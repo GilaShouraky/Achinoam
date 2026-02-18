@@ -19,8 +19,7 @@
  * contact_address        | רחוב התבור, בית שמש
  */
 
-export const SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/1TO_yfSLpdZobY_TvWatOkZrunVqwuERBynBonOOEU6o/edit?usp=sharing'; // הדביקו כאן את ה-URL מ-Google Sheets
-
+export const SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTzHSA8raPYkB3EaYN8ovRX_LU1wYhKXJ4LjNSjFl8LSDOlj1osu4ziirzAoHkJ_VDsWxo-FcDI65qv/pubhtml'
 // ─── ברירות מחדל ─────────────────────────────────────────────
 export const defaultContent = {
   banner_text: '🚚 משלוח חינם בקנייה מעל 150 ש"ח',
@@ -39,7 +38,7 @@ export const defaultContent = {
   contact_email: 'Achinoamharkochav@gmail.com',
   contact_address: 'רחוב התבור, בית שמש',
 
-  
+
   whatsapp_number: '9720548838607',
 
   graphics_intro: 'כמה מילים ממני… כל עבודה מעוצבת עם אהבה ותשומת לב לפרטים הקטנים. צרו איתי קשר ונתאים יחד את העיצוב המושלם עבורכם.',
