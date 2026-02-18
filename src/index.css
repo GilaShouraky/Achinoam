@@ -1,0 +1,82 @@
+@font-face {
+  font-family: 'Balerina';
+  src: url('./fonts/HKBalerina-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --cream: #F5F0F2;
+  --warm-white: #FAF6F8;
+  --sage: #7FA3B3;
+  --deep-sage: #6B8FA0;
+  --terracotta: #8B5A6B;
+  --gold: #C98A10;
+  --dark: #2C2C2C;
+  --mid: #6B6B6B;
+  --light: #9B9B9B;
+  --light-border: #DDD0D6;
+  --heading-color: #8B5A6B;
+  --font-display: 'Balerina', 'Frank Ruhl Libre', serif;
+  --font-body: 'Heebo', sans-serif;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.1);
+  --shadow-lg: 0 16px 40px rgba(0,0,0,0.14);
+  --radius: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--cream);
+  color: var(--dark);
+  direction: rtl;
+  text-align: right;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--heading-color);
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes slideOutRight {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}

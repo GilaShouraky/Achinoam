@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.fc033095.css",
+    "main.js": "/static/js/main.fb024787.js",
+    "static/media/HKBalerina-Regular.otf": "/static/media/HKBalerina-Regular.4ff721d21678ed757d5d.otf",
+    "index.html": "/index.html",
+    "main.fc033095.css.map": "/static/css/main.fc033095.css.map",
+    "main.fb024787.js.map": "/static/js/main.fb024787.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fc033095.css",
+    "static/js/main.fb024787.js"
+  ]
+}
