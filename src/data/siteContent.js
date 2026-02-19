@@ -10,6 +10,7 @@ export const SHEETS = {
   workshops: `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=1001488632&single=true&output=csv`,
 };
 
+
 // CORS proxy – מאפשר לדפדפן לקרוא את הגיליון
 const PROXY = 'https://corsproxy.io/?';
 
