@@ -71,7 +71,7 @@ export default function ProductCard({ product, size = 'normal' }) {
           fontWeight: '700',
           color: 'var(--terracotta)',
         }}>
-          {product.priceNote ? product.priceNote : product.price > 0 ? `₪${product.price}` : 'לפי הצעה'}
+          {product.priceNote ? product.priceNote : Number(product.price) > 0 ? `₪${Number(product.price)}` : 'לפי הצעה'}
         </p>
       </div>
     </div>

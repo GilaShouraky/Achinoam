@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { workshops } from '../data/products';
+
 
 export default function WorkshopsPage() {
-  const { navigate, content, pageData } = useApp();
+  const { navigate, content, pageData, workshops } = useApp();
   const [activeWs, setActiveWs] = useState(
     pageData?.subCategory || workshops[0].id
   );

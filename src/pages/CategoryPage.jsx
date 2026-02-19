@@ -1,51 +1,50 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
-import { categories, workshops } from '../data/products';
+import { categories } from '../data/products';
 
-// Sub-category visual data: emoji + gradient per sub-category
 const subCatVisuals = {
-  // Products
-  pesach:       { emoji: '🍷', gradient: 'linear-gradient(135deg, #C9A0A0, #A06060)' },
-  rosh_hashana: { emoji: '🍎', gradient: 'linear-gradient(135deg, #C9B87A, #A08040)' },
-  chagim:       { emoji: '🕯️', gradient: 'linear-gradient(135deg, #B0A8C9, #7060A0)' },
-  notebooks:    { emoji: '📓', gradient: 'linear-gradient(135deg, #8BA8C9, #4060A0)' },
-  embroidery:   { emoji: '🌺', gradient: 'linear-gradient(135deg, #C9A8B0, #A06070)' },
-  under100:     { emoji: '🎁', gradient: 'linear-gradient(135deg, #A8C9A0, #508050)' },
-  bride:        { emoji: '👰', gradient: 'linear-gradient(135deg, #F5DFC0, #C9A070)' },
-  // Graphics
-  invitations:  { emoji: '✉️', gradient: 'linear-gradient(135deg, #8FB5C9, #406080)' },
-  flyers:       { emoji: '📄', gradient: 'linear-gradient(135deg, #A8BCC9, #507090)' },
-  branding:     { emoji: '🏷️', gradient: 'linear-gradient(135deg, #7A9CB0, #3A6080)' },
-  // Workshops
-  macrame:      { emoji: '🪢', gradient: 'linear-gradient(135deg, #C9B8A0, #907050)' },
-  embroidery_ws:{ emoji: '🧵', gradient: 'linear-gradient(135deg, #C9A0B0, #906070)' },
-  art_general:  { emoji: '🎨', gradient: 'linear-gradient(135deg, #A0B8C9, #507090)' },
-};
-
-const catConfig = {
-  products: {
-    title: 'המוצרים שלי',
-    icon: '🎁',
-    targetPage: 'products',
-    subs: categories.products.subCategories,
-  },
-  graphics: {
-    title: 'עבודות גרפיקה',
-    icon: '🎨',
-    targetPage: 'graphics',
-    subs: categories.graphics.subCategories,
-  },
-  workshops: {
-    title: 'סדנאות אומנות',
-    icon: '✂️',
-    targetPage: 'workshops',
-    subs: workshops.map(w => ({ id: w.id, label: w.label })),
-  },
+  pesach:        { emoji: '🍷', gradient: 'linear-gradient(135deg, #C9A0A0, #A06060)' },
+  rosh_hashana:  { emoji: '🍎', gradient: 'linear-gradient(135deg, #C9B87A, #A08040)' },
+  chagim:        { emoji: '🕯️', gradient: 'linear-gradient(135deg, #B0A8C9, #7060A0)' },
+  notebooks:     { emoji: '📓', gradient: 'linear-gradient(135deg, #8BA8C9, #4060A0)' },
+  embroidery:    { emoji: '🌺', gradient: 'linear-gradient(135deg, #C9A8B0, #A06070)' },
+  under100:      { emoji: '🎁', gradient: 'linear-gradient(135deg, #A8C9A0, #508050)' },
+  bride:         { emoji: '👰', gradient: 'linear-gradient(135deg, #F5DFC0, #C9A070)' },
+  invitations:   { emoji: '✉️', gradient: 'linear-gradient(135deg, #8FB5C9, #406080)' },
+  flyers:        { emoji: '📄', gradient: 'linear-gradient(135deg, #A8BCC9, #507090)' },
+  branding:      { emoji: '🏷️', gradient: 'linear-gradient(135deg, #7A9CB0, #3A6080)' },
+  macrame:       { emoji: '🪢', gradient: 'linear-gradient(135deg, #C9B8A0, #907050)' },
+  embroidery_ws: { emoji: '🧵', gradient: 'linear-gradient(135deg, #C9A0B0, #906070)' },
+  art_general:   { emoji: '🎨', gradient: 'linear-gradient(135deg, #A0B8C9, #507090)' },
 };
 
 export default function CategoryPage() {
-  const { navigate, pageData } = useApp();
+  // ← workshops נטען כאן מתוך הקונטקסט, אחרי שהוא קיים
+  const { navigate, pageData, workshops } = useApp();
   const catKey = pageData || 'products';
+
+  // catConfig נבנה בתוך הקומפוננטה כדי שיוכל לגשת ל-workshops
+  const catConfig = {
+    products: {
+      title: 'המוצרים שלי',
+      icon: '🎁',
+      targetPage: 'products',
+      subs: categories.products.subCategories,
+    },
+    graphics: {
+      title: 'עבודות גרפיקה',
+      icon: '🎨',
+      targetPage: 'graphics',
+      subs: categories.graphics.subCategories,
+    },
+    workshops: {
+      title: 'סדנאות אומנות',
+      icon: '✂️',
+      targetPage: 'workshops',
+      subs: (workshops || []).map(w => ({ id: w.id, label: w.label })),
+    },
+  };
+
   const cat = catConfig[catKey] || catConfig.products;
 
   return (
@@ -70,7 +69,6 @@ export default function CategoryPage() {
           fontFamily: 'var(--font-display)',
           fontSize: '38px',
           fontWeight: '900',
-          color: 'var(--dark)',
           display: 'flex',
           alignItems: 'center',
           gap: '12px',
@@ -108,7 +106,6 @@ export default function CategoryPage() {
               onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = 'var(--shadow-lg)'; }}
               onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
             >
-              {/* Image area */}
               <div style={{
                 width: '100%',
                 paddingTop: '68%',
@@ -123,14 +120,12 @@ export default function CategoryPage() {
                   {visual.emoji}
                 </span>
               </div>
-
-              {/* Label */}
               <div style={{ padding: '14px 16px', textAlign: 'center' }}>
                 <p style={{
                   fontFamily: 'var(--font-display)',
                   fontSize: '16px',
                   fontWeight: '700',
-                  color: 'var(--dark)',
+                  color: 'var(--heading-color)',
                 }}>
                   {sub.label}
                 </p>

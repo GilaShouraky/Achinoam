@@ -1,10 +1,10 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
 import ProductCard from '../components/ProductCard';
-import { products } from '../data/products';
+
 
 export default function HomePage() {
-  const { content, navigate } = useApp();
+  const { content, navigate, products } = useApp();
 
   const recentProducts = products.slice(0, 4);
   const customProducts = products.filter(p => p.category === 'notebooks' || p.category === 'embroidery').slice(0, 4);

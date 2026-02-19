@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
+import { categories } from '../data/products';
 import ProductCard from '../components/ProductCard';
-import { products, categories } from '../data/products';
+
 
 export default function ProductsPage() {
-  const { navigate, pageData } = useApp();
+  const { navigate, pageData, products } = useApp();
   const [activeSubCat, setActiveSubCat] = useState(
     pageData?.subCategory || categories.products.subCategories[0].id
   );

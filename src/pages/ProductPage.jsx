@@ -102,7 +102,7 @@ export default function ProductPage() {
             color: 'var(--terracotta)',
             marginBottom: '24px',
           }}>
-            {product.priceNote ? product.priceNote : product.price > 0 ? `₪${product.price}` : 'לפי הצעה'}
+            {product.priceNote ? product.priceNote : Number(product.price) > 0 ? `₪${Number(product.price)}` : 'לפי הצעה'}
           </p>
 
           <p style={{
@@ -114,7 +114,7 @@ export default function ProductPage() {
             {product.description}
           </p>
 
-          {product.price > 0 && (
+          {Number(product.price) > 0 && (
             <>
               {/* Quantity */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px' }}>
