@@ -171,30 +171,20 @@ function rowToSetting(row) {
 
 // ─── טעינת תמונות קטגוריות ראשיות ─────────────────────────────
 export async function loadSubCategoriesFromSheets() {
+  // קורא מגיליון ההגדרות הקיים — שורות שהמפתח שלהן מתחיל ב-subcat_
   try {
-    const res = await fetch(PROXY + encodeURIComponent(SHEETS.subCategories));
-    if (!res.ok) return {};
-    const text = await res.text();
-    const lines = text.trim().split('\n');
-    if (lines.length < 2) return {};
-    // קריאת כותרות דינמית — תמיכה בעברית, BOM, ורווחים
-    const clean = s => s.trim().replace(/"/g, '').replace(/\uFEFF/g, '').replace(/_/g,' ').trim();
-    const headers = lines[0].split(',').map(clean);
-    const idCol  = headers.findIndex(h => h.includes('מזהה') || h === 'id');
-    const urlCol = headers.findIndex(h => h.includes('קישור') || h === 'url');
-    const iIdx = idCol  >= 0 ? idCol  : 0;
-    const uIdx = urlCol >= 0 ? urlCol : 1;
+    const rows = await fetchCSV(SHEETS.settings);
     const result = {};
-    lines.slice(1).forEach(row => {
-      // תמיכה ב-URL עם פסיקים בתוך quotes
-      const cols = row.match(/(".*?"|[^,]+)/g) || row.split(',');
-      const id  = (cols[iIdx] || '').trim().replace(/"/g, '').trim();
-      const url = (cols[uIdx] || '').trim().replace(/"/g, '').trim();
-      if (id && url && url.startsWith('http')) result[`subcat_${id}`] = url;
+    rows.forEach(row => {
+      const { key, value } = rowToSetting(row);
+      if (key && key.startsWith('subcat_') && value && value.startsWith('http')) {
+        result[key] = value;
+      }
     });
+    console.log('[subcat] loaded from settings:', result);
     return result;
   } catch (err) {
-    console.warn('שגיאה בטעינת קטגוריות ראשיות:', err);
+    console.warn('שגיאה בטעינת subcat:', err);
     return {};
   }
 }

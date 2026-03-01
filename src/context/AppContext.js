@@ -35,7 +35,10 @@ export function AppProvider({ children }) {
       setGraphics(g);
       setWorkshops(w);
       setDataLoaded(true);
-    }).catch(() => setDataLoaded(true));
+    }).catch(err => {
+      console.error('[AppContext] Error loading data:', err);
+      setDataLoaded(true);
+    });
   }, []);
 
   // ─── navigate helper: תומך בכל הסוגים ─────────────────────
