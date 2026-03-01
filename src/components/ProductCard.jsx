@@ -22,7 +22,7 @@ export default function ProductCard({ product, size = 'normal' }) {
       {/* תמונה */}
       <div style={{
         background: 'linear-gradient(145deg, var(--cream), var(--rose-soft))',
-        paddingTop: isSmall ? '78%' : '72%',
+        paddingTop: isSmall ? '90%' : '105%',
         position: 'relative', overflow: 'hidden',
       }}>
         {product.images?.[0] ? (

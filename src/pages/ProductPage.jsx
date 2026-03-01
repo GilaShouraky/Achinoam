@@ -25,7 +25,7 @@ export default function ProductPage({ productOverride } = {}) {
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '44px', alignItems: 'start' }}>
           {/* תמונה */}
-          <div style={{ background: 'linear-gradient(145deg, var(--cream), var(--rose-soft))', borderRadius: '24px', paddingTop: '88%', position: 'relative', overflow: 'hidden', boxShadow: 'var(--shadow-md)', border: '1px solid var(--border-light)' }}>
+          <div style={{ background: 'linear-gradient(145deg, var(--cream), var(--rose-soft))', borderRadius: '24px', paddingTop: '120%', position: 'relative', overflow: 'hidden', boxShadow: 'var(--shadow-md)', border: '1px solid var(--border-light)' }}>
             {product.images?.[0] ? (
               <img src={product.images[0]} alt={product.name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
             ) : (

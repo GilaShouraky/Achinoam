@@ -124,14 +124,24 @@ export default function HomePage() {
   return (
     <div>
       {/* ─── Hero ─── */}
-      <section style={{ background: 'var(--grad-warm)', padding: 'clamp(56px,10vw,96px) 28px clamp(48px,8vw,76px)', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: '-60px', right: '-40px', width: '320px', height: '320px', background: 'var(--rose)', borderRadius: '50%', filter: 'blur(100px)', opacity: 0.07, pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', bottom: '-40px', left: '-40px', width: '240px', height: '240px', background: 'var(--slate)', borderRadius: '50%', filter: 'blur(80px)', opacity: 0.07, pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', top: '12%', right: '8%', fontSize: '28px', opacity: 0.13, transform: 'rotate(15deg)' }}>❀</div>
-        <div style={{ position: 'absolute', bottom: '15%', left: '6%', fontSize: '22px', opacity: 0.1, transform: 'rotate(-10deg)' }}>✿</div>
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: '660px', margin: '0 auto' }}>
-          <p className="fade-in" style={{ fontSize: 'clamp(13px,1.8vw,16px)', color: 'var(--mid)', fontWeight: '500', marginBottom: '8px' }}>{content.hero_subtitle}</p>
-          <h1 className="fade-in fade-in-delay-1" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(40px,7vw,70px)', fontWeight: '900', color: 'var(--rose)', lineHeight: '1.1' }}>{content.hero_title}</h1>
+      <section style={{
+        position: 'relative', overflow: 'hidden',
+        minHeight: 'clamp(260px, 40vw, 480px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        textAlign: 'center',
+      }}>
+        {/* תמונת רקע */}
+        <img
+          src="https://i.ibb.co/CK4VYPTt/Whats-App-Image-2026-03-01-at-03-16-12.jpg"
+          alt=""
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', filter: 'brightness(0.82)' }}
+        />
+        {/* שכבת בהירות לבנה */}
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,248,244,0.45)' }} />
+        {/* טקסט */}
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: '660px', margin: '0 auto', padding: '0 28px' }}>
+          <p className="fade-in" style={{ fontSize: 'clamp(16px,2.2vw,20px)', color: 'var(--mid)', fontWeight: '500', marginBottom: '10px', textShadow: '0 1px 4px rgba(255,255,255,0.6)' }}>{content.hero_subtitle}</p>
+          <h1 className="fade-in fade-in-delay-1" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(52px,9vw,90px)', fontWeight: '900', color: 'var(--rose)', lineHeight: '1.1', textShadow: '0 2px 8px rgba(255,255,255,0.5)' }}>{content.hero_title}</h1>
         </div>
       </section>
 
