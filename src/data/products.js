@@ -9,7 +9,7 @@ export const categories = {
     icon: '🎁',
     subCategories: [
       { id: 'pesach',       label: 'קולקציית פסח' },
-      { id: 'rosh_hashana', label: 'קולקציית מתנות סוף שנה' },
+      { id: 'sof_shana', label: 'קולקציית מתנות סוף שנה' },
       { id: 'chagim',       label: 'קולקציית חגים' },
       { id: 'notebooks',    label: 'מחברות ניהול זמן' },
       { id: 'embroidery',   label: 'עבודות ריקמה' },

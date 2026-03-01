@@ -1,131 +1,55 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
+import Logo from './Logo';
 
 const menuItems = [
-  { label: 'אודות', page: 'about' },
-  { label: 'חנות', page: 'products', data: null },
-  { label: 'המוצרים שלי', page: 'products' },
-  { label: 'עבודות גרפיקה', page: 'graphics' },
-  { label: 'סדנאות אומנות', page: 'workshops' },
-  { label: 'סל קניות', page: 'cart' },
-  { label: 'צור קשר', page: 'contact' },
+  { label: 'דף הבית',       page: 'home',     icon: '🏠' },
+  { label: 'המוצרים שלי',   page: 'category', data: 'products',  icon: '🎁' },
+  { label: 'עבודות גרפיקה', page: 'category', data: 'graphics',  icon: '🎨' },
+  { label: 'סדנאות אומנות', page: 'category', data: 'workshops', icon: '🧵' },
+  { label: 'קצת עלי',       page: 'about',    icon: '🌿' },
+  { label: 'צרי קשר',       page: 'contact',  icon: '📩' },
 ];
 
 export default function Sidebar() {
-  const { sidebarOpen, setSidebarOpen, navigate } = useApp();
+  const { sidebarOpen, setSidebarOpen, navigate, content } = useApp();
 
   return (
     <>
-      {/* Overlay */}
-      <div
-        onClick={() => setSidebarOpen(false)}
-        style={{
-          position: 'fixed',
-          inset: 0,
-          background: 'rgba(0,0,0,0.45)',
-          zIndex: 200,
-          opacity: sidebarOpen ? 1 : 0,
-          pointerEvents: sidebarOpen ? 'all' : 'none',
-          transition: 'opacity 0.3s ease',
-        }}
-      />
-
-      {/* Sidebar panel */}
+      {sidebarOpen && (
+        <div onClick={() => setSidebarOpen(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(44,31,31,0.45)', backdropFilter: 'blur(3px)', zIndex: 200, animation: 'fadeIn 0.2s ease' }} />
+      )}
       <div style={{
-        position: 'fixed',
-        top: 0,
-        right: sidebarOpen ? 0 : '-320px',
-        width: '290px',
-        height: '100vh',
-        background: 'var(--warm-white)',
-        zIndex: 300,
-        transition: 'right 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
-        boxShadow: '-6px 0 32px rgba(0,0,0,0.15)',
-        display: 'flex',
-        flexDirection: 'column',
-        overflowY: 'auto',
+        position: 'fixed', top: 0, right: 0,
+        width: '290px', height: '100vh',
+        background: 'var(--warm-white)', zIndex: 300,
+        transform: sidebarOpen ? 'translateX(0)' : 'translateX(100%)',
+        transition: 'transform 0.33s cubic-bezier(0.22,1,0.36,1)',
+        display: 'flex', flexDirection: 'column',
+        boxShadow: '-6px 0 40px rgba(139,90,107,0.12)',
       }}>
-        {/* Close button */}
-        <button
-          onClick={() => setSidebarOpen(false)}
-          style={{
-            position: 'absolute',
-            top: '16px',
-            left: '16px',
-            background: 'none',
-            border: 'none',
-            fontSize: '24px',
-            color: 'var(--mid)',
-            lineHeight: 1,
-          }}
-          aria-label="סגור"
-        >
-          ×
-        </button>
-
-        {/* Logo */}
-        <div style={{
-          padding: '28px 28px 24px',
-          borderBottom: '1px solid var(--light-border)',
-          fontFamily: 'var(--font-display)',
-          fontSize: '24px',
-          fontWeight: '900',
-          color: 'var(--deep-sage)',
-        }}>
-          אחינועם הר כוכב
-          <div style={{ fontSize: '12px', color: 'var(--terracotta)', fontFamily: 'var(--font-body)', fontWeight: 400, marginTop: 4 }}>
-            מתנות | עיצוב | סדנאות
-          </div>
+        <div style={{ height: '3px', background: 'linear-gradient(90deg, var(--rose), var(--slate), var(--amber))' }} />
+        <div style={{ padding: '24px 22px 20px', display: 'flex', justifyContent: 'center', alignItems: 'center', borderBottom: '1px solid var(--border-light)', position: 'relative' }}>
+          <Logo size="small" />
+          <button onClick={() => setSidebarOpen(false)}
+            style={{ position: 'absolute', left: '16px', background: 'var(--cream)', border: 'none', borderRadius: '50%', width: '34px', height: '34px', fontSize: '16px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--mid)' }}>×</button>
         </div>
-
-        {/* Nav links */}
-        <nav style={{ flex: 1 }}>
-          {menuItems.map((item) => (
-            <button
-              key={item.label}
-              onClick={() => navigate(item.page, item.data)}
-              style={{
-                display: 'block',
-                width: '100%',
-                padding: '16px 28px',
-                background: 'none',
-                border: 'none',
-                borderBottom: '1px solid var(--light-border)',
-                textAlign: 'right',
-                fontSize: '16px',
-                fontWeight: '500',
-                color: 'var(--dark)',
-                transition: 'background 0.2s, color 0.2s',
-                cursor: 'pointer',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.background = 'var(--cream)'; e.currentTarget.style.color = 'var(--deep-sage)'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.color = 'var(--dark)'; }}
+        <nav style={{ flex: 1, padding: '12px', overflowY: 'auto' }}>
+          {menuItems.map((item, i) => (
+            <button key={i} onClick={() => navigate(item.page, item.data || null)}
+              style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '13px', padding: '13px 14px', background: 'none', border: 'none', borderRadius: '12px', cursor: 'pointer', textAlign: 'right', marginBottom: '3px', transition: 'all 0.2s', fontFamily: 'var(--font-body)' }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'var(--rose-soft)'; e.currentTarget.style.paddingRight = '20px'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.paddingRight = '14px'; }}
             >
-              {item.label}
+              <span style={{ fontSize: '19px', width: '26px', textAlign: 'center' }}>{item.icon}</span>
+              <span style={{ fontSize: '15px', fontWeight: '600', color: 'var(--dark)' }}>{item.label}</span>
             </button>
           ))}
         </nav>
-
-        {/* WhatsApp */}
-        <div style={{ padding: '24px 28px' }}>
-          <a
-            href="https://wa.me/9720548838607"
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              background: '#25D366',
-              color: 'white',
-              padding: '12px 20px',
-              borderRadius: '30px',
-              fontSize: '14px',
-              fontWeight: '600',
-              justifyContent: 'center',
-            }}
-          >
-            <span>💬</span> ווצאפ
+        <div style={{ padding: '18px 20px', borderTop: '1px solid var(--border-light)' }}>
+          <a href={`https://wa.me/${content.whatsapp_number}`} target="_blank" rel="noopener noreferrer"
+            className="btn-whatsapp" style={{ width: '100%', borderRadius: '12px', padding: '13px' }}>
+            <span>💬</span><span>שלחי הודעה בוואטסאפ</span>
           </a>
         </div>
       </div>

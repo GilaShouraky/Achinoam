@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
 import { AppProvider, useApp } from './context/AppContext';
 import TopBanner from './components/TopBanner';
 import Header from './components/Header';
@@ -15,36 +16,70 @@ import CartPage from './pages/CartPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 
-function Router() {
-  const { page } = useApp();
+// wrapper לעמוד קטגוריה — מקבל catKey מה-URL
+function CategoryPageWrapper() {
+  const { catKey } = useParams();
+  const { products, graphics, workshops, content, navigate } = useApp();
+  return <CategoryPage catKeyOverride={catKey} />;
+}
 
-  const pageMap = {
-    home:      <HomePage />,
-    category:  <CategoryPage />,   // ← intermediate sub-category selector
-    products:  <ProductsPage />,
-    product:   <ProductPage />,
-    graphics:  <GraphicsPage />,
-    workshops: <WorkshopsPage />,
-    cart:      <CartPage />,
-    about:     <AboutPage />,
-    contact:   <ContactPage />,
-  };
+// wrapper לעמוד מוצרים עם sub-category מה-URL
+function ProductsPageWrapper() {
+  const { subCat } = useParams();
+  return <ProductsPage subCatOverride={subCat} />;
+}
+function GraphicsPageWrapper() {
+  const { subCat } = useParams();
+  return <GraphicsPage subCatOverride={subCat} />;
+}
+function WorkshopsPageWrapper() {
+  const { subCat } = useParams();
+  return <WorkshopsPage subCatOverride={subCat} />;
+}
 
-  return pageMap[page] || <HomePage />;
+// wrapper לעמוד מוצר — טוען מוצר לפי ID
+function ProductPageWrapper() {
+  const { productId } = useParams();
+  const { products, graphics } = useApp();
+  const allProducts = [...products, ...graphics];
+  // מנסה למצוא מה-state, אחרת מהנתונים
+  const stored = sessionStorage.getItem('currentProduct');
+  const product = allProducts.find(p => p.id === productId)
+    || (stored ? JSON.parse(stored) : null);
+  return <ProductPage productOverride={product} />;
+}
+
+function Layout() {
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <TopBanner />
+      <Header />
+      <Sidebar />
+      <main style={{ flex: 1 }}>
+        <Routes>
+          <Route path="/"                    element={<HomePage />} />
+          <Route path="/category/:catKey"    element={<CategoryPageWrapper />} />
+          <Route path="/products/:subCat?"   element={<ProductsPageWrapper />} />
+          <Route path="/graphics/:subCat?"   element={<GraphicsPageWrapper />} />
+          <Route path="/workshops/:subCat?"  element={<WorkshopsPageWrapper />} />
+          <Route path="/product/:productId"  element={<ProductPageWrapper />} />
+          <Route path="/cart"                element={<CartPage />} />
+          <Route path="/about"               element={<AboutPage />} />
+          <Route path="/contact"             element={<ContactPage />} />
+          <Route path="*"                    element={<HomePage />} />
+        </Routes>
+      </main>
+      <ContactBanner />
+    </div>
+  );
 }
 
 export default function App() {
   return (
-    <AppProvider>
-      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-        <TopBanner />
-        <Header />
-        <Sidebar />
-        <main style={{ flex: 1 }}>
-          <Router />
-        </main>
-        <ContactBanner />
-      </div>
-    </AppProvider>
+    <BrowserRouter>
+      <AppProvider>
+        <Layout />
+      </AppProvider>
+    </BrowserRouter>
   );
 }

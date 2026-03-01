@@ -2,124 +2,34 @@ import React from 'react';
 import { useApp } from '../context/AppContext';
 
 export default function AboutPage() {
-  const { navigate, content } = useApp();
-
+  const { content, navigate } = useApp();
   return (
     <div className="fade-in">
-      <div style={{ background: 'white', borderBottom: '1px solid var(--light-border)', padding: '32px 36px 24px' }}>
-        <div onClick={() => navigate('home')} style={{ fontSize: '13px', color: 'var(--mid)', marginBottom: '8px', cursor: 'pointer' }}>
-          ← חזרה לדף הבית
-        </div>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '36px', fontWeight: '900', color: 'var(--dark)' }}>
-          אודות
-        </h1>
+      <div className="page-header">
+        <button className="back-btn" onClick={() => navigate('home')}>→ חזרה לדף הבית</button>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '38px', fontWeight: '900', color: 'var(--rose)', marginTop: '8px' }}>קצת עלי</h1>
       </div>
-
-      <div style={{ maxWidth: '760px', margin: '50px auto', padding: '0 36px 80px' }}>
-        {/* Profile area */}
-        <div style={{
-          background: 'white',
-          border: '1px solid var(--light-border)',
-          borderRadius: '24px',
-          padding: '48px 44px',
-          position: 'relative',
-          overflow: 'hidden',
-        }}>
-          <div style={{
-            position: 'absolute', top: 0, right: 0,
-            width: '5px', height: '100%',
-            background: 'linear-gradient(to bottom, var(--sage), var(--terracotta), var(--gold))',
-          }} />
-
-          <div style={{
-            width: '90px', height: '90px',
-            background: 'linear-gradient(135deg, var(--sage), var(--deep-sage))',
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '44px',
-            marginBottom: '24px',
-          }}>
-            🌿
+      <div style={{ maxWidth: '720px', margin: '46px auto 78px', padding: '0 28px' }}>
+        <div style={{ background: 'var(--warm-white)', borderRadius: '26px', padding: '44px', boxShadow: 'var(--shadow-sm)', border: '1px solid var(--border-light)', position: 'relative', overflow: 'hidden', marginBottom: '28px' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, var(--rose), var(--slate), var(--amber))' }} />
+          <div style={{ position: 'absolute', bottom: '-30px', left: '-30px', width: '140px', height: '140px', background: 'var(--slate)', borderRadius: '50%', filter: 'blur(60px)', opacity: 0.07 }} />
+          <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '28px' }}>
+            <div style={{ width: '70px', height: '70px', background: 'var(--rose-soft)', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px', flexShrink: 0, border: '1px solid var(--rose-pale)' }}>🌿</div>
+            <div>
+              <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '28px', color: 'var(--rose)', fontWeight: '900', marginBottom: '3px' }}>{content.about_signature}</h2>
+              <p style={{ fontSize: '12px', color: 'var(--light)', letterSpacing: '1px' }}>יוצרת · גרפיקאית · מעצבת</p>
+            </div>
           </div>
-
-          <h2 style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: '28px',
-            fontWeight: '900',
-            color: 'var(--dark)',
-            marginBottom: '20px',
-          }}>
-            אחינועם הר כוכב
-          </h2>
-
-          <p style={{
-            fontSize: '16px',
-            lineHeight: '2',
-            color: 'var(--mid)',
-            whiteSpace: 'pre-line',
-            marginBottom: '20px',
-          }}>
-            {content.about_text}
-          </p>
-
-          <p style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: '26px',
-            color: 'var(--deep-sage)',
-            fontWeight: '700',
-          }}>
-            {content.about_signature}
-          </p>
+          <p style={{ fontSize: '14px', lineHeight: '2', color: 'var(--mid)', whiteSpace: 'pre-line' }}>{content.about_text}</p>
         </div>
-
-        {/* Tags */}
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '28px' }}>
-          {['🎨 גרפיקאית', '🎁 מתנות אישיות', '✂️ סדנאות', '🌿 עיצוב מקורי', '💌 עם אהבה'].map(tag => (
-            <span key={tag} style={{
-              background: 'white',
-              border: '1px solid var(--light-border)',
-              borderRadius: '20px',
-              padding: '8px 18px',
-              fontSize: '14px',
-              color: 'var(--mid)',
-            }}>
-              {tag}
-            </span>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '9px', marginBottom: '36px' }}>
+          {['מתנות מעוצבות','גרפיקה ועיצוב','סדנאות יצירה','עבודות ריקמה','חבילת כלה','עיצוב אישי'].map(t => (
+            <span key={t} className="pill pill-rose">{t}</span>
           ))}
         </div>
-
-        {/* CTA */}
-        <div style={{
-          marginTop: '36px',
-          background: 'var(--deep-sage)',
-          borderRadius: '20px',
-          padding: '32px 36px',
-          textAlign: 'center',
-          color: 'white',
-        }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '22px', fontWeight: '700', marginBottom: '16px' }}>
-            רוצים לדבר?
-          </h3>
-          <a
-            href={`https://wa.me/${content.whatsapp_number}`}
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              background: '#25D366',
-              color: 'white',
-              padding: '12px 28px',
-              borderRadius: '30px',
-              fontSize: '14px',
-              fontWeight: '600',
-            }}
-          >
-            💬 שלחו הודעה
-          </a>
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          <button className="btn-primary" onClick={() => navigate('category', 'products')}>לצפייה במוצרים ←</button>
+          <button className="btn-secondary" onClick={() => navigate('contact')}>צרי קשר</button>
         </div>
       </div>
     </div>

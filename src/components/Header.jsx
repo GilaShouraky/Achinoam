@@ -1,93 +1,66 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
+
+const LOGO_URL = 'https://i.ibb.co/6R35Qkzt/4.png';
 
 export default function Header() {
   const { setSidebarOpen, cartCount, navigate } = useApp();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 10);
+    window.addEventListener('scroll', fn);
+    return () => window.removeEventListener('scroll', fn);
+  }, []);
 
   return (
     <header style={{
-      background: 'var(--warm-white)',
-      borderBottom: '1px solid var(--light-border)',
-      padding: '16px 28px',
+      background: scrolled ? 'rgba(255,252,250,0.95)' : 'var(--warm-white)',
+      backdropFilter: scrolled ? 'blur(16px)' : 'none',
+      borderBottom: '1px solid var(--border-light)',
+      padding: '0 28px',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      position: 'sticky',
-      top: 0,
-      zIndex: 100,
-      boxShadow: 'var(--shadow-sm)',
+      height: '80px',
+      position: 'sticky', top: 0, zIndex: 100,
+      transition: 'all 0.3s ease',
+      boxShadow: scrolled ? '0 2px 16px rgba(139,90,107,0.08)' : 'none',
+      direction: 'rtl',
     }}>
-      {/* Hamburger – Right */}
-      <button
-        onClick={() => setSidebarOpen(true)}
-        style={{ background: 'none', border: 'none', padding: '6px', display: 'flex', flexDirection: 'column', gap: '5px' }}
-        aria-label="תפריט"
-      >
-        {[0,1,2].map(i => (
-          <span key={i} style={{
-            display: 'block',
-            width: '24px',
-            height: '2px',
-            background: 'var(--dark)',
-            borderRadius: '2px',
-            transition: 'all 0.3s',
-          }} />
+
+      {/* ימין קיצוני: 3 פסים */}
+      <button onClick={() => setSidebarOpen(true)}
+        style={{ background: 'none', border: 'none', padding: '10px', display: 'flex', flexDirection: 'column', gap: '6px', cursor: 'pointer', flexShrink: 0 }}>
+        {[26, 18, 26].map((w, i) => (
+          <span key={i} style={{ display: 'block', width: w, height: '2px', background: 'var(--rose)', borderRadius: '2px' }} />
         ))}
       </button>
 
-      {/* Logo – Left */}
-      <button
-        onClick={() => navigate('home')}
-        style={{ background: 'none', border: 'none', textAlign: 'left', cursor: 'pointer' }}
-      >
-        <div style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: '26px',
-          fontWeight: '900',
-          color: 'var(--deep-sage)',
-          lineHeight: '1',
-        }}>
-          אחינועם
-        </div>
-        <div style={{
-          fontSize: '10px',
-          fontWeight: '400',
-          color: 'var(--terracotta)',
-          letterSpacing: '2.5px',
-          textTransform: 'uppercase',
-          marginTop: '2px',
-        }}>
-          מתנות | עיצוב | סדנאות
-        </div>
+      {/* מרכז: לוגו */}
+      <button onClick={() => navigate('home')}
+        style={{ background: 'none', border: 'none', cursor: 'pointer', position: 'absolute', left: '50%', transform: 'translateX(-50%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <img src={LOGO_URL} alt="אחינועם"
+          style={{ height: '68px', width: 'auto', objectFit: 'contain', display: 'block' }} />
       </button>
 
-      {/* Cart icon */}
-      <button
-        onClick={() => navigate('cart')}
-        style={{ background: 'none', border: 'none', position: 'relative', padding: '4px', fontSize: '22px' }}
-        aria-label="סל קניות"
-      >
-        🛒
+      {/* שמאל קיצוני: עגלה */}
+      <button onClick={() => navigate('cart')}
+        style={{ background: 'none', border: 'none', position: 'relative', width: '46px', height: '46px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', transition: 'background 0.2s', cursor: 'pointer', flexShrink: 0 }}
+        onMouseEnter={e => e.currentTarget.style.background = 'var(--rose-soft)'}
+        onMouseLeave={e => e.currentTarget.style.background = 'none'}>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--rose)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
         {cartCount > 0 && (
-          <span style={{
-            position: 'absolute',
-            top: '-2px',
-            right: '-4px',
-            background: 'var(--terracotta)',
-            color: 'white',
-            borderRadius: '50%',
-            width: '18px',
-            height: '18px',
-            fontSize: '10px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontWeight: '700',
-          }}>
+          <span style={{ position: 'absolute', top: '6px', left: '6px', background: 'var(--amber)', color: 'white', borderRadius: '50%', width: '17px', height: '17px', fontSize: '9px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '800' }}>
             {cartCount}
           </span>
         )}
       </button>
+
     </header>
   );
 }

@@ -6,77 +6,242 @@
   font-display: swap;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --cream: #F5F0F2;
-  --warm-white: #FAF6F8;
-  --sage: #7FA3B3;
-  --deep-sage: #6B8FA0;
-  --terracotta: #8B5A6B;
-  --gold: #C98A10;
-  --dark: #2C2C2C;
-  --mid: #6B6B6B;
-  --light: #9B9B9B;
-  --light-border: #DDD0D6;
-  --heading-color: #8B5A6B;
-  --font-display: 'Balerina', 'Frank Ruhl Libre', serif;
-  --font-body: 'Heebo', sans-serif;
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
-  --shadow-md: 0 8px 24px rgba(0,0,0,0.1);
-  --shadow-lg: 0 16px 40px rgba(0,0,0,0.14);
-  --radius: 16px;
+  /* ─── הצבעים המדויקים מהפלטה ─── */
+  --rose:          #8B5A6B;
+  --rose-light:    #A87080;
+  --rose-pale:     #F0E4E8;
+  --rose-soft:     #F8EFF2;
+
+  --slate:         #5B8FA8;
+  --slate-light:   #7AAFC8;
+  --slate-pale:    #E2EFF5;
+  --slate-soft:    #EFF6FA;
+
+  --amber:         #C4861A;
+  --amber-light:   #D9A040;
+  --amber-pale:    #F5EAD4;
+  --amber-soft:    #FAF3E6;
+
+  /* ─── ניטרלים חמים ─── */
+  --linen:         #FAF6F2;
+  --cream:         #F5EFE8;
+  --warm-white:    #FFFCFA;
+  --parchment:     #EDE4D8;
+  --border:        #E2D5CC;
+  --border-light:  #EDE4DC;
+
+  --dark:          #2C1F1F;
+  --mid:           #6B5050;
+  --light:         #A8948A;
+
+  /* ─── סמנטי ─── */
+  --heading-color:  var(--rose);
+  --font-display:   'Balerina', 'Frank Ruhl Libre', serif;
+  --font-body:      'Heebo', sans-serif;
+
+  /* ─── צלליות חמות ─── */
+  --shadow-xs: 0 1px 4px rgba(139,90,107,0.07);
+  --shadow-sm: 0 3px 14px rgba(139,90,107,0.09);
+  --shadow-md: 0 8px 28px rgba(139,90,107,0.13);
+  --shadow-lg: 0 18px 44px rgba(139,90,107,0.17);
+  --shadow-xl: 0 28px 60px rgba(139,90,107,0.21);
+
+  /* ─── גרדיאנטים אורגניים ─── */
+  --grad-rose:   linear-gradient(135deg, #8B5A6B 0%, #6B3D52 100%);
+  --grad-slate:  linear-gradient(135deg, #5B8FA8 0%, #3D6F88 100%);
+  --grad-amber:  linear-gradient(135deg, #C4861A 0%, #9A6410 100%);
+  --grad-warm:   linear-gradient(160deg, #FAF6F2 0%, #F5EDE4 40%, #EFF5F8 100%);
+  --grad-card:   linear-gradient(150deg, #FFFCFA 0%, #F8F2EE 100%);
+
+  --radius-sm: 10px;
+  --radius:    18px;
+  --radius-lg: 26px;
+  --radius-xl: 38px;
 }
 
+/* ─── Base ─── */
 body {
   font-family: var(--font-body);
-  background: var(--cream);
+  background: var(--linen);
   color: var(--dark);
   direction: rtl;
   text-align: right;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  line-height: 1.65;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  color: var(--heading-color);
+/* טקסטורה עדינה על הרקע */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(139,90,107,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(91,143,168,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 60% 10%, rgba(196,134,26,0.03) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 0;
 }
 
-button {
-  font-family: var(--font-body);
-  cursor: pointer;
-}
+#root { position: relative; z-index: 1; }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
+h1,h2,h3,h4,h5,h6 { color: var(--heading-color); line-height: 1.25; }
+button { font-family: var(--font-body); cursor: pointer; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
 
-img {
-  max-width: 100%;
-  display: block;
+/* ─── אנימציות ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-
-/* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes bloomIn {
+  from { opacity: 0; transform: scale(0.94) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes slideFromLeft {
+  from { opacity: 0; transform: translateX(-28px) scale(0.96); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes slideFromRight {
+  from { opacity: 0; transform: translateX(28px) scale(0.96); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
 }
 
-@keyframes slideInRight {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
+.fade-in         { animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+.fade-in-delay-1 { animation: fadeUp 0.5s 0.1s cubic-bezier(0.22,1,0.36,1) both; }
+.fade-in-delay-2 { animation: fadeUp 0.5s 0.2s cubic-bezier(0.22,1,0.36,1) both; }
+.fade-in-delay-3 { animation: fadeUp 0.5s 0.3s cubic-bezier(0.22,1,0.36,1) both; }
+
+/* ─── כפתורים ─── */
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 13px 30px;
+  background: var(--grad-rose);
+  color: white; border: none; border-radius: 50px;
+  font-size: 14px; font-weight: 700; font-family: var(--font-body);
+  cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 18px rgba(139,90,107,0.32);
+  letter-spacing: 0.3px;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(139,90,107,0.42); }
+
+.btn-secondary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px 28px;
+  background: transparent; color: var(--rose);
+  border: 1.5px solid var(--rose); border-radius: 50px;
+  font-size: 14px; font-weight: 600; font-family: var(--font-body);
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-secondary:hover { background: var(--rose); color: white; transform: translateY(-2px); }
+
+.btn-whatsapp {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 13px 28px;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: white; border: none; border-radius: 50px;
+  font-size: 14px; font-weight: 700; font-family: var(--font-body);
+  cursor: pointer; text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 18px rgba(37,211,102,0.28);
+}
+.btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,211,102,0.38); }
+
+/* ─── Page header ─── */
+.page-header {
+  background: var(--warm-white);
+  border-bottom: 1px solid var(--border-light);
+  padding: 28px 40px 22px;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  display: none;
+}
+/* פרח דקורטיבי ברקע */
+.page-header::after {
+  content: '❀';
+  position: absolute; left: 30px; top: 50%; transform: translateY(-50%);
+  font-size: 80px; opacity: 0.04; pointer-events: none;
 }
 
-@keyframes slideOutRight {
-  from { transform: translateX(0); }
-  to { transform: translateX(100%); }
+/* ─── Back button ─── */
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: white; border: none; font-size: 13px;
+  color: var(--rose); cursor: pointer; padding: 7px 16px;
+  border-radius: 50px; transition: all 0.2s; font-family: var(--font-body);
+  font-weight: 600; box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+}
+.back-btn:hover { background: var(--rose-soft); }
+
+/* ─── Pill ─── */
+.pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 14px; border-radius: 50px;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.3px;
+}
+.pill-rose   { background: var(--rose-pale);  color: var(--rose);  }
+.pill-slate  { background: var(--slate-pale); color: var(--slate); }
+.pill-amber  { background: var(--amber-pale); color: var(--amber); }
+
+/* ─── Section title ─── */
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3.5vw, 38px);
+  font-weight: 900; color: var(--rose);
+  position: relative; display: inline-block;
+}
+.section-title::after {
+  content: '';
+  position: absolute; bottom: -5px; right: 0;
+  width: 45%; height: 2.5px;
+  background: linear-gradient(90deg, var(--amber), transparent);
+  border-radius: 2px;
 }
 
-.fade-in {
-  animation: fadeIn 0.5s ease forwards;
+/* ─── Qty control ─── */
+.qty-control {
+  display: flex; align-items: center;
+  border: 1.5px solid var(--border); border-radius: 50px;
+  overflow: hidden; background: white;
 }
+.qty-btn {
+  width: 36px; height: 36px; background: none; border: none;
+  font-size: 17px; color: var(--rose); cursor: pointer;
+  transition: background 0.2s; font-family: var(--font-body);
+}
+.qty-btn:hover { background: var(--rose-soft); }
+.qty-num { min-width: 34px; text-align: center; font-size: 14px; font-weight: 700; color: var(--dark); }
+
+/* ─── Tag ─── */
+.tag {
+  display: inline-block; padding: 5px 14px; border-radius: 50px;
+  font-size: 12px; font-weight: 500; background: var(--cream);
+  color: var(--mid); border: 1px solid var(--border-light);
+  cursor: pointer; transition: all 0.2s;
+}
+.tag:hover, .tag.active { background: var(--rose); color: white; border-color: var(--rose); }
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--linen); }
+::-webkit-scrollbar-thumb { background: var(--parchment); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--rose-light); }

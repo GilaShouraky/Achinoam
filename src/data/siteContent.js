@@ -8,15 +8,16 @@ export const SHEETS = {
   products:  `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=1740173305&single=true&output=csv`,
   graphics:  `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=1174110383&single=true&output=csv`,
   workshops: `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=1001488632&single=true&output=csv`,
+  // גיליון "קטגוריות ראשיות" – תעדכני את ה-gid אחרי שתוסיפי את הגיליון
+  subCategories: `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=2111774314&single=true&output=csv`,
 };
-
 
 // CORS proxy – מאפשר לדפדפן לקרוא את הגיליון
 const PROXY = 'https://corsproxy.io/?';
 
 // ─── ערכי ברירת מחדל למלל בלבד (לא מוצרים) ─────────────────
 export const defaultContent = {
-  banner_text:     '🚚 משלוח חינם בקנייה מעל 150 ש"ח',
+  banner_text:     '',
   hero_subtitle:   'מחפשים מתנה לעצמכם? לאהובים עליכם?',
   hero_title:      'הגעתם למקום הנכון',
   about_text:      'הי, אני אחינועם הר כוכב, יוצרת, גרפיקאית, ואוהבת מאוד אומנות\nיצרתי את העסק שלי מתוך צורך לשדרג את שולחן השבת של ההורים שלי ומשם זה התפתח לרצון של אנשים סביבי לרכוש את המוצרים גם לבית שלהם\nפה בשביל להגשים לכם וליצור עבורכם מתנות לעצמיכם ולסובבים אתכם\nכאן לכל שאלה, בקשה, הערה והארה',
@@ -27,6 +28,28 @@ export const defaultContent = {
   whatsapp_number: '9720548838607',
   graphics_intro:  'כמה מילים ממני… כל עבודה מעוצבת עם אהבה ותשומת לב לפרטים הקטנים. צרו איתי קשר ונתאים יחד את העיצוב המושלם עבורכם.',
   footer_credit:   'כל הזכויות שמורות © אחינועם הר כוכב',
+  // תמונות לכרטיסי קטגוריה (אופציונלי – אם ריק יוצג האמוג'י)
+  cat_products_image:  '',
+  cat_graphics_image:  '',
+  cat_workshops_image: '',
+  // פס תחתון: קישור לתמונה = מציג תמונה, טקסט = מציג טקסט, ריק = לא מוצג
+  bottom_banner:       '',
+  // תמונות תת-קטגוריות (נטענות מגיליון "קטגוריות ראשיות")
+  subcat_pesach:        '',
+  subcat_sof_shana:     '',
+  subcat_chagim:        '',
+  subcat_notebooks:     '',
+  subcat_embroidery:    '',
+  subcat_under100:      '',
+  subcat_bride:         '',
+  subcat_invitations:   '',
+  subcat_flyers:        '',
+  subcat_branding:      '',
+  subcat_macrame:       '',
+  subcat_embroidery_ws: '',
+  subcat_art_general:   '',
+  // מזהי מוצרים נבחרים (מופרדים בפסיק, לדוגמה: 1,3,5,7)
+  featured_ids:        '',
 };
 
 // ─── פירוק שורת CSV ──────────────────────────────────────────
@@ -145,6 +168,36 @@ function rowToSetting(row) {
 }
 
 // ─── פונקציות טעינה ציבוריות ────────────────────────────────
+
+// ─── טעינת תמונות קטגוריות ראשיות ─────────────────────────────
+export async function loadSubCategoriesFromSheets() {
+  try {
+    const res = await fetch(PROXY + encodeURIComponent(SHEETS.subCategories));
+    if (!res.ok) return {};
+    const text = await res.text();
+    const lines = text.trim().split('\n');
+    if (lines.length < 2) return {};
+    // קריאת כותרות דינמית — תמיכה בעברית, BOM, ורווחים
+    const clean = s => s.trim().replace(/"/g, '').replace(/\uFEFF/g, '').replace(/_/g,' ').trim();
+    const headers = lines[0].split(',').map(clean);
+    const idCol  = headers.findIndex(h => h.includes('מזהה') || h === 'id');
+    const urlCol = headers.findIndex(h => h.includes('קישור') || h === 'url');
+    const iIdx = idCol  >= 0 ? idCol  : 0;
+    const uIdx = urlCol >= 0 ? urlCol : 1;
+    const result = {};
+    lines.slice(1).forEach(row => {
+      // תמיכה ב-URL עם פסיקים בתוך quotes
+      const cols = row.match(/(".*?"|[^,]+)/g) || row.split(',');
+      const id  = (cols[iIdx] || '').trim().replace(/"/g, '').trim();
+      const url = (cols[uIdx] || '').trim().replace(/"/g, '').trim();
+      if (id && url && url.startsWith('http')) result[`subcat_${id}`] = url;
+    });
+    return result;
+  } catch (err) {
+    console.warn('שגיאה בטעינת קטגוריות ראשיות:', err);
+    return {};
+  }
+}
 
 export async function loadContentFromSheets() {
   try {
