@@ -116,9 +116,9 @@ export default function HomePage() {
   const under100 = products.filter(p => Number(p.price) > 0 && Number(p.price) <= 100);
 
   const mainCats = [
-    { key: 'products',  pageData: 'products',  icon: '🎁', title: 'המוצרים שלי',    desc: 'קולקציות עונתיות, מתנות ממותגות ופריטים בעיצוב אישי', color: 'var(--rose)',  grad: 'var(--grad-rose)',  bg: 'var(--rose-soft)',  imgKey: content.cat_products_image },
-    { key: 'graphics',  pageData: 'graphics',  icon: '🎨', title: 'עבודות גרפיקה', desc: 'הזמנות, פלאיירים ומיתוגים לעסק ולאירועים',           color: 'var(--slate)', grad: 'var(--grad-slate)', bg: 'var(--slate-soft)', imgKey: content.cat_graphics_image },
-    { key: 'workshops', pageData: 'workshops', icon: '🧵', title: 'סדנאות אומנות',  desc: 'סדנאות מקרמה, ריקמה ואומנות לכל הגילאים',            color: 'var(--amber)', grad: 'var(--grad-amber)', bg: 'var(--amber-soft)', imgKey: content.cat_workshops_image },
+    { key: 'products',  pageData: 'products',  icon: '', title: 'המוצרים שלי',    desc: 'קולקציות עונתיות, מתנות ממותגות ופריטים בעיצוב אישי', color: 'var(--rose)',  grad: 'var(--grad-rose)',  bg: 'var(--rose-soft)',  imgKey: content.cat_products_image },
+    { key: 'graphics',  pageData: 'graphics',  icon: '', title: 'עבודות גרפיקה', desc: 'הזמנות, פלאיירים ומיתוגים לעסק ולאירועים',           color: 'var(--slate)', grad: 'var(--grad-slate)', bg: 'var(--slate-soft)', imgKey: content.cat_graphics_image },
+    { key: 'workshops', pageData: 'workshops', icon: '', title: 'סדנאות אומנות',  desc: 'סדנאות מקרמה, ריקמה ואומנות לכל הגילאים',            color: 'var(--amber)', grad: 'var(--grad-amber)', bg: 'var(--amber-soft)', imgKey: content.cat_workshops_image },
   ];
 
   return (
@@ -126,7 +126,7 @@ export default function HomePage() {
       {/* ─── Hero ─── */}
       <section style={{
         position: 'relative', overflow: 'hidden',
-        minHeight: 'clamp(260px, 40vw, 480px)',
+        minHeight: 'clamp(200px, 28vw, 360px)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         textAlign: 'center',
       }}>
@@ -140,7 +140,7 @@ export default function HomePage() {
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,248,244,0.45)' }} />
         {/* טקסט */}
         <div style={{ position: 'relative', zIndex: 1, maxWidth: '660px', margin: '0 auto', padding: '0 28px' }}>
-          <p className="fade-in" style={{ fontSize: 'clamp(16px,2.2vw,20px)', color: 'var(--mid)', fontWeight: '500', marginBottom: '10px', textShadow: '0 1px 4px rgba(255,255,255,0.6)' }}>{content.hero_subtitle}</p>
+          <p className="fade-in" style={{ fontSize: 'clamp(20px,3vw,28px)', color: 'var(--mid)', fontWeight: '500', marginBottom: '10px', textShadow: '0 1px 4px rgba(255,255,255,0.6)' }}>{content.hero_subtitle}</p>
           <h1 className="fade-in fade-in-delay-1" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(52px,9vw,90px)', fontWeight: '900', color: 'var(--rose)', lineHeight: '1.1', textShadow: '0 2px 8px rgba(255,255,255,0.5)' }}>{content.hero_title}</h1>
         </div>
       </section>
@@ -149,21 +149,21 @@ export default function HomePage() {
       <section style={{ background: 'var(--warm-white)', padding: '48px 28px', borderBottom: '1px solid var(--border-light)' }}>
         <div style={{ maxWidth: '860px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '48px', direction: 'rtl' }}>
           {/* תמונה */}
-          <div style={{ flexShrink: 0, width: '200px', height: '200px', borderRadius: '50%', overflow: 'hidden', boxShadow: '0 8px 32px rgba(139,90,107,0.18)', border: '4px solid var(--rose-soft)' }}>
+          <div style={{ flexShrink: 0, width: '200px', height: '200px', borderRadius: '50%', overflow: 'hidden', boxShadow: '0 8px 32px rgba(139,90,107,0.18)', border: '4px solid var(--rose-soft)', background: '#E8D8E8' }}>
             <img src="https://i.ibb.co/vCRMZYPs/25.png" alt="אחינועם"
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
           </div>
           {/* טקסט */}
           <div style={{ flex: 1, textAlign: 'right' }}>
-            <p style={{ fontSize: '14px', lineHeight: '2', color: 'var(--mid)', whiteSpace: 'pre-line' }}>{content.about_text}</p>
-            <p style={{ fontFamily: 'var(--font-display)', fontSize: '19px', color: 'var(--rose)', fontWeight: '700', marginTop: '12px' }}>{content.about_signature}</p>
+            <p style={{ fontSize: '16px', lineHeight: '2.1', color: 'var(--mid)', whiteSpace: 'pre-line' }}>{content.about_text}</p>
+            <p style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: 'var(--rose)', fontWeight: '700', marginTop: '14px' }}>{content.about_signature}</p>
           </div>
         </div>
       </section>
 
       {/* ─── קטגוריות ─── */}
       <section style={{ padding: 'clamp(48px,8vw,76px) 28px', maxWidth: '980px', margin: '0 auto' }}>
-        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,3.5vw,38px)', fontWeight: '900', color: 'var(--rose)', textAlign: 'center', marginBottom: '40px' }}>מה תמצאי אצלי?</h2>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,3.5vw,38px)', fontWeight: '900', color: 'var(--rose)', textAlign: 'center', marginBottom: '40px' }}>מה תמצאו אצלי?</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
           {mainCats.map((cat, i) => (
             <div key={cat.key} onClick={() => navigate('category', cat.pageData)}
@@ -173,15 +173,15 @@ export default function HomePage() {
             >
               <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: cat.grad }} />
               {cat.imgKey ? (
-                <div style={{ width: '100%', paddingTop: '55%', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ width: '100%', paddingTop: '72%', position: 'relative', overflow: 'hidden' }}>
                   <img src={cat.imgKey} alt={cat.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
               ) : (
                 <div style={{ paddingTop: '36px', textAlign: 'center', fontSize: '50px', animation: `float 3s ${i * 0.4}s ease-in-out infinite` }}>{cat.icon}</div>
               )}
               <div style={{ padding: '16px 24px 24px', textAlign: 'center' }}>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '21px', fontWeight: '900', color: cat.color, marginBottom: '8px' }}>{cat.title}</h3>
-                <p style={{ fontSize: '13px', color: 'var(--mid)', lineHeight: '1.7', marginBottom: '18px' }}>{cat.desc}</p>
+                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '26px', fontWeight: '900', color: cat.color, marginBottom: '8px' }}>{cat.title}</h3>
+                <p style={{ fontSize: '14px', color: 'var(--mid)', lineHeight: '1.7', marginBottom: '18px' }}>{cat.desc}</p>
                 <div style={{ display: 'inline-block', padding: '8px 22px', borderRadius: '50px', background: cat.grad, color: 'white', fontSize: '13px', fontWeight: '700' }}>לצפייה ←</div>
               </div>
             </div>
@@ -198,7 +198,7 @@ export default function HomePage() {
 
       {/* ─── מתנות עד 100 ─── */}
       {under100.length > 0 && (
-        <Carousel items={under100} color="var(--amber)" title="🎁 מתנות עד 100 ₪" bg="var(--amber-soft)" />
+        <Carousel items={under100} color="var(--amber)" title="מתנות עד 100 ₪" bg="var(--amber-soft)" />
       )}
     </div>
   );

@@ -34,6 +34,11 @@ export const defaultContent = {
   cat_workshops_image: '',
   // פס תחתון: קישור לתמונה = מציג תמונה, טקסט = מציג טקסט, ריק = לא מוצג
   bottom_banner:       '',
+  // כותרות עמודי קטגוריה (ניתן לעריכה בגוגל שיטס)
+  products_page_title:  'המוצרים שלי',
+  graphics_page_title:  'עבודות גרפיקה',
+  workshops_page_title: 'סדנאות אומנות',
+  workshops_title:      'סדנאות אומנות',
   // תמונות תת-קטגוריות (נטענות מגיליון "קטגוריות ראשיות")
   subcat_pesach:        '',
   subcat_sof_shana:     '',

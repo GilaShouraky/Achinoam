@@ -5,7 +5,7 @@ import { categories } from '../data/products';
 const subCatVisuals = {
   pesach:        { emoji: '🍷', bg: 'linear-gradient(145deg, #F5E8E8, #EDD0D0)' },
   sof_shana:     { emoji: '🍎', bg: 'linear-gradient(145deg, #F5F0E0, #E8D890)' },
-  chagim:        { emoji: '🕯️', bg: 'linear-gradient(145deg, #EDE8F5, #D0C0E8)' },
+  shabat:        { emoji: '🕯️', bg: 'linear-gradient(145deg, #EDE8F5, #D0C0E8)' },
   notebooks:     { emoji: '📓', bg: 'linear-gradient(145deg, #E8EEF5, #C0D0E4)' },
   embroidery:    { emoji: '🌺', bg: 'linear-gradient(145deg, #F5E8EE, #E8C0D0)' },
   under100:      { emoji: '🎁', bg: 'linear-gradient(145deg, #E8F5EC, #C0E0CC)' },
@@ -44,32 +44,24 @@ export default function CategoryPage({ catKeyOverride } = {}) {
       {/* ─── Header בהיר עם צבע הקטגוריה ─── */}
       <div style={{
         background: meta.headerBg,
-        padding: '20px 40px 28px',
+        minHeight: '130px',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
         position: 'relative', overflow: 'hidden',
+        padding: '20px 120px',
       }}>
         <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '200px', height: '200px', background: 'rgba(255,255,255,0.12)', borderRadius: '50%', filter: 'blur(50px)' }} />
-
-        {/* כפתור חזרה – ימין */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', direction: 'ltr', marginBottom: '14px', position: 'relative', zIndex: 1 }}>
-          <button className="back-btn" onClick={() => navigate('home')}>
-            → חזרה לדף הבית
-          </button>
+        <div style={{ position: 'absolute', top: '50%', right: '20px', transform: 'translateY(-50%)', zIndex: 2 }}>
+          <button className="back-btn" onClick={() => navigate('home')}>→ חזרה לדף הבית</button>
         </div>
-
-        {/* כותרת לבנה, בלי אמוג'י */}
-        <h1 style={{
-          fontFamily: 'var(--font-display)', fontSize: 'clamp(26px,5vw,40px)',
-          fontWeight: '900', color: 'white', textAlign: 'center',
-          textShadow: '0 2px 10px rgba(0,0,0,0.12)',
-          position: 'relative', zIndex: 1,
-        }}>
-          {meta.title}
-        </h1>
-        <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '13px', textAlign: 'center', marginTop: '6px', position: 'relative', zIndex: 1 }}>
-          בחרי קטגוריה להמשך
-        </p>
+        <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px,5vw,40px)', fontWeight: '900', color: 'white', textShadow: '0 2px 10px rgba(0,0,0,0.12)', margin: '0 0 6px' }}>
+            {meta.title}
+          </h1>
+          <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '13px', margin: 0 }}>בחרי קטגוריה להמשך</p>
+        </div>
       </div>
 
+      {/* ─── גריד
       {/* ─── גריד קטגוריות ─── */}
       <div style={{ maxWidth: '980px', margin: '36px auto 68px', padding: '0 28px', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(185px, 1fr))', gap: '18px' }}>
         {subs.map(sub => {

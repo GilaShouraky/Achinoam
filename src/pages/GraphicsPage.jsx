@@ -13,18 +13,19 @@ export default function GraphicsPage({ subCatOverride } = {}) {
     <div className="fade-in">
       {/* ─── Header ─── */}
       <div style={{
-        background: 'linear-gradient(135deg, #8AAEC4, #6A94B0)',
-        padding: '20px 40px 28px',
+        background: 'var(--grad-slate)',
+        minHeight: '130px',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
         position: 'relative', overflow: 'hidden',
+        padding: '20px 120px',
       }}>
         <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '200px', height: '200px', background: 'rgba(255,255,255,0.12)', borderRadius: '50%', filter: 'blur(50px)' }} />
-        <div style={{ display: 'flex', justifyContent: 'flex-end', direction: 'ltr', marginBottom: '14px', position: 'relative', zIndex: 1 }}>
-          <button className="back-btn" onClick={() => navigate('category', 'graphics')}>
-            → חזרה לקטגוריות
-          </button>
+        {/* כפתור חזרה – absolute ימין */}
+        <div style={{ position: 'absolute', top: '50%', right: '20px', transform: 'translateY(-50%)', zIndex: 2 }}>
+          <button className="back-btn" onClick={() => navigate('category', 'graphics')}>→ חזרה לקטגוריות</button>
         </div>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,4vw,36px)', fontWeight: '900', color: 'white', textAlign: 'center', textShadow: '0 2px 10px rgba(0,0,0,0.12)', position: 'relative', zIndex: 1 }}>
-          עבודות גרפיקה
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,4vw,36px)', fontWeight: '900', color: 'white', textAlign: 'center', textShadow: '0 2px 10px rgba(0,0,0,0.12)', position: 'relative', zIndex: 1, margin: 0 }}>
+          {'עבודות גרפיקה 🎨'}
         </h1>
       </div>
 

@@ -3,12 +3,12 @@ import { useApp } from '../context/AppContext';
 import Logo from './Logo';
 
 const menuItems = [
-  { label: 'דף הבית',       page: 'home',     icon: '🏠' },
-  { label: 'המוצרים שלי',   page: 'category', data: 'products',  icon: '🎁' },
-  { label: 'עבודות גרפיקה', page: 'category', data: 'graphics',  icon: '🎨' },
-  { label: 'סדנאות אומנות', page: 'category', data: 'workshops', icon: '🧵' },
-  { label: 'קצת עלי',       page: 'about',    icon: '🌿' },
-  { label: 'צרי קשר',       page: 'contact',  icon: '📩' },
+  { label: 'דף הבית',       page: 'home'                          },
+  { label: 'המוצרים שלי',   page: 'category', data: 'products'   },
+  { label: 'עבודות גרפיקה', page: 'category', data: 'graphics'   },
+  { label: 'סדנאות אומנות', page: 'category', data: 'workshops'  },
+  { label: 'קצת עלי',       page: 'about'                         },
+  { label: 'צרי קשר',       page: 'contact'                       },
 ];
 
 export default function Sidebar() {
@@ -37,11 +37,10 @@ export default function Sidebar() {
         <nav style={{ flex: 1, padding: '12px', overflowY: 'auto' }}>
           {menuItems.map((item, i) => (
             <button key={i} onClick={() => navigate(item.page, item.data || null)}
-              style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '13px', padding: '13px 14px', background: 'none', border: 'none', borderRadius: '12px', cursor: 'pointer', textAlign: 'right', marginBottom: '3px', transition: 'all 0.2s', fontFamily: 'var(--font-body)' }}
-              onMouseEnter={e => { e.currentTarget.style.background = 'var(--rose-soft)'; e.currentTarget.style.paddingRight = '20px'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.paddingRight = '14px'; }}
+              style={{ width: '100%', display: 'flex', alignItems: 'center', padding: '14px 16px', background: 'none', border: 'none', borderRadius: '12px', cursor: 'pointer', textAlign: 'right', marginBottom: '3px', transition: 'all 0.2s', fontFamily: 'var(--font-body)' }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'var(--rose-soft)'; e.currentTarget.style.paddingRight = '22px'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.paddingRight = '16px'; }}
             >
-              <span style={{ fontSize: '19px', width: '26px', textAlign: 'center' }}>{item.icon}</span>
               <span style={{ fontSize: '15px', fontWeight: '600', color: 'var(--dark)' }}>{item.label}</span>
             </button>
           ))}
@@ -49,7 +48,7 @@ export default function Sidebar() {
         <div style={{ padding: '18px 20px', borderTop: '1px solid var(--border-light)' }}>
           <a href={`https://wa.me/${content.whatsapp_number}`} target="_blank" rel="noopener noreferrer"
             className="btn-whatsapp" style={{ width: '100%', borderRadius: '12px', padding: '13px' }}>
-            <span>💬</span><span>שלחי הודעה בוואטסאפ</span>
+            <span>שלחי הודעה בוואטסאפ</span>
           </a>
         </div>
       </div>

@@ -161,8 +161,9 @@ img { max-width: 100%; display: block; }
   cursor: pointer; text-decoration: none;
   transition: transform 0.2s, box-shadow 0.2s;
   box-shadow: 0 4px 18px rgba(37,211,102,0.28);
+  border: 2px solid transparent;
 }
-.btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,211,102,0.38); }
+.btn-whatsapp:hover { transform: translateY(-2px); background: white !important; color: var(--rose) !important; box-shadow: 0 4px 16px rgba(139,90,107,0.15); border-color: var(--rose) !important; }
 
 /* ─── Page header ─── */
 .page-header {
@@ -241,7 +242,7 @@ img { max-width: 100%; display: block; }
 .tag:hover, .tag.active { background: var(--rose); color: white; border-color: var(--rose); }
 
 /* ─── Scrollbar ─── */
-::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--linen); }
 ::-webkit-scrollbar-thumb { background: var(--parchment); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--rose-light); }

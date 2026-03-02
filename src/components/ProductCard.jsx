@@ -38,8 +38,8 @@ export default function ProductCard({ product, size = 'normal' }) {
           position: 'absolute', bottom: '9px', left: '9px',
           background: isPriceFixed ? 'var(--amber)' : 'rgba(139,90,107,0.82)',
           backdropFilter: 'blur(6px)',
-          color: 'white', padding: '3px 10px', borderRadius: '50px',
-          fontSize: '11px', fontWeight: '800',
+          color: 'white', padding: '5px 12px', borderRadius: '50px',
+          fontSize: '13px', fontWeight: '800',
         }}>
           {price}
         </div>
@@ -47,7 +47,7 @@ export default function ProductCard({ product, size = 'normal' }) {
 
       {/* מידע */}
       <div style={{ padding: isSmall ? '11px 13px' : '14px 16px' }}>
-        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: isSmall ? '13px' : '16px', fontWeight: '700', color: 'var(--rose)', marginBottom: '3px', lineHeight: '1.3' }}>
+        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: isSmall ? '14px' : '18px', fontWeight: '700', color: 'var(--rose)', marginBottom: '3px', lineHeight: '1.3' }}>
           {product.name}
         </h3>
         {!isSmall && (
