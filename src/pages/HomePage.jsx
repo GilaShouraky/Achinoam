@@ -134,7 +134,7 @@ export default function HomePage() {
         <img
           src="https://i.ibb.co/CK4VYPTt/Whats-App-Image-2026-03-01-at-03-16-12.jpg"
           alt=""
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', filter: 'brightness(0.82)' }}
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%', filter: 'brightness(0.82)' }}
         />
         {/* שכבת בהירות לבנה */}
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,248,244,0.45)' }} />
@@ -149,7 +149,7 @@ export default function HomePage() {
       <section style={{ background: 'var(--warm-white)', padding: '48px 28px', borderBottom: '1px solid var(--border-light)' }}>
         <div style={{ maxWidth: '860px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '48px', direction: 'rtl' }}>
           {/* תמונה */}
-          <div style={{ flexShrink: 0, width: '200px', height: '200px', borderRadius: '50%', overflow: 'hidden', boxShadow: '0 8px 32px rgba(139,90,107,0.18)', border: '4px solid var(--rose-soft)', background: '#E8D8E8' }}>
+          <div style={{ flexShrink: 0, width: '200px', height: '200px', borderRadius: '50%', overflow: 'hidden', boxShadow: '0 8px 32px rgba(139,90,107,0.18)', border: '4px solid #D4A840', background: '#F5EDD0' }}>
             <img src="https://i.ibb.co/vCRMZYPs/25.png" alt="אחינועם"
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
           </div>

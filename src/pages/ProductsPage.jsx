@@ -46,7 +46,7 @@ export default function ProductsPage({ subCatOverride } = {}) {
             <p>אין מוצרים בקטגוריה זו עדיין</p>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(195px, 1fr))', gap: '18px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: active === 'pesach' ? 'repeat(auto-fill, minmax(260px, 1fr))' : 'repeat(auto-fill, minmax(195px, 1fr))', gap: '18px' }}>
             {filtered.map(p => <ProductCard key={p.id} product={p} />)}
           </div>
         )}

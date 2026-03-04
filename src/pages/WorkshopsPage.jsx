@@ -3,9 +3,10 @@ import { useApp } from '../context/AppContext';
 
 function ImageGallery({ images, label }) {
   const imgs = (images || []).filter(Boolean);
-  const [pos, setPos] = React.useState(0);
-  const [moving, setMoving] = React.useState(false);
-  const trackRef = React.useRef(null);
+  const [cur, setCur] = React.useState(0);
+  const [sliding, setSliding] = React.useState(false);
+  const [slideDir, setSlideDir] = React.useState(0); // -1 = left, 1 = right
+  const [nextIdx, setNextIdx] = React.useState(null);
 
   if (!imgs.length) return (
     <div style={{ paddingTop: '55%', background: 'var(--amber-soft)', position: 'relative', borderRadius: '20px' }}>
@@ -15,81 +16,75 @@ function ImageGallery({ images, label }) {
 
   const total = imgs.length;
 
-  const slideTo = (newPos) => {
-    if (moving || total < 2) return;
-    setMoving(true);
-    const cardW = trackRef.current ? trackRef.current.offsetWidth * 0.56 + 10 : 200;
-    const step = ((newPos - pos + total) % total);
-    const dir  = step <= total / 2 ? step : step - total;
-    const px   = dir * cardW;
-    if (trackRef.current) {
-      trackRef.current.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1)';
-      trackRef.current.style.transform  = `translateX(${px}px)`;
-    }
+  const go = (dir) => {
+    if (sliding || total < 2) return;
+    const next = ((cur + dir) % total + total) % total;
+    setNextIdx(next);
+    setSlideDir(dir);
+    setSliding(true);
     setTimeout(() => {
-      if (trackRef.current) {
-        trackRef.current.style.transition = 'none';
-        trackRef.current.style.transform  = 'translateX(0)';
-      }
-      setPos(newPos);
-      setMoving(false);
-    }, 430);
+      setCur(next);
+      setSliding(false);
+      setNextIdx(null);
+    }, 380);
   };
 
-  const go = (dir) => slideTo(((pos + dir) % total + total) % total);
-  const getIdx = (o) => (pos + o + total) % total;
+  // current image: slides out in dir direction
+  // next image: slides in from opposite
+  const curStyle = sliding ? {
+    transform: `translateX(${slideDir * -110}%)`,
+    transition: 'transform 0.38s cubic-bezier(0.4,0,0.2,1)',
+    opacity: 0,
+  } : { transform: 'translateX(0)', transition: 'none', opacity: 1 };
 
-  const ArrowBtn = ({ dir }) => (
-    <button onClick={() => go(dir)}
-      style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'white',
-        border: '1.5px solid rgba(196,134,26,0.35)', color: 'var(--amber)',
-        fontSize: '20px', cursor: 'pointer', flexShrink: 0,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.08)', transition: 'all 0.2s' }}
-      onMouseEnter={e => { e.currentTarget.style.background = 'var(--amber)'; e.currentTarget.style.color = 'white'; }}
-      onMouseLeave={e => { e.currentTarget.style.background = 'white'; e.currentTarget.style.color = 'var(--amber)'; }}
-    >{dir === -1 ? '‹' : '›'}</button>
-  );
+  const nextStyle = sliding ? {
+    transform: 'translateX(0)',
+    transition: 'transform 0.38s cubic-bezier(0.4,0,0.2,1)',
+    opacity: 1,
+  } : { transform: `translateX(${slideDir * 110}%)`, transition: 'none', opacity: 1 };
 
   return (
-    <div>
-      {/* חיצים + track */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', overflow: 'hidden', padding: '16px 0 8px' }}>
-        <ArrowBtn dir={-1} />
+    <div style={{ padding: '16px 0 20px' }}>
+      {/* Main sliding area */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        {/* חץ ימין */}
+        <button onClick={() => go(-1)}
+          style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'white', border: '1.5px solid rgba(196,134,26,0.3)', color: 'var(--amber)', fontSize: '20px', cursor: 'pointer', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.08)', transition: 'all 0.2s' }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'var(--amber)'; e.currentTarget.style.color = 'white'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'white'; e.currentTarget.style.color = 'var(--amber)'; }}>‹</button>
 
-        {/* track */}
-        <div style={{ flex: 1, overflow: 'hidden', borderRadius: '16px' }}>
-          <div ref={trackRef} style={{ display: 'flex', gap: '10px' }}>
-            {/* תמונה שמאל – קטנה */}
-            {total > 1 && (
-              <div onClick={() => go(-1)} style={{ flex: '0 0 20%', borderRadius: '12px', overflow: 'hidden', opacity: 0.55, cursor: 'pointer', alignSelf: 'center' }}>
-                <img src={imgs[getIdx(-1)]} alt="" style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', display: 'block' }} />
-              </div>
-            )}
-            {/* תמונה מרכזית */}
-            <div style={{ flex: '0 0 56%', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 8px 28px rgba(0,0,0,0.16)' }}>
-              <img src={imgs[pos]} alt={label} style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', display: 'block' }} />
-            </div>
-            {/* תמונה ימין – קטנה */}
-            {total > 1 && (
-              <div onClick={() => go(1)} style={{ flex: '0 0 20%', borderRadius: '12px', overflow: 'hidden', opacity: 0.55, cursor: 'pointer', alignSelf: 'center' }}>
-                <img src={imgs[getIdx(1)]} alt="" style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', display: 'block' }} />
-              </div>
-            )}
-          </div>
+        {/* תמונה מרכזית עם slide */}
+        <div style={{ flex: 1, borderRadius: '20px', overflow: 'hidden', boxShadow: '0 8px 28px rgba(0,0,0,0.15)', position: 'relative', aspectRatio: '4/3' }}>
+          {/* תמונה נוכחית */}
+          <img src={imgs[cur]} alt={label}
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', ...curStyle }} />
+          {/* תמונה הבאה */}
+          {sliding && nextIdx !== null && (
+            <img src={imgs[nextIdx]} alt=""
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover',
+                transform: `translateX(${slideDir * 110}%)`,
+                animation: `slideIn${slideDir > 0 ? 'R' : 'L'} 0.38s cubic-bezier(0.4,0,0.2,1) forwards`,
+              }} />
+          )}
+          <style>{`
+            @keyframes slideInR { from { transform: translateX(110%); } to { transform: translateX(0); } }
+            @keyframes slideInL { from { transform: translateX(-110%); } to { transform: translateX(0); } }
+          `}</style>
         </div>
 
-        <ArrowBtn dir={1} />
+        {/* חץ שמאל */}
+        <button onClick={() => go(1)}
+          style={{ width: '38px', height: '38px', borderRadius: '50%', background: 'white', border: '1.5px solid rgba(196,134,26,0.3)', color: 'var(--amber)', fontSize: '20px', cursor: 'pointer', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.08)', transition: 'all 0.2s' }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'var(--amber)'; e.currentTarget.style.color = 'white'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'white'; e.currentTarget.style.color = 'var(--amber)'; }}>›</button>
       </div>
 
       {/* נקודות */}
       {total > 1 && (
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '6px', marginTop: '10px' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '6px', marginTop: '14px' }}>
           {imgs.map((_, i) => (
-            <div key={i} onClick={() => slideTo(i)}
-              style={{ width: i === pos ? '18px' : '6px', height: '6px', borderRadius: '3px',
-                background: i === pos ? 'var(--amber)' : 'rgba(0,0,0,0.18)',
-                cursor: 'pointer', transition: 'all 0.3s' }} />
+            <div key={i} onClick={() => !sliding && go(i > cur ? 1 : -1)}
+              style={{ width: i === cur ? '18px' : '6px', height: '6px', borderRadius: '3px', background: i === cur ? 'var(--amber)' : 'rgba(0,0,0,0.18)', cursor: 'pointer', transition: 'all 0.3s' }} />
           ))}
         </div>
       )}

@@ -147,7 +147,7 @@ function rowToProduct(row) {
     price,
     priceNote,
     emoji:       (emojiKey && row[emojiKey].trim()) || '🎁',
-    images:      [row['תמונה1'], row['תמונה2'], row['תמונה3']].filter(Boolean),
+    images:      [row['תמונה1'], row['תמונה2'], row['תמונה3'], row['תמונה4']].filter(Boolean),
   };
 }
 
@@ -160,7 +160,7 @@ function rowToWorkshop(row) {
     details:     row['פרטים']      || '',
     priceNote:   row['הערת מחיר'] || '',
     emoji:       (emojiKey && row[emojiKey]) || '✂️',
-    images:      [row['תמונה1'], row['תמונה2'], row['תמונה3']].filter(Boolean),
+    images:      [row['תמונה1'], row['תמונה2'], row['תמונה3'], row['תמונה4']].filter(Boolean),
   };
 }
 
