@@ -64,8 +64,8 @@ function ImageGallery({ images, label }) {
         <div style={{ flex: 1, overflow: 'hidden' }}>
           <div ref={trackRef} style={{ display: 'flex', gap: `${CARD_GAP}px` }}>
             {visible.map((src, i) => (
-              <div key={`${pos}-${i}`} style={{ flex: `0 0 calc((100% - ${CARD_GAP * 2}px) / 3)`, borderRadius: '14px', overflow: 'hidden', boxShadow: i === 0 ? '0 6px 20px rgba(0,0,0,0.14)' : '0 2px 8px rgba(0,0,0,0.08)', transform: i === 0 ? 'scale(1)' : 'scale(0.95)', transition: 'transform 0.3s' }}>
-                <img src={src} alt={i === 0 ? label : ''} style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', display: 'block' }} />
+              <div key={`${pos}-${i}`} style={{ flex: `0 0 calc((100% - ${CARD_GAP * 2}px) / 3)`, borderRadius: '14px', overflow: 'hidden', boxShadow: i === 1 ? '0 6px 20px rgba(0,0,0,0.14)' : '0 2px 8px rgba(0,0,0,0.08)', transform: i === 1 ? 'scale(1)' : 'scale(0.92)', transition: 'transform 0.3s' }}>
+                <img src={src} alt={i === 1 ? label : ''} style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', display: 'block' }} />
               </div>
             ))}
           </div>

@@ -140,7 +140,7 @@ export default function HomePage() {
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,248,244,0.45)' }} />
         {/* טקסט */}
         <div style={{ position: 'relative', zIndex: 1, maxWidth: '660px', margin: '0 auto', padding: '0 28px' }}>
-          <p className="fade-in" style={{ fontSize: 'clamp(20px,3vw,28px)', color: 'var(--mid)', fontWeight: '500', marginBottom: '10px', textShadow: '0 1px 4px rgba(255,255,255,0.6)' }}>{content.hero_subtitle}</p>
+          <p className="fade-in" style={{ fontSize: 'clamp(22px,3.2vw,32px)', color: 'var(--mid)', fontWeight: '500', marginBottom: '10px', textShadow: '0 1px 4px rgba(255,255,255,0.6)' }}>{content.hero_subtitle}</p>
           <h1 className="fade-in fade-in-delay-1" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(52px,9vw,90px)', fontWeight: '900', color: 'var(--rose)', lineHeight: '1.1', textShadow: '0 2px 8px rgba(255,255,255,0.5)' }}>{content.hero_title}</h1>
         </div>
       </section>
@@ -149,7 +149,7 @@ export default function HomePage() {
       <section style={{ background: 'var(--warm-white)', padding: '48px 28px', borderBottom: '1px solid var(--border-light)' }}>
         <div style={{ maxWidth: '860px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '48px', direction: 'rtl' }}>
           {/* תמונה */}
-          <div style={{ flexShrink: 0, width: '200px', height: '200px', borderRadius: '50%', overflow: 'hidden', boxShadow: '0 8px 32px rgba(139,90,107,0.18)', border: 'none', background: '#D4A840' }}>
+          <div style={{ flexShrink: 0, width: '200px', height: '200px', borderRadius: '50%', overflow: 'hidden', boxShadow: '0 8px 32px rgba(139,90,107,0.18)', border: 'none', background: '#D4B0BE' }}>
             <img src="https://i.ibb.co/vCRMZYPs/25.png" alt="אחינועם"
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
           </div>
