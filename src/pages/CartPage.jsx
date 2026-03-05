@@ -86,6 +86,14 @@ export default function CartPage() {
  style={{ width: '100%', borderRadius: '12px', fontSize: '15px', padding: '15px', textDecoration: 'none' }}>
  להשלמת ההזמנה בוואטסאפ
  </a>
+          <a href={`https://www.bitpay.co.il/app/pay?phoneNumber=0548838607&sum=${cartTotal}&message=${encodeURIComponent('הזמנה מאתר אחינועם הר כוכב')}`}
+            target="_blank" rel="noopener noreferrer"
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', width: '100%', borderRadius: '12px', fontSize: '15px', padding: '15px', textDecoration: 'none', background: 'white', border: '2px solid #00A4E0', color: '#00A4E0', fontWeight: '700', marginTop: '10px', transition: 'all 0.2s', boxSizing: 'border-box' }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#00A4E0'; e.currentTarget.style.color = 'white'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'white'; e.currentTarget.style.color = '#00A4E0'; }}>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Bit_logo.svg/200px-Bit_logo.svg.png" alt="ביט" style={{ height: '22px' }} />
+            תשלום בביט — ₪{cartTotal}
+          </a>
  </div>
  </div>
  </div>
