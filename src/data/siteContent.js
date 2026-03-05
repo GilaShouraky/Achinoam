@@ -108,7 +108,32 @@ async function fetchCSV(url) {
     }
   }
 
-  const lines = text.trim().split('\n').filter(l => l.trim());
+  // פרסור נכון של CSV עם שורות חדשות בתוך תאים
+  function parseCSVFull(raw) {
+    const rows = [];
+    let cur = [], field = '', inQ = false;
+    for (let i = 0; i < raw.length; i++) {
+      const ch = raw[i];
+      if (ch === '"') {
+        if (inQ && raw[i+1] === '"') { field += '"'; i++; }
+        else inQ = !inQ;
+      } else if (ch === ',' && !inQ) {
+        cur.push(field); field = '';
+      } else if ((ch === '\n' || (ch === '\r' && raw[i+1] === '\n')) && !inQ) {
+        if (ch === '\r') i++;
+        cur.push(field); field = '';
+        if (cur.some(f => f.trim())) rows.push(cur);
+        cur = [];
+      } else {
+        field += ch;
+      }
+    }
+    if (field || cur.length) { cur.push(field); if (cur.some(f=>f.trim())) rows.push(cur); }
+    return rows;
+  }
+
+  const allRows = parseCSVFull(text.trim());
+  const lines = allRows.map(r => r.map(f => f.replace(/^"|"$/g, '')));
   console.log('✅ מקור:', source, '| שורות:', lines.length);
 
   if (lines.length < 2) {
@@ -116,13 +141,12 @@ async function fetchCSV(url) {
     return [];
   }
 
-  const headers = parseCSVLine(lines[0]).map(h => h.trim());
+  const headers = lines[0].map(h => h.trim());
   console.log('📋 כותרות:', headers);
 
-  return lines.slice(1).map(line => {
-    const vals = parseCSVLine(line);
+  return lines.slice(1).map(row => {
     const obj = {};
-    headers.forEach((h, i) => { obj[h] = (vals[i] || '').trim(); });
+    headers.forEach((h, i) => { obj[h] = (row[i] || '').trim(); });
     return obj;
   });
 }
@@ -148,6 +172,11 @@ function rowToProduct(row) {
     priceNote,
     emoji:       (emojiKey && row[emojiKey].trim()) || '🎁',
     images:      [row['תמונה1'], row['תמונה2'], row['תמונה3'], row['תמונה4']].filter(Boolean),
+    _debug_keys: Object.keys(row).join('|'),
+    _debug_img: row['תמונה1'],
+    dealQty:     row['מבצע_כמות']   ? Number(row['מבצע_כמות'])   : null,
+    dealPrice:   row['מבצע_מחיר']   ? Number(row['מבצע_מחיר'])   : null,
+    dealLabel:   (row['תיאור_מבצע'] || '').trim() || null,
   };
 }
 

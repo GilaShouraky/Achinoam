@@ -79,7 +79,31 @@ export function AppProvider({ children }) {
   };
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const cartTotal = cart.reduce((sum, item) => sum + (Number(item.price) * item.quantity), 0);
+
+  // חישוב מחיר עם מבצעים
+  const calcItemTotal = (item) => {
+    const qty = item.quantity;
+    const basePrice = Number(item.price);
+    if (item.dealQty && item.dealPrice && qty >= item.dealQty) {
+      const dealSets = Math.floor(qty / item.dealQty);
+      const remainder = qty % item.dealQty;
+      return dealSets * item.dealPrice + remainder * basePrice;
+    }
+    return basePrice * qty;
+  };
+
+  const calcItemSaving = (item) => {
+    const qty = item.quantity;
+    const basePrice = Number(item.price);
+    if (item.dealQty && item.dealPrice && qty >= item.dealQty) {
+      const dealSets = Math.floor(qty / item.dealQty);
+      return dealSets * (item.dealQty * basePrice - item.dealPrice);
+    }
+    return 0;
+  };
+
+  const cartTotal = cart.reduce((sum, item) => sum + calcItemTotal(item), 0);
+  const cartSavings = cart.reduce((sum, item) => sum + calcItemSaving(item), 0);
 
   if (!dataLoaded) {
     return (
@@ -95,7 +119,7 @@ export function AppProvider({ children }) {
       navigate, location,
       sidebarOpen, setSidebarOpen,
       cart, addToCart, removeFromCart, updateQuantity,
-      cartCount, cartTotal,
+      cartCount, cartTotal, cartSavings, calcItemTotal, calcItemSaving,
       content, products, graphics, workshops, dataLoaded,
     }}>
       {children}

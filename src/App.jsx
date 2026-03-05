@@ -44,8 +44,12 @@ function ProductPageWrapper() {
   const allProducts = [...products, ...graphics];
   // מנסה למצוא מה-state, אחרת מהנתונים
   const stored = sessionStorage.getItem('currentProduct');
-  const product = allProducts.find(p => p.id === productId)
-    || (stored ? JSON.parse(stored) : null);
+  const storedProduct = stored ? JSON.parse(stored) : null;
+  // מעדיף את הנתון מ-sessionStorage כי הוא מכיל _fromSubCategory
+  const baseProduct = allProducts.find(p => p.id === productId);
+  const product = (storedProduct?.id === productId)
+    ? { ...baseProduct, ...storedProduct }
+    : (baseProduct || storedProduct);
   return <ProductPage productOverride={product} />;
 }
 
