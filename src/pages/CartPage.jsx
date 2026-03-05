@@ -86,12 +86,12 @@ export default function CartPage() {
  style={{ width: '100%', borderRadius: '12px', fontSize: '15px', padding: '15px', textDecoration: 'none' }}>
  להשלמת ההזמנה בוואטסאפ
  </a>
-          <a href={`https://www.bitpay.co.il/app/pay?phoneNumber=0548838607&sum=${cartTotal}&message=${encodeURIComponent('הזמנה מאתר אחינועם הר כוכב')}`}
+          <a href="https://www.bitpay.co.il/app/me/5C73B070-A95C-F0D9-524F-9A98AFAE6998645A"
             target="_blank" rel="noopener noreferrer"
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', width: '100%', borderRadius: '12px', fontSize: '15px', padding: '15px', textDecoration: 'none', background: 'white', border: '2px solid #00A4E0', color: '#00A4E0', fontWeight: '700', marginTop: '10px', transition: 'all 0.2s', boxSizing: 'border-box' }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#00A4E0'; e.currentTarget.style.color = 'white'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'white'; e.currentTarget.style.color = '#00A4E0'; }}>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Bit_logo.svg/200px-Bit_logo.svg.png" alt="ביט" style={{ height: '22px' }} />
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', width: '100%', borderRadius: '12px', fontSize: '15px', padding: '15px', textDecoration: 'none', background: '#00A4E0', color: 'white', fontWeight: '700', marginTop: '10px', boxSizing: 'border-box', transition: 'all 0.2s' }}
+            onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
+            onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Bit_logo.svg/200px-Bit_logo.svg.png" alt="ביט" style={{ height: '22px', filter: 'brightness(0) invert(1)' }} />
             תשלום בביט — ₪{cartTotal}
           </a>
  </div>
