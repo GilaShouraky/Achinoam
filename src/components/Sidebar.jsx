@@ -7,8 +7,6 @@ const menuItems = [
   { label: 'המוצרים שלי',   page: 'category', data: 'products'   },
   { label: 'עבודות גרפיקה', page: 'category', data: 'graphics'   },
   { label: 'סדנאות אומנות', page: 'category', data: 'workshops'  },
-  { label: 'קצת עלי',       page: 'about'                         },
-  { label: 'צרי קשר',       page: 'contact'                       },
 ];
 
 export default function Sidebar() {

@@ -17,7 +17,7 @@ export default function CartPage() {
  <div className="fade-in">
  <div className="page-header">
  <button className="back-btn" onClick={() => navigate('home')}>→ חזרה לקנייה</button>
- <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '34px', color: 'var(--rose)', fontWeight: '900', marginTop: '8px' }}>סל הקניות</h1>
+ <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '42px', color: 'var(--rose)', fontWeight: '900', marginTop: '8px', textAlign: 'center', width: '100%' }}>סל הקניות</h1>
  </div>
  <div style={{ maxWidth: '680px', margin: '32px auto 78px', padding: '0 28px' }}>
  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
@@ -34,18 +34,18 @@ export default function CartPage() {
  </div>
  )}
  {/* תמונה */}
- <div style={{ width: '54px', height: '54px', background: 'var(--cream)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', flexShrink: 0, overflow: 'hidden' }}>
+ <div style={{ width: '72px', height: '72px', background: 'var(--cream)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', flexShrink: 0, overflow: 'hidden' }}>
  {item.images?.[0] ? <img src={item.images[0]} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : item.emoji}
  </div>
  {/* פרטים */}
  <div style={{ flex: 1 }}>
- <p style={{ fontFamily: 'var(--font-display)', fontSize: '15px', fontWeight: '700', color: 'var(--rose)', marginBottom: '3px' }}>{item.name}</p>
+ <p style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: '700', color: 'var(--rose)', marginBottom: '5px' }}>{item.name}</p>
  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
  {hasDeal ? (
  <>
  <span style={{ fontSize: '13px', color: 'var(--amber)', fontWeight: '700' }}>₪{itemTotal}</span>
  <span style={{ fontSize: '11px', color: 'var(--light)', textDecoration: 'line-through' }}>₪{Number(item.price) * item.quantity}</span>
- <span style={{ fontSize: '11px', color: '#25A85A', fontWeight: '700' }}>חסכת ₪{saving}</span>
+ <span style={{ fontSize: '15px', color: '#25A85A', fontWeight: '700' }}>חסכת ₪{saving}</span>
  </>
  ) : (
  <span style={{ fontSize: '13px', color: 'var(--amber)', fontWeight: '700' }}>₪{itemTotal}</span>
@@ -79,21 +79,14 @@ export default function CartPage() {
  )}
  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
  <span style={{ fontSize: '15px', color: 'var(--mid)' }}>סה"כ לתשלום:</span>
- <span style={{ fontFamily: 'var(--font-display)', fontSize: '26px', fontWeight: '900', color: 'var(--amber)' }}>₪{cartTotal}</span>
+ <span style={{ fontFamily: 'var(--font-body)', fontSize: '22px', fontWeight: '800', color: 'var(--amber)' }}>₪{cartTotal}</span>
  </div>
  <a href={`https://wa.me/${content.whatsapp_number}?text=${encodeURIComponent('היי! אני רוצה להזמין:\n' + cart.map(i => `• ${i.name} x${i.quantity} — ₪${calcItemTotal(i)}`).join('\n') + (cartSavings > 0 ? `\n\n חסכת: ₪${cartSavings}` : '') + `\n\nסה"כ: ₪${cartTotal}`)}`}
  target="_blank" rel="noopener noreferrer" className="btn-whatsapp"
  style={{ width: '100%', borderRadius: '12px', fontSize: '15px', padding: '15px', textDecoration: 'none' }}>
  להשלמת ההזמנה בוואטסאפ
  </a>
-          <a href="https://www.bitpay.co.il/app/me/5C73B070-A95C-F0D9-524F-9A98AFAE6998645A"
-            target="_blank" rel="noopener noreferrer"
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', width: '100%', borderRadius: '12px', fontSize: '15px', padding: '15px', textDecoration: 'none', background: '#00A4E0', color: 'white', fontWeight: '700', marginTop: '10px', boxSizing: 'border-box', transition: 'all 0.2s' }}
-            onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
-            onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Bit_logo.svg/200px-Bit_logo.svg.png" alt="ביט" style={{ height: '22px', filter: 'brightness(0) invert(1)' }} />
-            תשלום בביט — ₪{cartTotal}
-          </a>
+
  </div>
  </div>
  </div>

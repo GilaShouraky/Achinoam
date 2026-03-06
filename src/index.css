@@ -155,15 +155,15 @@ img { max-width: 100%; display: block; }
 .btn-whatsapp {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   padding: 13px 28px;
-  background: linear-gradient(135deg, #25D366, #128C7E);
+  background: #1a7a4a;
   color: white; border: none; border-radius: 50px;
   font-size: 14px; font-weight: 700; font-family: var(--font-body);
   cursor: pointer; text-decoration: none;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 18px rgba(37,211,102,0.28);
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  box-shadow: 0 4px 18px rgba(26,122,74,0.30);
   border: 2px solid transparent;
 }
-.btn-whatsapp:hover { transform: translateY(-2px); background: white !important; color: var(--rose) !important; box-shadow: 0 4px 16px rgba(139,90,107,0.15); border-color: var(--rose) !important; }
+.btn-whatsapp:hover { transform: translateY(-2px); background: #145c37 !important; box-shadow: 0 6px 22px rgba(26,122,74,0.40) !important; }
 
 /* ─── Page header ─── */
 .page-header {
@@ -246,3 +246,50 @@ img { max-width: 100%; display: block; }
 ::-webkit-scrollbar-track { background: var(--linen); }
 ::-webkit-scrollbar-thumb { background: var(--parchment); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--rose-light); }
+
+/* ─── Mobile Responsive ─── */
+@media (max-width: 768px) {
+  /* Header */
+  .page-header { padding: 16px 14px 12px; }
+  .page-header h1 { font-size: clamp(20px, 5.5vw, 30px) !important; }
+
+  /* Product cards grid - 2 columns */
+  div[style*="minmax(195px"] { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+  div[style*="minmax(260px"] { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+
+  /* Category cards - stack */
+  div[style*="minmax(280px"] { grid-template-columns: 1fr !important; }
+
+  /* Qty control */
+  .qty-control { gap: 4px !important; }
+  .qty-btn { width: 30px !important; height: 30px !important; font-size: 15px !important; }
+
+  /* Buttons full width */
+  .btn-primary, .btn-whatsapp { width: 100% !important; padding: 13px 16px !important; }
+
+  /* Sub-category tabs scroll */
+  nav[style*="overflowX"] { -webkit-overflow-scrolling: touch; }
+
+  /* Cart page */
+  .cart-item-img { width: 60px !important; height: 60px !important; }
+}
+
+@media (max-width: 480px) {
+  /* Hero section */
+  section[style*="minHeight"] h1 { font-size: 26px !important; }
+  section[style*="minHeight"] p { font-size: 14px !important; }
+
+  /* About section */
+  div[style*="gap: '48px'"] { flex-direction: column !important; gap: 20px !important; }
+  div[style*="gap: '40px'"] { flex-direction: column !important; gap: 20px !important; }
+
+  /* Product page */
+  div[style*="gap: '44px'"] { flex-direction: column !important; gap: 16px !important; }
+  div[style*="gap: '48px'"] { flex-direction: column !important; gap: 16px !important; }
+
+  /* Logo */
+  img[alt="אחינועם"] { height: 44px !important; }
+
+  /* Cart summary */
+  div[style*="maxWidth: '680px'"] { padding: 0 10px !important; }
+}

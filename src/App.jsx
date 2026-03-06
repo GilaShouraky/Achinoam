@@ -13,8 +13,6 @@ import ProductPage from './pages/ProductPage';
 import GraphicsPage from './pages/GraphicsPage';
 import WorkshopsPage from './pages/WorkshopsPage';
 import CartPage from './pages/CartPage';
-import AboutPage from './pages/AboutPage';
-import ContactPage from './pages/ContactPage';
 
 // wrapper לעמוד קטגוריה — מקבל catKey מה-URL
 function CategoryPageWrapper() {
@@ -68,8 +66,6 @@ function Layout() {
           <Route path="/workshops/:subCat?"  element={<WorkshopsPageWrapper />} />
           <Route path="/product/:productId"  element={<ProductPageWrapper />} />
           <Route path="/cart"                element={<CartPage />} />
-          <Route path="/about"               element={<AboutPage />} />
-          <Route path="/contact"             element={<ContactPage />} />
           <Route path="*"                    element={<HomePage />} />
         </Routes>
       </main>

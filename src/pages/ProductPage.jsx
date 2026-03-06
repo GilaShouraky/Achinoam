@@ -112,7 +112,7 @@ export default function ProductPage({ productOverride } = {}) {
  <span className="qty-num">{qty}</span>
  <button className="qty-btn" onClick={() => setQty(q => q + 1)}>+</button>
  </div>
- <button className="btn-primary" onClick={handleAdd} style={{ flex: 1, background: added ? 'linear-gradient(135deg,#25D366,#128C7E)' : 'var(--grad-rose)' }}>
+ <button className="btn-primary" onClick={handleAdd} style={{ flex: 1, background: added ? 'linear-gradient(135deg,#C0A0BC,#A885A8)' : 'var(--grad-rose)' }}>
  {added ? ' נוסף לסל!' : 'הוספה לסל'}
  </button>
  </div>

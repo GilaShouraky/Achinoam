@@ -55,6 +55,7 @@ export const defaultContent = {
   subcat_art_general:   '',
   // מזהי מוצרים נבחרים (מופרדים בפסיק, לדוגמה: 1,3,5,7)
   featured_ids:        '',
+  under100_ids:        '',
 };
 
 // ─── פירוק שורת CSV ──────────────────────────────────────────
