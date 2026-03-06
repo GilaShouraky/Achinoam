@@ -293,3 +293,78 @@ img { max-width: 100%; display: block; }
   /* Cart summary */
   div[style*="maxWidth: '680px'"] { padding: 0 10px !important; }
 }
+
+
+
+/* ═══════════════════════════════════════
+   MOBILE ONLY (max 768px)
+   ═══════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* 1. Hero titles */
+  .hero-subtitle { font-size: clamp(12px, 2.8vw, 17px) !important; }
+  .hero-title    { font-size: clamp(36px, 10vw, 58px) !important; }
+
+  /* 2. About section - vertical, smaller */
+  .about-flex {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 16px !important;
+  }
+  .about-flex > div:first-child {
+    width: 120px !important;
+    height: 120px !important;
+  }
+  .about-flex > div:first-child img {
+    width: 120px !important;
+    height: 120px !important;
+  }
+  .about-signature { font-size: 20px !important; }
+
+  /* 3. Carousel - 1 item on mobile */
+  .carousel-grid { grid-template-columns: 1fr !important; }
+  .carousel-grid > div { min-width: 0; }
+
+  /* 4. ProductPage - deal badge below price */
+  .price-deal-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+
+  /* 5. ProductPage - qty+button stacked */
+  .product-qty-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+  .product-qty-row .qty-control { justify-content: center; }
+  .product-qty-row .btn-primary { width: 100% !important; flex: none !important; }
+
+  /* 6. ProductPage - full column layout (image top, info below) */
+  .product-layout {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  /* 7. Cart items - image LEFT, text+qty RIGHT vertical */
+  .cart-item {
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    padding: 14px 14px !important;
+  }
+  .cart-item-img {
+    flex-shrink: 0 !important;
+  }
+  .cart-item-details {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+  }
+  .cart-item-qty {
+    margin-top: 4px;
+  }
+}

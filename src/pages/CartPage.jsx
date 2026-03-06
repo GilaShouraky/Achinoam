@@ -26,7 +26,7 @@ export default function CartPage() {
  const saving = calcItemSaving(item);
  const hasDeal = item.dealQty && item.dealPrice && item.quantity >= item.dealQty;
  return (
- <div key={item.id} style={{ background: 'var(--warm-white)', border: `1px solid ${hasDeal ? '#D4A84060' : 'var(--border-light)'}`, borderRadius: '16px', padding: '18px 22px', display: 'flex', alignItems: 'center', gap: '16px', position: 'relative' }}>
+ <div key={item.id} className="cart-item" style={{ background: 'var(--warm-white)', border: `1px solid ${hasDeal ? '#D4A84060' : 'var(--border-light)'}`, borderRadius: '16px', padding: '18px 22px', display: 'flex', alignItems: 'center', gap: '16px', position: 'relative' }}>
  {/* תגית מבצע */}
  {hasDeal && (
  <div style={{ position: 'absolute', top: '-10px', right: '16px', background: 'var(--grad-amber)', color: 'white', fontSize: '11px', fontWeight: '700', padding: '3px 10px', borderRadius: '20px', boxShadow: '0 2px 8px rgba(196,134,26,0.3)' }}>
@@ -34,11 +34,11 @@ export default function CartPage() {
  </div>
  )}
  {/* תמונה */}
- <div style={{ width: '72px', height: '72px', background: 'var(--cream)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', flexShrink: 0, overflow: 'hidden' }}>
+ <div className="cart-item-img" style={{ width: '72px', height: '72px', background: 'var(--cream)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', flexShrink: 0, overflow: 'hidden' }}>
  {item.images?.[0] ? <img src={item.images[0]} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : item.emoji}
  </div>
  {/* פרטים */}
- <div style={{ flex: 1 }}>
+ <div className="cart-item-details" style={{ flex: 1 }}>
  <p style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: '700', color: 'var(--rose)', marginBottom: '5px' }}>{item.name}</p>
  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
  {hasDeal ? (
@@ -53,7 +53,7 @@ export default function CartPage() {
  </div>
  </div>
  {/* כמות */}
- <div className="qty-control">
+ <div className="qty-control cart-item-qty">
  <button className="qty-btn" onClick={() => updateQuantity(item.id, item.quantity - 1)}>−</button>
  <span className="qty-num">{item.quantity}</span>
  <button className="qty-btn" onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>

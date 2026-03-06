@@ -44,7 +44,7 @@ export default function ProductPage({ productOverride } = {}) {
  <button className="back-btn" onClick={() => navigate('products', fromSubCat ? { subCategory: fromSubCat } : undefined)}>→ חזרה למוצרים</button>
  </div>
 
- <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '44px', alignItems: 'start' }}>
+ <div className="product-layout" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '44px', alignItems: 'start' }}>
 
  {/* עמודת תמונות */}
  <div>
@@ -91,14 +91,14 @@ export default function ProductPage({ productOverride } = {}) {
  <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px,4vw,34px)', fontWeight: '900', color: 'var(--rose)', lineHeight: '1.2', marginBottom: '14px' }}>
  {product.name}
  </h1>
- <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+ <div className="price-deal-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
  <div style={{ fontSize: '32px', fontWeight: '800', color: hasPrice ? 'var(--amber)' : 'var(--rose)', fontFamily: 'Heebo, sans-serif' }}>
  {priceDisplay}
  </div>
  {product.dealQty && product.dealPrice && (
  <div style={{ background: 'var(--grad-amber)', borderRadius: '8px', padding: '4px 10px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
- <span style={{ color: 'white', fontSize: '12px', fontWeight: '800' }}>מבצע!</span>
- <span style={{ color: 'white', fontSize: '12px', fontWeight: '600' }}>{product.dealLabel || `${product.dealQty} יחידות ב-₪${product.dealPrice}`}</span>
+ <span style={{ color: 'white', fontSize: '11px', fontWeight: '800' }}>מבצע!</span>
+ <span style={{ color: 'white', fontSize: '11px', fontWeight: '600' }}>{product.dealLabel || `${product.dealQty}×₪${product.dealPrice}`}</span>
  </div>
  )}
  </div>
@@ -106,7 +106,7 @@ export default function ProductPage({ productOverride } = {}) {
  <p style={{ fontSize: '14px', color: 'var(--mid)', lineHeight: '1.9', marginBottom: '28px' }}>{product.description}</p>
 
  {hasPrice && (
- <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '14px', flexWrap: 'wrap' }}>
+ <div className="product-qty-row" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '14px' }}>
  <div className="qty-control">
  <button className="qty-btn" onClick={() => setQty(q => Math.max(1, q - 1))}>−</button>
  <span className="qty-num">{qty}</span>

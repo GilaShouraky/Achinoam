@@ -4,16 +4,17 @@ import ProductCard from '../components/ProductCard';
 
 // קרוסלה עם CSS sliding אמיתי 
 function Carousel({ items, color, title, bg }) {
- const [pos, setPos] = useState(0); // אינדקס נוכחי (0..total-1)
+ const [pos, setPos] = useState(0);
  const [moving, setMoving] = useState(false);
  const CARD_GAP = 14;
  const trackRef = useRef(null);
  const total = items.length;
+ const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+ const visibleCount = 4;
 
- // רוחב קלף מחושב דינמית
  const getCardW = () => {
  if (!trackRef.current) return 220;
- return (trackRef.current.offsetWidth - CARD_GAP * 3) / 4;
+ return (trackRef.current.offsetWidth - CARD_GAP * (visibleCount - 1)) / visibleCount;
  };
 
  const slideTo = (newPos) => {
@@ -41,7 +42,7 @@ function Carousel({ items, color, title, bg }) {
  const go = (dir) => slideTo(((pos + dir) % total + total) % total);
 
  // מה שמוצג: 4 קלפים מהמיקום הנוכחי (circular)
- const visible = Array.from({ length: Math.min(4, total) }, (_, i) => items[(pos + i) % total]);
+ const visible = Array.from({ length: Math.min(visibleCount, total) }, (_, i) => items[(pos + i) % total]);
 
  const Arrow = ({ dir }) => {
  const label = dir === -1 ? '‹' : '›';
@@ -78,7 +79,7 @@ function Carousel({ items, color, title, bg }) {
  {/* window — overflow:hidden מסתיר את מה שמחוץ */}
  <div style={{ flex: 1, overflow: 'hidden' }}>
  <div ref={trackRef}
- style={{ display: 'grid', gridTemplateColumns: `repeat(4, 1fr)`, gap: `${CARD_GAP}px` }}>
+ className="carousel-grid" style={{ display: 'grid', gridTemplateColumns: `repeat(${visibleCount}, 1fr)`, gap: `${CARD_GAP}px` }}>
  {visible.map((p, i) => (
  <div key={`${pos}-${i}`}>
  <ProductCard product={p} size="small" />
@@ -140,14 +141,14 @@ export default function HomePage() {
  <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,248,244,0.45)' }} />
  {/* טקסט */}
  <div style={{ position: 'relative', zIndex: 1, maxWidth: '660px', margin: '0 auto', padding: '0 28px' }}>
- <p className="fade-in" style={{ fontSize: 'clamp(22px,3.2vw,32px)', color: 'var(--mid)', fontWeight: '500', marginBottom: '10px', textShadow: '0 1px 4px rgba(255,255,255,0.6)' }}>{content.hero_subtitle}</p>
- <h1 className="fade-in fade-in-delay-1" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(52px,9vw,90px)', fontWeight: '900', color: 'var(--rose)', lineHeight: '1.1', textShadow: '0 2px 8px rgba(255,255,255,0.5)' }}>{content.hero_title}</h1>
+ <p className="fade-in hero-subtitle" style={{ fontSize: 'clamp(14px,3.2vw,32px)', color: 'var(--mid)', fontWeight: '500', marginBottom: '10px', textShadow: '0 1px 4px rgba(255,255,255,0.6)' }}>{content.hero_subtitle}</p>
+ <h1 className="fade-in fade-in-delay-1 hero-title" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(32px,9vw,90px)', fontWeight: '900', color: 'var(--rose)', lineHeight: '1.1', textShadow: '0 2px 8px rgba(255,255,255,0.5)' }}>{content.hero_title}</h1>
  </div>
  </section>
 
  {/* About */}
  <section style={{ background: 'var(--warm-white)', padding: '48px 28px', borderBottom: '1px solid var(--border-light)' }}>
- <div style={{ maxWidth: '860px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '48px', direction: 'rtl' }}>
+ <div className="about-flex" style={{ maxWidth: '860px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '48px', direction: 'rtl' }}>
  {/* תמונה */}
  <div style={{ flexShrink: 0, width: '200px', height: '200px', borderRadius: '50%', overflow: 'hidden', boxShadow: '0 8px 32px rgba(139,90,107,0.18)', border: 'none', background: '#D4B0BE' }}>
  <img src="https://i.ibb.co/vCRMZYPs/25.png" alt="אחינועם"
@@ -156,7 +157,7 @@ export default function HomePage() {
  {/* טקסט */}
  <div style={{ flex: 1, textAlign: 'right' }}>
  <p style={{ fontSize: '16px', lineHeight: '2.1', color: 'var(--mid)', whiteSpace: 'pre-line' }}>{content.about_text}</p>
- <p style={{ fontFamily: 'var(--font-display)', fontSize: '28px', color: 'var(--rose)', fontWeight: '900', marginTop: '14px' }}>{content.about_signature}</p>
+ <p className="about-signature" style={{ fontFamily: 'var(--font-display)', fontSize: '28px', color: 'var(--rose)', fontWeight: '900', marginTop: '14px' }}>{content.about_signature}</p>
  </div>
  </div>
  </section>
