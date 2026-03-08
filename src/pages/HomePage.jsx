@@ -140,7 +140,7 @@ export default function HomePage() {
  <div style={{ position: 'absolute', inset: 0, background: 'rgba(200,190,185,0.45)' }} />
  {/* טקסט */}
  <div style={{ position: 'relative', zIndex: 1, maxWidth: '660px', margin: '0 auto', padding: '0 28px' }}>
- <p className="fade-in hero-subtitle" style={{ fontSize: 'clamp(14px,3.2vw,32px)', color: '#4a2a34', fontWeight: '700', marginBottom: '10px', textShadow: '0 0 8px rgba(255,255,255,1), 0 0 16px rgba(255,255,255,1)' }}>{content.hero_subtitle}</p>
+ <p className="fade-in hero-subtitle" style={{ fontSize: 'clamp(14px,3.2vw,32px)', color: 'var(--rose)', fontWeight: '700', marginBottom: '10px', textShadow: '0 0 8px rgba(255,255,255,1), 0 0 16px rgba(255,255,255,1)' }}>{content.hero_subtitle}</p>
  <h1 className="fade-in fade-in-delay-1 hero-title" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(32px,9vw,90px)', fontWeight: '900', color: 'var(--rose)', lineHeight: '1.1', textShadow: '0 0 10px rgba(255,255,255,1), 0 0 24px rgba(255,255,255,1), 1px 1px 0 rgba(255,255,255,0.8)' }}>{content.hero_title}</h1>
  </div>
  </section>
