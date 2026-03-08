@@ -135,14 +135,14 @@ export default function HomePage() {
  <img
  src="https://i.ibb.co/CK4VYPTt/Whats-App-Image-2026-03-01-at-03-16-12.jpg"
  alt=""
- style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%', filter: 'brightness(1.25)' }}
+ style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%', filter: 'brightness(1.5)' }}
  />
- {/* שכבת בהירות לבנה */}
- <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.08)' }} />
+ {/* שכבה לבנה לבהירות נוספת */}
+ <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.35)' }} />
  {/* טקסט */}
  <div style={{ position: 'relative', zIndex: 1, maxWidth: '660px', margin: '0 auto', padding: '0 28px' }}>
- <p className="fade-in hero-subtitle" style={{ fontSize: 'clamp(14px,3.2vw,32px)', color: 'var(--mid)', fontWeight: '500', marginBottom: '10px', textShadow: '0 1px 4px rgba(255,255,255,0.6)' }}>{content.hero_subtitle}</p>
- <h1 className="fade-in fade-in-delay-1 hero-title" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(32px,9vw,90px)', fontWeight: '900', color: 'var(--rose)', lineHeight: '1.1', textShadow: '0 2px 8px rgba(255,255,255,0.5)' }}>{content.hero_title}</h1>
+ <p className="fade-in hero-subtitle" style={{ fontSize: 'clamp(14px,3.2vw,32px)', color: '#4a2a34', fontWeight: '700', marginBottom: '10px', textShadow: '0 0 8px rgba(255,255,255,1), 0 0 16px rgba(255,255,255,1)' }}>{content.hero_subtitle}</p>
+ <h1 className="fade-in fade-in-delay-1 hero-title" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(32px,9vw,90px)', fontWeight: '900', color: 'var(--rose)', lineHeight: '1.1', textShadow: '0 0 10px rgba(255,255,255,1), 0 0 24px rgba(255,255,255,1), 1px 1px 0 rgba(255,255,255,0.8)' }}>{content.hero_title}</h1>
  </div>
  </section>
 
