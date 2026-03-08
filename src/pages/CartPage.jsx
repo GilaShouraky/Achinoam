@@ -10,9 +10,9 @@ export default function CartPage() {
 
   const [showPopup, setShowPopup] = useState(false);
   const [form, setForm] = useState({
-    name: '', phone: '',
+    name: '', phone: '', email: '',
     delivery: '',
-    deliveryName: '', deliveryPhone: '', city: '', street: '', houseNum: '', floor: '', apt: '', zip: '', notes: ''
+    deliveryName: '', deliveryPhone: '', city: '', street: '', houseNum: '', floor: '', apt: '', entrance: '', notes: ''
   });
   const [errors, setErrors] = useState({});
   useEffect(() => {
@@ -34,6 +34,7 @@ export default function CartPage() {
   const validate = () => {
     const e = {};
     if (!form.name.trim()) e.name = true;
+    if (!form.email.trim() || !/^[^@]+@[^@]+\.[^@]+$/.test(form.email)) e.email = true;
     const phoneDigits = form.phone.replace(/\D/g, '');
     if (!form.phone.trim() || phoneDigits.length !== 10) e.phone = true;
     if (!form.delivery) e.delivery = true;
@@ -53,6 +54,7 @@ export default function CartPage() {
     const data = {
       name: form.name,
       phone: form.phone,
+      email: form.email,
       itemCount: cart.reduce((s, i) => s + i.quantity, 0),
       itemsList: cart.map(i => `${i.name} x${i.quantity} (₪${calcItemTotal(i)})`).join(', '),
       total: totalWithDelivery,
@@ -68,7 +70,7 @@ export default function CartPage() {
       houseNum: form.houseNum,
       floor: form.floor,
       apt: form.apt,
-      zip: form.zip,
+      entrance: form.entrance,
       notes: form.notes,
     };
     try {
@@ -91,7 +93,7 @@ export default function CartPage() {
       ? `
 איש קשר: ${form.deliveryName}
 טלפון: ${form.deliveryPhone}
-כתובת: ${form.street} ${form.houseNum}${form.floor ? ` קומה ${form.floor}` : ''}${form.apt ? ` דירה ${form.apt}` : ''}, ${form.city}${form.zip ? ` מיקוד ${form.zip}` : ''}${form.notes ? `
+כתובת: ${form.street} ${form.houseNum}${form.floor ? ` קומה ${form.floor}` : ''}${form.apt ? ` דירה ${form.apt}` : ''}, ${form.city}${form.entrance ? ` כניסה ${form.entrance}` : ''}${form.notes ? `
 הערות: ${form.notes}` : ''}`
       : '';
     const msg = `היי! אני רוצה להזמין:\n${items}${savings}\n\nסה"כ לתשלום: ₪${totalWithDelivery}\n\n👤 שם: ${form.name}\n📞 טלפון: ${form.phone}\n\n🚚 אופן קבלה: ${deliveryLabel}${deliveryDetails}`;
@@ -205,6 +207,10 @@ export default function CartPage() {
               <label style={lbl}>מספר פלאפון *</label>
               <input style={inp(errors.phone)} value={form.phone} onChange={e => setField('phone', e.target.value)} type="tel" />
             </div>
+            <div style={row}>
+              <label style={lbl}>מייל *</label>
+              <input style={inp(errors.email)} value={form.email} onChange={e => setField('email', e.target.value)} type="email" />
+            </div>
 
             <div style={secTitle}>איך אני רוצה לקבל את ההזמנה שלי?</div>
             {errors.delivery && <p style={{ color: '#e74c3c', fontSize: '12px', margin: '-8px 0 10px' }}>יש לבחור אופן קבלה</p>}
@@ -257,8 +263,8 @@ export default function CartPage() {
                     <input style={inp(false)} value={form.apt} onChange={e => setField('apt', e.target.value)} />
                   </div>
                   <div>
-                    <label style={lbl}>מיקוד</label>
-                    <input style={inp(false)} value={form.zip} onChange={e => setField('zip', e.target.value)} />
+                    <label style={lbl}>כניסה</label>
+                    <input style={inp(false)} value={form.entrance} onChange={e => setField('entrance', e.target.value)} />
                   </div>
                 </div>
                 <div style={{ marginTop: '12px' }}>

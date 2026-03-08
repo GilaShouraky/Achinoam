@@ -146,9 +146,9 @@ export function AppProvider({ children }) {
 
   if (!dataLoaded) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: 'Heebo, sans-serif', gap: '16px', background: '#F5F0F2', direction: 'rtl' }}>
-        
-        <p style={{ fontSize: '18px', color: '#6B6B6B', fontWeight: 500 }}>טוענת את האתר…</p>
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: 'Heebo, sans-serif', gap: '20px', background: '#F5F0F2', direction: 'rtl' }}>
+        <img src="https://i.ibb.co/6R35Qkzt/4.png" alt="אחינועם" style={{ height: '110px', width: 'auto', objectFit: 'contain' }} />
+        <p style={{ fontSize: '18px', color: '#6B6B6B', fontWeight: 500 }}>האתר של אחינועם נטען...</p>
       </div>
     );
   }

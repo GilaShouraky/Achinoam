@@ -9,8 +9,13 @@ function Carousel({ items, color, title, bg }) {
  const CARD_GAP = 14;
  const trackRef = useRef(null);
  const total = items.length;
- const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
- const visibleCount = 1;
+ const [isMobile, setIsMobile] = React.useState(typeof window !== 'undefined' && window.innerWidth <= 768);
+ const visibleCount = isMobile ? 1 : 4;
+ React.useEffect(() => {
+   const handler = () => setIsMobile(window.innerWidth <= 768);
+   window.addEventListener('resize', handler);
+   return () => window.removeEventListener('resize', handler);
+ }, []);
 
  const getCardW = () => {
  if (!trackRef.current) return 220;
