@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/static/css/main.a7a4e20b.css",
-    "main.js": "/static/js/main.5b6fa811.js",
+    "main.js": "/static/js/main.d3fcfe53.js",
     "static/media/HKBalerina-Regular.otf": "/static/media/HKBalerina-Regular.4ff721d21678ed757d5d.otf",
     "index.html": "/index.html",
     "main.a7a4e20b.css.map": "/static/css/main.a7a4e20b.css.map",
-    "main.5b6fa811.js.map": "/static/js/main.5b6fa811.js.map"
+    "main.d3fcfe53.js.map": "/static/js/main.d3fcfe53.js.map"
   },
   "entrypoints": [
     "static/css/main.a7a4e20b.css",
-    "static/js/main.5b6fa811.js"
+    "static/js/main.d3fcfe53.js"
   ]
 }
