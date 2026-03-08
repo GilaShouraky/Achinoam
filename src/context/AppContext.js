@@ -72,6 +72,7 @@ export function AppProvider({ children }) {
   };
 
   const removeFromCart = (productId) => setCart(prev => prev.filter(item => item.id !== productId));
+  const clearCart = () => setCart([]);
 
   const updateQuantity = (productId, quantity) => {
     if (quantity <= 0) { removeFromCart(productId); return; }
@@ -84,34 +85,40 @@ export function AppProvider({ children }) {
   const getGroupQty = (currentCart, groupName) =>
     currentCart.filter(i => i.dealGroup === groupName).reduce((sum, i) => sum + i.quantity, 0);
 
+  // כמה פריטים מוזלים מגיעים למוצר זה — לפי סדר בסל
+  const getDiscountedQtyForItem = (item, currentCart) => {
+    const groupQty = getGroupQty(currentCart, item.dealGroup);
+    const totalDiscounted = Math.floor(groupQty / item.dealQty) * item.dealQty;
+    if (totalDiscounted === 0) return 0;
+    let remaining = totalDiscounted;
+    for (const cartItem of currentCart) {
+      if (cartItem.dealGroup !== item.dealGroup) continue;
+      if (cartItem.id === item.id) {
+        return Math.min(cartItem.quantity, Math.max(0, remaining));
+      }
+      remaining -= cartItem.quantity;
+      if (remaining <= 0) return 0;
+    }
+    return 0;
+  };
+
   // חישוב מחיר עם מבצעים (כולל מבצע קבוצתי)
   const calcItemTotal = (item, currentCart = cart) => {
     const qty = item.quantity;
     const basePrice = Number(item.price);
 
     if (item.dealQty && item.dealPrice) {
-      // קבוצתי – סופר את כל הקבוצה
-      const countQty = item.dealGroup
-        ? getGroupQty(currentCart, item.dealGroup)
-        : qty;
-
-      const totalDiscounted = Math.floor(countQty / item.dealQty) * item.dealQty;
-      if (totalDiscounted === 0) return basePrice * qty;
-
-      const dealPricePerItem = item.dealPrice / item.dealQty;
-
       if (item.dealGroup) {
-        // מחלק יחסית — כמה מהפריטים של המוצר הזה נופלים בתוך ה-totalDiscounted
-        const ratio = totalDiscounted / countQty;
-        const discountedQty = Math.min(qty, Math.floor(ratio * qty + 0.5));
+        const discountedQty = getDiscountedQtyForItem(item, currentCart);
+        const dealPricePerItem = item.dealPrice / item.dealQty;
         return discountedQty * dealPricePerItem + (qty - discountedQty) * basePrice;
       } else {
-        // פרטני — ישן
-        const dealSets = Math.floor(qty / item.dealQty);
-        return dealSets * item.dealPrice + (qty % item.dealQty) * basePrice;
+        if (qty >= item.dealQty) {
+          const dealSets = Math.floor(qty / item.dealQty);
+          return dealSets * item.dealPrice + (qty % item.dealQty) * basePrice;
+        }
       }
     }
-
     return basePrice * qty;
   };
 
@@ -120,25 +127,17 @@ export function AppProvider({ children }) {
     const basePrice = Number(item.price);
 
     if (item.dealQty && item.dealPrice) {
-      const countQty = item.dealGroup
-        ? getGroupQty(currentCart, item.dealGroup)
-        : qty;
-
-      const totalDiscounted = Math.floor(countQty / item.dealQty) * item.dealQty;
-      if (totalDiscounted === 0) return 0;
-
-      const dealPricePerItem = item.dealPrice / item.dealQty;
-
       if (item.dealGroup) {
-        const ratio = totalDiscounted / countQty;
-        const discountedQty = Math.min(qty, Math.floor(ratio * qty + 0.5));
+        const discountedQty = getDiscountedQtyForItem(item, currentCart);
+        const dealPricePerItem = item.dealPrice / item.dealQty;
         return discountedQty * (basePrice - dealPricePerItem);
       } else {
-        const dealSets = Math.floor(qty / item.dealQty);
-        return dealSets * (item.dealQty * basePrice - item.dealPrice);
+        if (qty >= item.dealQty) {
+          const dealSets = Math.floor(qty / item.dealQty);
+          return dealSets * (item.dealQty * basePrice - item.dealPrice);
+        }
       }
     }
-
     return 0;
   };
 
@@ -158,7 +157,7 @@ export function AppProvider({ children }) {
     <AppContext.Provider value={{
       navigate, location,
       sidebarOpen, setSidebarOpen,
-      cart, addToCart, removeFromCart, updateQuantity,
+      cart, addToCart, removeFromCart, updateQuantity, clearCart,
       cartCount, cartTotal, cartSavings, calcItemTotal, calcItemSaving,
       content, products, graphics, workshops, dataLoaded,
     }}>

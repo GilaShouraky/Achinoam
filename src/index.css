@@ -419,3 +419,40 @@ img { max-width: 100%; display: block; }
     align-self: flex-start !important;
   }
 }
+
+/* ── Popup mobile ── */
+@media (max-width: 600px) {
+  .order-popup-wrap {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+  .order-popup-inner {
+    padding: 20px 16px !important;
+    max-height: 92vh !important;
+    border-radius: 20px 20px 0 0 !important;
+    width: 100% !important;
+  }
+  .order-popup-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+  .order-popup-grid-3 {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+/* ── Popup scrollbar ── */
+.order-popup-inner::-webkit-scrollbar {
+  width: 4px;
+}
+.order-popup-inner::-webkit-scrollbar-track {
+  background: transparent;
+}
+.order-popup-inner::-webkit-scrollbar-thumb {
+  background: #d4c4b8;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.order-popup-inner:hover::-webkit-scrollbar-thumb {
+  opacity: 1;
+}

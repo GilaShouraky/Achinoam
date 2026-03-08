@@ -85,7 +85,7 @@ export default function CategoryPage({ catKeyOverride } = {}) {
  <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '3px', background: meta.grad }} />
  </div>
  <div style={{ padding: '13px 15px', textAlign: 'center' }}>
- <p className="subcat-label" style={{ fontFamily: 'var(--font-display)', fontSize: '14px', fontWeight: '700', color: meta.color }}>{sub.label}</p>
+ <p className="subcat-label" style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: '700', color: meta.color }}>{sub.label}</p>
  </div>
  </div>
  );

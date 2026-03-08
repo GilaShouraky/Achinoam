@@ -10,7 +10,7 @@ export default function ContactBanner() {
  <footer style={{
  background: 'linear-gradient(160deg, #2C1F1F 0%, #3A2030 50%, #1E2C35 100%)',
  color: 'white', padding: '52px 36px 28px',
- position: 'relative', overflow: 'hidden',
+ position: 'relative', overflow: 'hidden', zIndex: 0,
  }}>
  {/* blobs חמים */}
  <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '200px', height: '200px', background: '#C4861A', borderRadius: '50%', filter: 'blur(80px)', opacity: 0.18 }} />
