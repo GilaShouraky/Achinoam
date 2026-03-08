@@ -147,7 +147,7 @@ export function AppProvider({ children }) {
   if (!dataLoaded) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: 'Heebo, sans-serif', gap: '16px', background: '#F5F0F2', direction: 'rtl' }}>
-        <div style={{ fontSize: '48px' }}>🌿</div>
+        
         <p style={{ fontSize: '18px', color: '#6B6B6B', fontWeight: 500 }}>טוענת את האתר…</p>
       </div>
     );
