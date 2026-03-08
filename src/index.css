@@ -304,11 +304,11 @@ img { max-width: 100%; display: block; }
    ═══════════════════════════════════════ */
 @media (max-width: 768px) {
 
-  /* 1. Hero titles */
-  .hero-subtitle { font-size: clamp(12px, 2.8vw, 17px) !important; }
-  .hero-title    { font-size: clamp(36px, 10vw, 58px) !important; }
+  /* 1. Hero titles - bigger */
+  .hero-subtitle { font-size: clamp(15px, 4vw, 20px) !important; }
+  .hero-title    { font-size: clamp(46px, 13vw, 68px) !important; }
 
-  /* 2. About section - vertical, smaller */
+  /* 2. About section - vertical, bigger image */
   .about-flex {
     flex-direction: column !important;
     align-items: center !important;
@@ -316,14 +316,22 @@ img { max-width: 100%; display: block; }
     gap: 16px !important;
   }
   .about-flex > div:first-child {
-    width: 120px !important;
-    height: 120px !important;
+    width: 160px !important;
+    height: 160px !important;
   }
   .about-flex > div:first-child img {
-    width: 120px !important;
-    height: 120px !important;
+    width: 160px !important;
+    height: 160px !important;
   }
-  .about-signature { font-size: 20px !important; }
+
+  /* 3. Signature "אחינועם" - bigger */
+  .about-signature { font-size: 32px !important; }
+
+  /* 4. Sub-category labels - bigger */
+  .subcat-label { font-size: 18px !important; }
+
+  /* 5. Page main titles (המוצרים שלי / גרפיקה / סדנאות) */
+  .page-main-title { font-size: clamp(30px, 8vw, 42px) !important; }
 
   /* 3. Carousel - 1 item on mobile */
   .carousel-grid { grid-template-columns: 1fr !important; }
@@ -371,5 +379,12 @@ img { max-width: 100%; display: block; }
   }
   .cart-item-qty {
     margin-top: 4px;
+  }
+
+  /* 8. Qty control - clean pill, no stretch */
+  .qty-control {
+    display: inline-flex !important;
+    width: auto !important;
+    align-self: flex-start !important;
   }
 }

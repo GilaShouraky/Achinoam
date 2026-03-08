@@ -24,7 +24,7 @@ export default function ProductsPage({ subCatOverride } = {}) {
  <div style={{ position: 'absolute', top: '14px', right: '16px', zIndex: 2 }}>
  <button className="back-btn" onClick={() => navigate('category', 'products')}>→ חזרה לקטגוריות</button>
  </div>
- <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,4vw,36px)', fontWeight: '900', color: 'white', textAlign: 'center', textShadow: '0 2px 10px rgba(0,0,0,0.12)', position: 'relative', zIndex: 1, margin: '40px 0 0' }}>
+ <h1 className="page-main-title" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,4vw,36px)', fontWeight: '900', color: 'white', textAlign: 'center', textShadow: '0 2px 10px rgba(0,0,0,0.12)', position: 'relative', zIndex: 1, margin: '40px 0 0' }}>
  {'המוצרים שלי '}
  </h1>
  </div>
