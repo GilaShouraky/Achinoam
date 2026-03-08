@@ -135,10 +135,10 @@ export default function HomePage() {
  <img
  src="https://i.ibb.co/CK4VYPTt/Whats-App-Image-2026-03-01-at-03-16-12.jpg"
  alt=""
- style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%', filter: 'brightness(0.82)' }}
+ style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%', filter: 'brightness(1.08)' }}
  />
  {/* שכבת בהירות לבנה */}
- <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,248,244,0.45)' }} />
+ <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,248,244,0.25)' }} />
  {/* טקסט */}
  <div style={{ position: 'relative', zIndex: 1, maxWidth: '660px', margin: '0 auto', padding: '0 28px' }}>
  <p className="fade-in hero-subtitle" style={{ fontSize: 'clamp(14px,3.2vw,32px)', color: 'var(--mid)', fontWeight: '500', marginBottom: '10px', textShadow: '0 1px 4px rgba(255,255,255,0.6)' }}>{content.hero_subtitle}</p>

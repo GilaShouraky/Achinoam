@@ -39,23 +39,26 @@ export default function CartPage() {
  </div>
  {/* פרטים */}
  <div className="cart-item-details" style={{ flex: 1 }}>
- <p style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: '700', color: 'var(--rose)', marginBottom: '5px' }}>{item.name}</p>
- <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '10px' }}>
+ <p style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: '700', color: 'var(--rose)', marginBottom: '8px' }}>{item.name}</p>
+ {/* מחיר + כמות באותה שורה */}
+ <div className="cart-price-qty-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+ <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
  {hasDeal ? (
  <>
- <span style={{ fontSize: '13px', color: 'var(--amber)', fontWeight: '700' }}>₪{itemTotal}</span>
- <span style={{ fontSize: '11px', color: 'var(--light)', textDecoration: 'line-through' }}>₪{Number(item.price) * item.quantity}</span>
- <span style={{ fontSize: '15px', color: '#25A85A', fontWeight: '700' }}>חסכת ₪{saving}</span>
+ <span className="cart-price" style={{ fontSize: '18px', color: 'var(--amber)', fontWeight: '800' }}>₪{itemTotal}</span>
+ <span style={{ fontSize: '12px', color: 'var(--light)', textDecoration: 'line-through' }}>₪{Number(item.price) * item.quantity}</span>
+ <span style={{ fontSize: '13px', color: '#25A85A', fontWeight: '700' }}>חסכת ₪{saving}</span>
  </>
  ) : (
- <span style={{ fontSize: '13px', color: 'var(--amber)', fontWeight: '700' }}>₪{itemTotal}</span>
+ <span className="cart-price" style={{ fontSize: '18px', color: 'var(--amber)', fontWeight: '800' }}>₪{itemTotal}</span>
  )}
  </div>
- {/* כמות - מתחת לשם ומחיר */}
+ {/* כמות - באותה שורה של המחיר */}
  <div className="qty-control">
  <button className="qty-btn" onClick={() => updateQuantity(item.id, item.quantity - 1)}>−</button>
  <span className="qty-num">{item.quantity}</span>
  <button className="qty-btn" onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+ </div>
  </div>
  </div>
  {/* מחיקה */}

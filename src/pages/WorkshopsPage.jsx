@@ -17,16 +17,21 @@ function ImageGallery({ images, label }) {
 
  const getCardW = () => {
  if (!trackRef.current) return 160;
+ const isMobile = window.innerWidth <= 768;
+ if (isMobile) return trackRef.current.offsetWidth;
  return (trackRef.current.offsetWidth - CARD_GAP * 2) / 3;
  };
+
+ const visibleCount = typeof window !== 'undefined' && window.innerWidth <= 768 ? 1 : 3;
 
  const slideTo = (newPos) => {
  if (moving) return;
  setMoving(true);
  const cardW = getCardW();
+ const gap = visibleCount === 1 ? 0 : CARD_GAP;
  const step = ((newPos - pos + total) % total);
  const dir = step <= total / 2 ? step : step - total;
- const px = dir * (cardW + CARD_GAP);
+ const px = dir * (cardW + gap);
  if (trackRef.current) {
  trackRef.current.style.transition = 'transform 0.42s cubic-bezier(0.4,0,0.2,1)';
  trackRef.current.style.transform = `translateX(${px}px)`;
@@ -42,7 +47,7 @@ function ImageGallery({ images, label }) {
  };
 
  const go = (dir) => slideTo(((pos + dir) % total + total) % total);
- const visible = Array.from({ length: Math.min(3, total) }, (_, i) => imgs[(pos + i) % total]);
+ const visible = Array.from({ length: Math.min(visibleCount, total) }, (_, i) => imgs[(pos + i) % total]);
 
  const ArrowBtn = ({ dir }) => (
  <button onClick={() => go(dir)}
@@ -62,10 +67,16 @@ function ImageGallery({ images, label }) {
  <ArrowBtn dir={-1} />
  {/* track */}
  <div style={{ flex: 1, overflow: 'hidden' }}>
- <div ref={trackRef} style={{ display: 'flex', gap: `${CARD_GAP}px` }}>
+ <div ref={trackRef} className="gallery-track" style={{ display: 'flex', gap: visibleCount === 1 ? '0px' : `${CARD_GAP}px` }}>
  {visible.map((src, i) => (
- <div key={`${pos}-${i}`} style={{ flex: `0 0 calc((100% - ${CARD_GAP * 2}px) / 3)`, borderRadius: '14px', overflow: 'hidden', boxShadow: i === 1 ? '0 6px 20px rgba(0,0,0,0.14)' : '0 2px 8px rgba(0,0,0,0.08)', transform: i === 1 ? 'scale(1)' : 'scale(0.92)', transition: 'transform 0.3s' }}>
- <img src={src} alt={i === 1 ? label : ''} style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', display: 'block' }} />
+ <div key={`${pos}-${i}`} style={{
+ flex: visibleCount === 1 ? '0 0 100%' : `0 0 calc((100% - ${CARD_GAP * 2}px) / 3)`,
+ borderRadius: '14px', overflow: 'hidden',
+ boxShadow: (visibleCount === 1 || i === 1) ? '0 6px 20px rgba(0,0,0,0.14)' : '0 2px 8px rgba(0,0,0,0.08)',
+ transform: (visibleCount === 1 || i === 1) ? 'scale(1)' : 'scale(0.92)',
+ transition: 'transform 0.3s'
+ }}>
+ <img src={src} alt={i === 0 ? label : ''} style={{ width: '100%', aspectRatio: visibleCount === 1 ? '4/3' : '3/4', objectFit: 'cover', display: 'block' }} />
  </div>
  ))}
  </div>

@@ -328,10 +328,21 @@ img { max-width: 100%; display: block; }
   .about-signature { font-size: 32px !important; }
 
   /* 4. Sub-category labels - bigger */
-  .subcat-label { font-size: 18px !important; }
+  .subcat-label { font-size: 20px !important; }
 
   /* 5. Page main titles (המוצרים שלי / גרפיקה / סדנאות) */
-  .page-main-title { font-size: clamp(30px, 8vw, 42px) !important; }
+  .page-main-title { font-size: clamp(34px, 9vw, 48px) !important; }
+
+  /* 6. qty control on product page - bigger, with bottom gap */
+  .product-qty-row .qty-control {
+    transform: scale(1.18);
+    transform-origin: right center;
+    margin-bottom: 12px !important;
+  }
+
+  /* 9. Gallery - 1 image on mobile */
+  .gallery-track > div { flex: 0 0 100% !important; }
+  .gallery-track > div:not(:first-child) { display: none !important; }
 
   /* 3. Carousel - 1 item on mobile */
   .carousel-grid { grid-template-columns: 1fr !important; }
