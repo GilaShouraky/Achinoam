@@ -17,7 +17,7 @@ export default function CartPage() {
  <div className="fade-in">
  <div className="page-header">
  <button className="back-btn" onClick={() => navigate('home')}>→ חזרה לקנייה</button>
- <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '42px', color: 'var(--rose)', fontWeight: '900', marginTop: '8px', textAlign: 'center', width: '100%' }}>סל הקניות</h1>
+ <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '42px', color: 'var(--rose)', fontWeight: '900', marginTop: '12px', textAlign: 'center', width: '100%' }}>סל הקניות</h1>
  </div>
  <div style={{ maxWidth: '680px', margin: '32px auto 78px', padding: '0 28px' }}>
  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
@@ -34,13 +34,13 @@ export default function CartPage() {
  </div>
  )}
  {/* תמונה */}
- <div className="cart-item-img" style={{ width: '72px', height: '72px', background: 'var(--cream)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', flexShrink: 0, overflow: 'hidden' }}>
+ <div className="cart-item-img" style={{ width: '120px', height: '120px', background: 'var(--cream)', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px', flexShrink: 0, overflow: 'hidden' }}>
  {item.images?.[0] ? <img src={item.images[0]} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : item.emoji}
  </div>
  {/* פרטים */}
  <div className="cart-item-details" style={{ flex: 1 }}>
  <p style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: '700', color: 'var(--rose)', marginBottom: '5px' }}>{item.name}</p>
- <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+ <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '10px' }}>
  {hasDeal ? (
  <>
  <span style={{ fontSize: '13px', color: 'var(--amber)', fontWeight: '700' }}>₪{itemTotal}</span>
@@ -51,12 +51,12 @@ export default function CartPage() {
  <span style={{ fontSize: '13px', color: 'var(--amber)', fontWeight: '700' }}>₪{itemTotal}</span>
  )}
  </div>
- </div>
- {/* כמות */}
- <div className="qty-control cart-item-qty">
+ {/* כמות - מתחת לשם ומחיר */}
+ <div className="qty-control">
  <button className="qty-btn" onClick={() => updateQuantity(item.id, item.quantity - 1)}>−</button>
  <span className="qty-num">{item.quantity}</span>
  <button className="qty-btn" onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+ </div>
  </div>
  {/* מחיקה */}
  <button onClick={() => removeFromCart(item.id)}

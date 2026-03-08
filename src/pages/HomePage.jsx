@@ -10,7 +10,7 @@ function Carousel({ items, color, title, bg }) {
  const trackRef = useRef(null);
  const total = items.length;
  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
- const visibleCount = 4;
+ const visibleCount = 1;
 
  const getCardW = () => {
  if (!trackRef.current) return 220;

@@ -47,13 +47,13 @@ export default function CategoryPage({ catKeyOverride } = {}) {
  minHeight: '130px',
  display: 'flex', alignItems: 'center', justifyContent: 'center',
  position: 'relative', overflow: 'hidden',
- padding: '20px 120px',
+ padding: '20px 20px',
  }}>
  <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '200px', height: '200px', background: 'rgba(255,255,255,0.12)', borderRadius: '50%', filter: 'blur(50px)' }} />
- <div style={{ position: 'absolute', top: '50%', right: '20px', transform: 'translateY(-50%)', zIndex: 2 }}>
+ <div style={{ position: 'absolute', top: '14px', right: '16px', zIndex: 2 }}>
  <button className="back-btn" onClick={() => navigate('home')}>→ חזרה לדף הבית</button>
  </div>
- <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
+ <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', marginTop: '40px' }}>
  <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px,5vw,40px)', fontWeight: '900', color: 'white', textShadow: '0 2px 10px rgba(0,0,0,0.12)', margin: '0 0 6px' }}>
  {meta.title}
  </h1>

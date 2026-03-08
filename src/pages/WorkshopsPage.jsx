@@ -108,14 +108,14 @@ export default function WorkshopsPage({ subCatOverride } = {}) {
  minHeight: '130px',
  display: 'flex', alignItems: 'center', justifyContent: 'center',
  position: 'relative', overflow: 'hidden',
- padding: '20px 120px',
+ padding: '20px 20px',
  }}>
  <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '200px', height: '200px', background: 'rgba(255,255,255,0.12)', borderRadius: '50%', filter: 'blur(50px)' }} />
- {/* כפתור חזרה – absolute ימין */}
- <div style={{ position: 'absolute', top: '50%', right: '20px', transform: 'translateY(-50%)', zIndex: 2 }}>
+ {/* כפתור חזרה – למעלה, לא חופף */}
+ <div style={{ position: 'absolute', top: '14px', right: '16px', zIndex: 2 }}>
  <button className="back-btn" onClick={() => navigate('category', 'workshops')}>→ חזרה לקטגוריות</button>
  </div>
- <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,4vw,36px)', fontWeight: '900', color: 'white', textAlign: 'center', textShadow: '0 2px 10px rgba(0,0,0,0.12)', position: 'relative', zIndex: 1, margin: 0 }}>
+ <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,4vw,36px)', fontWeight: '900', color: 'white', textAlign: 'center', textShadow: '0 2px 10px rgba(0,0,0,0.12)', position: 'relative', zIndex: 1, margin: '40px 0 0' }}>
  {content.workshops_title || 'סדנאות אומנות'}
  </h1>
  </div>
