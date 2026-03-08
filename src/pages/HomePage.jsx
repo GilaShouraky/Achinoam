@@ -135,9 +135,9 @@ export default function HomePage() {
  <img
  src="https://i.ibb.co/CK4VYPTt/Whats-App-Image-2026-03-01-at-03-16-12.jpg"
  alt=""
- style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%', opacity: 0.5 }}
+ style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%', filter: 'brightness(0.75)' }}
  />
- <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0)' }} />
+ <div style={{ position: 'absolute', inset: 0, background: 'rgba(200,190,185,0.45)' }} />
  {/* טקסט */}
  <div style={{ position: 'relative', zIndex: 1, maxWidth: '660px', margin: '0 auto', padding: '0 28px' }}>
  <p className="fade-in hero-subtitle" style={{ fontSize: 'clamp(14px,3.2vw,32px)', color: '#4a2a34', fontWeight: '700', marginBottom: '10px', textShadow: '0 0 8px rgba(255,255,255,1), 0 0 16px rgba(255,255,255,1)' }}>{content.hero_subtitle}</p>
