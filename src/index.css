@@ -313,8 +313,8 @@ img { max-width: 100%; display: block; }
 
   /* Hero section - tall on mobile */
   .hero-section {
-    min-height: 55vh !important;
-    height: 55vh !important;
+    min-height: 65vh !important;
+    height: 65vh !important;
   }
 
   /* 1. Hero titles - bigger */

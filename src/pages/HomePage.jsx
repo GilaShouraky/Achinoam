@@ -137,7 +137,7 @@ export default function HomePage() {
  alt=""
  style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%', filter: 'brightness(0.75)' }}
  />
- <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.35)' }} />
+ <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.45)' }} />
  {/* טקסט */}
  <div style={{ position: 'relative', zIndex: 1, maxWidth: '660px', margin: '0 auto', padding: '0 28px' }}>
  <p className="fade-in hero-subtitle" style={{ fontSize: 'clamp(14px,3.2vw,32px)', color: 'var(--rose)', fontWeight: '400', marginBottom: '10px', textShadow: '0 0 10px rgba(255,255,255,1), 0 0 24px rgba(255,255,255,1), 1px 1px 0 rgba(255,255,255,0.8)' }}>{content.hero_subtitle}</p>
@@ -146,7 +146,7 @@ export default function HomePage() {
  </section>
 
  {/* חץ מונפש - מובייל בלבד */}
- <div className="scroll-arrow-mobile" style={{ display: 'none', justifyContent: 'center', padding: '18px 40px 28px', background: 'var(--warm-white)' }}>
+ <div className="scroll-arrow-mobile" style={{ display: 'none', justifyContent: 'center', padding: '28px 40px 36px', background: 'var(--warm-white)' }}>
  <div style={{ animation: 'bounceDown 1.4s ease-in-out infinite', color: 'var(--rose)', lineHeight: 1 }}>
  <svg width="38" height="22" viewBox="0 0 38 22" fill="none" xmlns="http://www.w3.org/2000/svg">
  <path d="M2 2L19 19L36 2" stroke="var(--rose)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
