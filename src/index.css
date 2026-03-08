@@ -304,6 +304,12 @@ img { max-width: 100%; display: block; }
    ═══════════════════════════════════════ */
 @media (max-width: 768px) {
 
+  /* Hero section - tall on mobile */
+  .hero-section {
+    min-height: 55vh !important;
+    height: 55vh !important;
+  }
+
   /* 1. Hero titles - bigger */
   .hero-subtitle { font-size: clamp(15px, 4vw, 20px) !important; }
   .hero-title    { font-size: clamp(46px, 13vw, 68px) !important; }

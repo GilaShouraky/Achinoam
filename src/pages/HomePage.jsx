@@ -125,7 +125,7 @@ export default function HomePage() {
  return (
  <div>
  {/* Hero */}
- <section style={{
+ <section className="hero-section" style={{
  position: 'relative', overflow: 'hidden',
  minHeight: 'clamp(200px, 28vw, 360px)',
  display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -137,7 +137,7 @@ export default function HomePage() {
  alt=""
  style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%', filter: 'brightness(0.75)' }}
  />
- <div style={{ position: 'absolute', inset: 0, background: 'rgba(200,190,185,0.45)' }} />
+ <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.18)' }} />
  {/* טקסט */}
  <div style={{ position: 'relative', zIndex: 1, maxWidth: '660px', margin: '0 auto', padding: '0 28px' }}>
  <p className="fade-in hero-subtitle" style={{ fontSize: 'clamp(14px,3.2vw,32px)', color: 'var(--rose)', fontWeight: '700', marginBottom: '10px', textShadow: '0 0 8px rgba(255,255,255,1), 0 0 16px rgba(255,255,255,1)' }}>{content.hero_subtitle}</p>
