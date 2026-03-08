@@ -381,6 +381,7 @@ img { max-width: 100%; display: block; }
     width: 90px !important;
     height: 90px !important;
     flex-shrink: 0 !important;
+    margin-left: 4px !important;
   }
   .cart-item-details {
     flex: 1 !important;

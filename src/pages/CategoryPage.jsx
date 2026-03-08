@@ -54,10 +54,9 @@ export default function CategoryPage({ catKeyOverride } = {}) {
  <button className="back-btn" onClick={() => navigate('home')}>→ חזרה לדף הבית</button>
  </div>
  <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', marginTop: '40px' }}>
- <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px,5vw,40px)', fontWeight: '900', color: 'white', textShadow: '0 2px 10px rgba(0,0,0,0.12)', margin: '0 0 6px' }}>
+ <h1 className="page-main-title" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px,5vw,40px)', fontWeight: '900', color: 'white', textShadow: '0 2px 10px rgba(0,0,0,0.12)', margin: 0 }}>
  {meta.title}
  </h1>
- <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '13px', margin: 0 }}>בחרי קטגוריה להמשך</p>
  </div>
  </div>
 
