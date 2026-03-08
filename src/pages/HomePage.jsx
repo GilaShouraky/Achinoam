@@ -149,7 +149,7 @@ export default function HomePage() {
  </section>
 
  {/* חץ מונפש - מובייל בלבד */}
- <div className="scroll-arrow-mobile" style={{ display: 'none', justifyContent: 'center', padding: '28px 40px 36px', background: 'var(--warm-white)' }}>
+ <div className="scroll-arrow-mobile" style={{ display: 'none', justifyContent: 'center', padding: '42px 40px 36px', background: 'var(--warm-white)' }}>
  <div style={{ animation: 'bounceDown 1.4s ease-in-out infinite', color: 'var(--rose)', lineHeight: 1 }}>
  <svg width="38" height="22" viewBox="0 0 38 22" fill="none" xmlns="http://www.w3.org/2000/svg">
  <path d="M2 2L19 19L36 2" stroke="var(--rose)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
