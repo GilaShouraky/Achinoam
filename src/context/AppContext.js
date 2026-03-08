@@ -80,30 +80,70 @@ export function AppProvider({ children }) {
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-  // חישוב מחיר עם מבצעים
-  const calcItemTotal = (item) => {
+  // ─── עזר: כמות כוללת של קבוצת מבצע בסל ─────────────────────
+  const getGroupQty = (currentCart, groupName) =>
+    currentCart.filter(i => i.dealGroup === groupName).reduce((sum, i) => sum + i.quantity, 0);
+
+  // חישוב מחיר עם מבצעים (כולל מבצע קבוצתי)
+  const calcItemTotal = (item, currentCart = cart) => {
     const qty = item.quantity;
     const basePrice = Number(item.price);
-    if (item.dealQty && item.dealPrice && qty >= item.dealQty) {
-      const dealSets = Math.floor(qty / item.dealQty);
-      const remainder = qty % item.dealQty;
-      return dealSets * item.dealPrice + remainder * basePrice;
+
+    if (item.dealQty && item.dealPrice) {
+      // קבוצתי – סופר את כל הקבוצה
+      const countQty = item.dealGroup
+        ? getGroupQty(currentCart, item.dealGroup)
+        : qty;
+
+      const totalDiscounted = Math.floor(countQty / item.dealQty) * item.dealQty;
+      if (totalDiscounted === 0) return basePrice * qty;
+
+      const dealPricePerItem = item.dealPrice / item.dealQty;
+
+      if (item.dealGroup) {
+        // מחלק יחסית — כמה מהפריטים של המוצר הזה נופלים בתוך ה-totalDiscounted
+        const ratio = totalDiscounted / countQty;
+        const discountedQty = Math.min(qty, Math.floor(ratio * qty + 0.5));
+        return discountedQty * dealPricePerItem + (qty - discountedQty) * basePrice;
+      } else {
+        // פרטני — ישן
+        const dealSets = Math.floor(qty / item.dealQty);
+        return dealSets * item.dealPrice + (qty % item.dealQty) * basePrice;
+      }
     }
+
     return basePrice * qty;
   };
 
-  const calcItemSaving = (item) => {
+  const calcItemSaving = (item, currentCart = cart) => {
     const qty = item.quantity;
     const basePrice = Number(item.price);
-    if (item.dealQty && item.dealPrice && qty >= item.dealQty) {
-      const dealSets = Math.floor(qty / item.dealQty);
-      return dealSets * (item.dealQty * basePrice - item.dealPrice);
+
+    if (item.dealQty && item.dealPrice) {
+      const countQty = item.dealGroup
+        ? getGroupQty(currentCart, item.dealGroup)
+        : qty;
+
+      const totalDiscounted = Math.floor(countQty / item.dealQty) * item.dealQty;
+      if (totalDiscounted === 0) return 0;
+
+      const dealPricePerItem = item.dealPrice / item.dealQty;
+
+      if (item.dealGroup) {
+        const ratio = totalDiscounted / countQty;
+        const discountedQty = Math.min(qty, Math.floor(ratio * qty + 0.5));
+        return discountedQty * (basePrice - dealPricePerItem);
+      } else {
+        const dealSets = Math.floor(qty / item.dealQty);
+        return dealSets * (item.dealQty * basePrice - item.dealPrice);
+      }
     }
+
     return 0;
   };
 
-  const cartTotal = cart.reduce((sum, item) => sum + calcItemTotal(item), 0);
-  const cartSavings = cart.reduce((sum, item) => sum + calcItemSaving(item), 0);
+  const cartTotal = cart.reduce((sum, item) => sum + calcItemTotal(item, cart), 0);
+  const cartSavings = cart.reduce((sum, item) => sum + calcItemSaving(item, cart), 0);
 
   if (!dataLoaded) {
     return (

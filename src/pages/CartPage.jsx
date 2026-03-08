@@ -22,9 +22,14 @@ export default function CartPage() {
  <div style={{ maxWidth: '680px', margin: '32px auto 78px', padding: '0 28px' }}>
  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
  {cart.map(item => {
- const itemTotal = calcItemTotal(item);
- const saving = calcItemSaving(item);
- const hasDeal = item.dealQty && item.dealPrice && item.quantity >= item.dealQty;
+ const itemTotal = calcItemTotal(item, cart);
+ const saving = calcItemSaving(item, cart);
+ // מבצע פעיל: פרטני או קבוצתי
+ const groupQty = item.dealGroup ? cart.filter(i => i.dealGroup === item.dealGroup).reduce((s, i) => s + i.quantity, 0) : 0;
+ const hasDeal = item.dealQty && item.dealPrice && (
+ (item.dealGroup && groupQty >= item.dealQty) ||
+ (!item.dealGroup && item.quantity >= item.dealQty)
+ );
  return (
  <div key={item.id} className="cart-item" style={{ background: 'var(--warm-white)', border: `1px solid ${hasDeal ? '#D4A84060' : 'var(--border-light)'}`, borderRadius: '16px', padding: '18px 22px', display: 'flex', alignItems: 'center', gap: '16px', position: 'relative' }}>
  {/* תגית מבצע */}

@@ -312,6 +312,7 @@ img { max-width: 100%; display: block; }
    ═══════════════════════════════════════ */
 @media (max-width: 768px) {
 
+  .products-grid { grid-template-columns: 1fr !important; }
   .scroll-arrow-mobile { display: flex !important; }
   .hero-subtitle-mobile { display: block !important; font-size: clamp(25px, 5vw, 31px) !important; line-height: 1.6 !important; }
   .hero-subtitle-desktop { display: none !important; }

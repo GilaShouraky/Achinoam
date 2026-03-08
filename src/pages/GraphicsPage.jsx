@@ -45,7 +45,7 @@ export default function GraphicsPage({ subCatOverride } = {}) {
  <p>אין פריטים בקטגוריה זו עדיין</p>
  </div>
  ) : (
- <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '18px' }}>
+ <div className="products-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '18px' }}>
  {filtered.map(p =><ProductCard key={p.id} product={p} />)}
  </div>
  )}

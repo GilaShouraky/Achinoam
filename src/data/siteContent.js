@@ -178,6 +178,7 @@ function rowToProduct(row) {
     dealQty:     row['מבצע_כמות']   ? Number(row['מבצע_כמות'])   : null,
     dealPrice:   row['מבצע_מחיר']   ? Number(row['מבצע_מחיר'])   : null,
     dealLabel:   (row['תיאור_מבצע'] || '').trim() || null,
+    dealGroup:   (row['שם_מבצע']    || '').trim() || null,
   };
 }
 
