@@ -299,10 +299,17 @@ img { max-width: 100%; display: block; }
 
 
 
+@keyframes bounceDown {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(8px); opacity: 0.4; }
+}
+
 /* ═══════════════════════════════════════
    MOBILE ONLY (max 768px)
    ═══════════════════════════════════════ */
 @media (max-width: 768px) {
+
+  .scroll-arrow-mobile { display: flex !important; }
 
   /* Hero section - tall on mobile */
   .hero-section {
