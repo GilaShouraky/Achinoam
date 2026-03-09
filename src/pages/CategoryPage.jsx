@@ -25,13 +25,18 @@ const catMeta = {
 };
 
 export default function CategoryPage({ catKeyOverride } = {}) {
- const { navigate, pageData, workshops, content } = useApp();
+ const { navigate, pageData, workshops, content, products } = useApp();
  const catKey = catKeyOverride || pageData || 'products';
  const meta = catMeta[catKey] || catMeta.products;
 
- const subs = catKey === 'workshops'
+ const allSubs = catKey === 'workshops'
  ? (workshops || []).map(w => ({ id: w.id, label: w.label }))
  : (categories[catKey]?.subCategories || []);
+
+ // סנן קטגוריות ריקות (רק במוצרים)
+ const subs = catKey === 'products'
+ ? allSubs.filter(sub => products.some(p => p.category === sub.id))
+ : allSubs;
 
  // תמונות קטגוריות מגיליון "קטגוריות ראשיות"
  const getCatImage = (subId) => {
@@ -62,7 +67,7 @@ export default function CategoryPage({ catKeyOverride } = {}) {
 
  {/* גריד
  {/* גריד קטגוריות */}
- <div style={{ maxWidth: '980px', margin: '36px auto 68px', padding: '0 28px', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(185px, 1fr))', gap: '18px' }}>
+ <div style={{ maxWidth: '980px', margin: '36px auto 68px', padding: '0 28px', display: 'grid', gridTemplateColumns: `repeat(${Math.min(subs.length, 4)}, 1fr)`, gap: '18px' }}>
  {subs.map(sub => {
  const v = subCatVisuals[sub.id] || { emoji: '', bg: 'linear-gradient(145deg, var(--cream), var(--parchment))' };
  const imgUrl = getCatImage(sub.id);

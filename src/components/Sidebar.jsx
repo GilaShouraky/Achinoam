@@ -5,8 +5,8 @@ import Logo from './Logo';
 const menuItems = [
   { label: 'דף הבית',       page: 'home'                          },
   { label: 'המוצרים שלי',   page: 'category', data: 'products'   },
-  { label: 'עבודות גרפיקה', page: 'category', data: 'graphics'   },
-  { label: 'סדנאות אומנות', page: 'category', data: 'workshops'  },
+  // { label: 'עבודות גרפיקה', page: 'category', data: 'graphics'   },
+  // { label: 'סדנאות אומנות', page: 'category', data: 'workshops'  },
 ];
 
 export default function Sidebar() {

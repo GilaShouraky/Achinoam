@@ -36,7 +36,6 @@ export function AppProvider({ children }) {
       setWorkshops(w);
       setDataLoaded(true);
     }).catch(err => {
-      console.error('[AppContext] Error loading data:', err);
       setDataLoaded(true);
     });
   }, []);

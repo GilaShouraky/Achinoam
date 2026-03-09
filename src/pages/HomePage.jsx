@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import ProductCard from '../components/ProductCard';
+import { categories } from '../data/products';
 
 // קרוסלה עם CSS sliding אמיתי 
 function Carousel({ items, color, title, bg }) {
@@ -113,6 +114,12 @@ const isImageUrl = (val) => val && /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|svg)/
 
 export default function HomePage() {
  const { content, navigate, products } = useApp();
+ const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 600);
+ React.useEffect(() => {
+   const fn = () => setIsMobile(window.innerWidth <= 600);
+   window.addEventListener('resize', fn);
+   return () => window.removeEventListener('resize', fn);
+ }, []);
 
  const featuredIds = (content.featured_ids || '').split(',').map(s => s.trim()).filter(Boolean);
  const featured = featuredIds.length > 0
@@ -121,11 +128,9 @@ export default function HomePage() {
 
  const under100 = products.filter(p => Number(p.price) > 0 && Number(p.price) <= 100);
 
- const mainCats = [
- { key: 'products', pageData: 'products', icon: '', title: 'המוצרים שלי', desc: 'קולקציות עונתיות, מתנות ממותגות ופריטים בעיצוב אישי', color: 'var(--rose)', grad: 'var(--grad-rose)', bg: 'var(--rose-soft)', imgKey: content.cat_products_image },
- { key: 'graphics', pageData: 'graphics', icon: '', title: 'עבודות גרפיקה', desc: 'הזמנות, פלאיירים ומיתוגים לעסק ולאירועים', color: 'var(--slate)', grad: 'var(--grad-slate)', bg: 'var(--slate-soft)', imgKey: content.cat_graphics_image },
- { key: 'workshops', pageData: 'workshops', icon: '', title: 'סדנאות אומנות', desc: 'סדנאות מקרמה, ריקמה ואומנות לכל הגילאים', color: 'var(--amber)', grad: 'var(--grad-amber)', bg: 'var(--amber-soft)', imgKey: content.cat_workshops_image },
- ];
+ // קטגוריות ישירות מהמוצרים
+ const allSubCats = categories.products.subCategories;
+ const mainCats = allSubCats.filter(sub => products.some(p => p.category === sub.id));
 
  return (
  <div>
@@ -180,29 +185,29 @@ export default function HomePage() {
 
  {/* קטגוריות */}
  <section style={{ padding: 'clamp(48px,8vw,76px) 28px', maxWidth: '980px', margin: '0 auto' }}>
- <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,3.5vw,38px)', fontWeight: '900', color: 'var(--rose)', textAlign: 'center', marginBottom: '40px' }}>מה תמצאו אצלי?</h2>
- <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
- {mainCats.map((cat, i) => (
- <div key={cat.key} onClick={() => navigate('category', cat.pageData)}
- style={{ background: cat.bg, border: `1px solid ${cat.color}22`, borderRadius: '22px', overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.26s cubic-bezier(0.22,1,0.36,1), box-shadow 0.26s', position: 'relative' }}
+ <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,3.5vw,38px)', fontWeight: '900', color: 'var(--rose)', textAlign: 'center', marginBottom: '40px' }}>הקולקציות שלי</h2>
+ <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : `repeat(${Math.min(mainCats.length, 3)}, 1fr)`, gap: '20px' }}>
+ {mainCats.map((sub, i) => {
+ const imgKey = content[`subcat_${sub.id}`];
+ const imgUrl = imgKey && imgKey.startsWith('http') ? imgKey : null;
+ return (
+ <div key={sub.id} onClick={() => navigate('products', { subCategory: sub.id })}
+ style={{ borderRadius: '22px', overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.26s cubic-bezier(0.22,1,0.36,1), box-shadow 0.26s', position: 'relative' }}
  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-7px)'; e.currentTarget.style.boxShadow = 'var(--shadow-xl)'; }}
  onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
  >
- <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: cat.grad }} />
- {cat.imgKey ? (
- <div style={{ width: '100%', paddingTop: '72%', position: 'relative', overflow: 'hidden' }}>
- <img src={cat.imgKey} alt={cat.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
- </div>
- ) : (
- <div style={{ paddingTop: '36px', textAlign: 'center', fontSize: '50px', animation: `float 3s ${i * 0.4}s ease-in-out infinite` }}>{cat.icon}</div>
- )}
- <div style={{ padding: '16px 24px 24px', textAlign: 'center' }}>
- <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '26px', fontWeight: '900', color: cat.color, marginBottom: '8px' }}>{cat.title}</h3>
- <p style={{ fontSize: '14px', color: 'var(--mid)', lineHeight: '1.7', marginBottom: '18px' }}>{cat.desc}</p>
- <div style={{ display: 'inline-block', padding: '8px 22px', borderRadius: '50px', background: cat.grad, color: 'white', fontSize: '13px', fontWeight: '700' }}>לצפייה ←</div>
+ <div style={{ width: '100%', paddingTop: '35%', position: 'relative', overflow: 'hidden', background: 'var(--rose-soft)' }}>
+   {imgUrl && <img src={imgUrl} alt={sub.label} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.82)' }} />}
+   {/* overlay */}
+   <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.32)' }} />
+   {/* כיתוב במרכז */}
+   <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+     <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px,3.5vw,42px)', fontWeight: '900', color: 'white', textShadow: '0 2px 12px rgba(0,0,0,0.5)', margin: 0, textAlign: 'center', lineHeight: 1.3 }}>{sub.label}</h3>
+   </div>
  </div>
  </div>
- ))}
+ );
+ })}
  </div>
  </section>
 

@@ -83,28 +83,19 @@ async function fetchCSV(url) {
   let text;
   let source = 'direct';
 
-  console.log('🔄 מנסה לטעון:', url);
-
   try {
     const res = await fetch(url);
-    console.log('📡 סטטוס ישיר:', res.status);
     text = await res.text();
-    console.log('📄 100 תווים ראשונים:', text.substring(0, 100));
     if (text.trim().startsWith('<')) {
-      console.warn('⚠️ קיבלתי HTML - עובר ל-proxy');
       throw new Error('got HTML');
     }
   } catch (e) {
     source = 'proxy';
-    console.log('🔀 מנסה דרך proxy...');
     try {
       const proxyUrl = PROXY + encodeURIComponent(url);
       const res2 = await fetch(proxyUrl);
-      console.log('📡 סטטוס proxy:', res2.status);
       text = await res2.text();
-      console.log('📄 proxy - 100 תווים:', text.substring(0, 100));
     } catch (e2) {
-      console.error('❌ גם proxy נכשל:', e2.message);
       throw e2;
     }
   }
@@ -135,15 +126,12 @@ async function fetchCSV(url) {
 
   const allRows = parseCSVFull(text.trim());
   const lines = allRows.map(r => r.map(f => f.replace(/^"|"$/g, '')));
-  console.log('✅ מקור:', source, '| שורות:', lines.length);
 
   if (lines.length < 2) {
-    console.warn('⚠️ גיליון ריק');
     return [];
   }
 
   const headers = lines[0].map(h => h.trim());
-  console.log('📋 כותרות:', headers);
 
   return lines.slice(1).map(row => {
     const obj = {};
@@ -218,10 +206,8 @@ export async function loadSubCategoriesFromSheets() {
         result[key] = value;
       }
     });
-    console.log('[subcat] loaded from settings:', result);
     return result;
   } catch (err) {
-    console.warn('שגיאה בטעינת subcat:', err);
     return {};
   }
 }
@@ -236,7 +222,6 @@ export async function loadContentFromSheets() {
     });
     return content;
   } catch (err) {
-    console.warn('שגיאה בטעינת הגדרות:', err);
     return defaultContent;
   }
 }
@@ -246,7 +231,6 @@ export async function loadProductsFromSheets() {
     const rows = await fetchCSV(SHEETS.products);
     return rows.filter(r => r['שם']).map(rowToProduct);
   } catch (err) {
-    console.warn('שגיאה בטעינת מוצרים:', err);
     return [];
   }
 }
@@ -256,7 +240,6 @@ export async function loadGraphicsFromSheets() {
     const rows = await fetchCSV(SHEETS.graphics);
     return rows.filter(r => r['שם']).map(rowToProduct);
   } catch (err) {
-    console.warn('שגיאה בטעינת גרפיקה:', err);
     return [];
   }
 }
@@ -266,7 +249,6 @@ export async function loadWorkshopsFromSheets() {
     const rows = await fetchCSV(SHEETS.workshops);
     return rows.filter(r => r['כותרת']).map(rowToWorkshop);
   } catch (err) {
-    console.warn('שגיאה בטעינת סדנאות:', err);
     return [];
   }
 }

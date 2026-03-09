@@ -60,7 +60,8 @@ export default function CartPage() {
         method: 'POST',
         body: JSON.stringify({ type: 'updateStock', updates }),
       });
-    } catch(e) { console.error('Stock update failed:', e); }
+    } catch(e) {
+ }
   };
 
   const saveToSheets = async () => {
@@ -92,7 +93,6 @@ export default function CartPage() {
         body: JSON.stringify(data),
       });
     } catch(e) {
-      console.error('Sheets save failed:', e);
     }
   };
 
