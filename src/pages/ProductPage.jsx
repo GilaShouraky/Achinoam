@@ -26,7 +26,15 @@ export default function ProductPage({ productOverride } = {}) {
  }, 220);
  };
 
- const handleAdd = () => { addToCart(product, qty); setAdded(true); setTimeout(() => setAdded(false), 2000); };
+ const stock = product.stock; // null = unlimited
+ const cartQty = 0; // simplified - just check stock > 0
+ const outOfStock = stock !== null && stock <= 0;
+ const handleAdd = () => {
+   if (outOfStock) return;
+   addToCart(product, qty);
+   setAdded(true);
+   setTimeout(() => setAdded(false), 2000);
+ };
 
  return (
  <div className="fade-in">
@@ -112,8 +120,9 @@ export default function ProductPage({ productOverride } = {}) {
  <span className="qty-num">{qty}</span>
  <button className="qty-btn" onClick={() => setQty(q => q + 1)}>+</button>
  </div>
- <button className="btn-primary" onClick={handleAdd} style={{ flex: 1, background: added ? 'linear-gradient(135deg,#C0A0BC,#A885A8)' : 'var(--grad-rose)' }}>
- {added ? ' נוסף לסל!' : 'הוספה לסל'}
+ <button className="btn-primary" onClick={handleAdd} disabled={outOfStock}
+   style={{ flex: 1, background: outOfStock ? '#ccc' : added ? 'linear-gradient(135deg,#C0A0BC,#A885A8)' : 'var(--grad-rose)', cursor: outOfStock ? 'not-allowed' : 'pointer' }}>
+   {outOfStock ? 'אזל מהמלאי' : added ? ' נוסף לסל!' : 'הוספה לסל'}
  </button>
  </div>
  )}

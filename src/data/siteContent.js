@@ -179,6 +179,7 @@ function rowToProduct(row) {
     dealPrice:   row['מבצע_מחיר']   ? Number(row['מבצע_מחיר'])   : null,
     dealLabel:   (row['תיאור_מבצע'] || '').trim() || null,
     dealGroup:   (row['שם_מבצע']    || '').trim() || null,
+    stock:       (() => { const k = Object.keys(row).find(k => k.trim() === 'כמות_במלאי'); return k && row[k] !== '' ? Number(row[k]) : null; })(),
   };
 }
 

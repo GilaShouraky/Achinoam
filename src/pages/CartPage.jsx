@@ -50,6 +50,19 @@ export default function CartPage() {
     return Object.keys(e).length === 0;
   };
 
+  const updateStock = async () => {
+    const updates = cart
+      .filter(i => i.stock !== null)
+      .map(i => ({ id: i.id, qty: i.quantity }));
+    if (!updates.length) return;
+    try {
+      await fetch(SHEETS_URL, {
+        method: 'POST',
+        body: JSON.stringify({ type: 'updateStock', updates }),
+      });
+    } catch(e) { console.error('Stock update failed:', e); }
+  };
+
   const saveToSheets = async () => {
     const data = {
       name: form.name,
@@ -282,7 +295,7 @@ export default function CartPage() {
               </div>
             </div>
 
-            <button onClick={() => { if (validate()) { saveToSheets(); window.open(buildWhatsapp(), "_blank"); setShowPopup(false); clearCart(); } }} className="btn-whatsapp"
+            <button onClick={() => { if (validate()) { saveToSheets(); updateStock(); window.open(buildWhatsapp(), "_blank"); setShowPopup(false); clearCart(); } }} className="btn-whatsapp"
               style={{ width: "100%", borderRadius: "12px", fontSize: "15px", padding: "15px", border: "none", cursor: "pointer", display: "block", textAlign: "center", boxSizing: "border-box" }}>
               להשלמת ההזמנה בוואטסאפ
             </button>

@@ -456,3 +456,11 @@ img { max-width: 100%; display: block; }
 .order-popup-inner:hover::-webkit-scrollbar-thumb {
   opacity: 1;
 }
+
+/* ── Header search mobile ── */
+@media (max-width: 600px) {
+  .header-search-box {
+    width: calc(100vw - 140px) !important;
+    min-width: 0 !important;
+  }
+}
