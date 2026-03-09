@@ -27,8 +27,8 @@ export default function ProductPage({ productOverride } = {}) {
  };
 
  const stock = product.stock; // null = unlimited
- const cartQty = 0; // simplified - just check stock > 0
  const outOfStock = stock !== null && stock <= 0;
+ const maxQty = stock !== null ? stock : 999;
  const handleAdd = () => {
    if (outOfStock) return;
    addToCart(product, qty);
@@ -114,16 +114,25 @@ export default function ProductPage({ productOverride } = {}) {
  <p style={{ fontSize: '14px', color: 'var(--mid)', lineHeight: '1.9', marginBottom: '28px' }}>{product.description}</p>
 
  {hasPrice && (
- <div className="product-qty-row" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '14px' }}>
- <div className="qty-control">
- <button className="qty-btn" onClick={() => setQty(q => Math.max(1, q - 1))}>−</button>
- <span className="qty-num">{qty}</span>
- <button className="qty-btn" onClick={() => setQty(q => q + 1)}>+</button>
- </div>
- <button className="btn-primary" onClick={handleAdd} disabled={outOfStock}
-   style={{ flex: 1, background: outOfStock ? '#ccc' : added ? 'linear-gradient(135deg,#C0A0BC,#A885A8)' : 'var(--grad-rose)', cursor: outOfStock ? 'not-allowed' : 'pointer' }}>
-   {outOfStock ? 'אזל מהמלאי' : added ? ' נוסף לסל!' : 'הוספה לסל'}
- </button>
+ <div style={{ marginBottom: '14px' }}>
+   <div className="product-qty-row" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+     <div className="qty-control">
+       <button className="qty-btn" onClick={() => setQty(q => Math.max(1, q - 1))}>−</button>
+       <span className="qty-num">{qty}</span>
+       <button className="qty-btn" onClick={() => setQty(q => Math.min(maxQty, q + 1))}
+         disabled={qty >= maxQty}
+         style={{ opacity: qty >= maxQty ? 0.35 : 1, cursor: qty >= maxQty ? 'not-allowed' : 'pointer' }}>+</button>
+     </div>
+     <button className="btn-primary" onClick={handleAdd} disabled={outOfStock}
+       style={{ flex: 1, background: outOfStock ? '#ccc' : added ? 'linear-gradient(135deg,#C0A0BC,#A885A8)' : 'var(--grad-rose)', cursor: outOfStock ? 'not-allowed' : 'pointer' }}>
+       {outOfStock ? 'אזל מהמלאי' : added ? ' נוסף לסל!' : 'הוספה לסל'}
+     </button>
+   </div>
+   {stock !== null && stock > 0 && (stock <= 5 || qty >= stock) && (
+     <p style={{ fontSize: '12px', color: 'var(--amber)', fontWeight: '600', margin: '0', textAlign: 'right' }}>
+       {stock <= 5 ? `⚠️ נשארו רק ${stock} במלאי` : `הגעת למקסימום הזמין (${stock})`}
+     </p>
+   )}
  </div>
  )}
  </div>
