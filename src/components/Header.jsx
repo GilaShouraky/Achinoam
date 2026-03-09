@@ -75,13 +75,7 @@ export default function Header() {
       direction: 'rtl',
     }}>
 
-      {/* ימין: 3 פסים */}
-      <button onClick={() => setSidebarOpen(true)}
-        style={{ background: 'none', border: 'none', padding: '10px', display: 'flex', flexDirection: 'column', gap: '6px', cursor: 'pointer', flexShrink: 0 }}>
-        {[26, 18, 26].map((w, i) => (
-          <span key={i} style={{ display: 'block', width: w, height: '2px', background: 'var(--rose)', borderRadius: '2px' }} />
-        ))}
-      </button>
+      <div style={{ width: '46px' }} />
 
       {/* מרכז: לוגו */}
       <button onClick={() => navigate('home')}
