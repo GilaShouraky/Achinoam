@@ -1,15 +1,16 @@
 // ═══════════════════════════════════════════════════════
 //  Google Sheets – קישורי ה-CSV של הגיליון שלך
 // ═══════════════════════════════════════════════════════
+const CACHE_BUST = () => `&t=${Date.now()}`;
 const SHEET_ID = '2PACX-1vTzHSA8raPYkB3EaYN8ovRX_LU1wYhKXJ4LjNSjFl8LSDOlj1osu4ziirzAoHkJ_VDsWxo-FcDI65qv';
 
 export const SHEETS = {
-  settings:  `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=csv${CACHE_BUST}`,
-  products:  `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=1740173305&single=true&output=csv${CACHE_BUST}`,
-  graphics:  `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=1174110383&single=true&output=csv${CACHE_BUST}`,
-  workshops: `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=1001488632&single=true&output=csv${CACHE_BUST}`,
+  settings:  `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=csv`,
+  products:  `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=1740173305&single=true&output=csv`,
+  graphics:  `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=1174110383&single=true&output=csv`,
+  workshops: `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=1001488632&single=true&output=csv`,
   // גיליון "קטגוריות ראשיות" – תעדכני את ה-gid אחרי שתוסיפי את הגיליון
-  subCategories: `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=2111774314&single=true&output=csv${CACHE_BUST}`,
+  subCategories: `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=2111774314&single=true&output=csv`,
 };
 
 // CORS proxy – מאפשר לדפדפן לקרוא את הגיליון
@@ -84,7 +85,7 @@ async function fetchCSV(url) {
   let source = 'direct';
 
   try {
-    const res = await fetch(url);
+    const res = await fetch(url + CACHE_BUST());
     text = await res.text();
     if (text.trim().startsWith('<')) {
       throw new Error('got HTML');
