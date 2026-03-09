@@ -5,7 +5,7 @@ import ProductCard from '../components/ProductCard';
 
 export default function ProductsPage({ subCatOverride } = {}) {
  const { navigate, pageData, products, content } = useApp();
- const subs = categories.products.subCategories;
+ const subs = categories.products.subCategories.filter(sub => products.some(p => p.category === sub.id));
  const [active, setActive] = useState(subCatOverride || pageData?.subCategory || subs[0].id);
  const filtered = products.filter(p => p.category === active);
 

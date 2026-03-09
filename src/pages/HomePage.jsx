@@ -196,7 +196,7 @@ export default function HomePage() {
  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-7px)'; e.currentTarget.style.boxShadow = 'var(--shadow-xl)'; }}
  onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
  >
- <div style={{ width: '100%', paddingTop: '35%', position: 'relative', overflow: 'hidden', background: 'var(--rose-soft)' }}>
+ <div style={{ width: '100%', height: isMobile ? '260px' : '400px', position: 'relative', overflow: 'hidden', background: 'var(--rose-soft)' }}>
    {imgUrl && <img src={imgUrl} alt={sub.label} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.82)' }} />}
    {/* overlay */}
    <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.32)' }} />
