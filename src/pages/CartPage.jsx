@@ -35,19 +35,16 @@ export default function CartPage() {
     setUploading(true);
     setUploadError('');
     try {
-      const base64 = await new Promise((res, rej) => {
-        const reader = new FileReader();
-        reader.onload = () => res(reader.result);
-        reader.onerror = rej;
-        reader.readAsDataURL(file);
-      });
-      const response = await fetch(SHEETS_URL, {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'achinoam_receipts');
+      const response = await fetch('https://api.cloudinary.com/v1_1/dd0bpgvch/image/upload', {
         method: 'POST',
-        body: JSON.stringify({ type: 'uploadReceipt', image: base64, fileName: file.name }),
+        body: formData,
       });
       const data = await response.json();
-      if (data.success && data.url) {
-        setField('receiptLink', data.url);
+      if (data.secure_url) {
+        setField('receiptLink', data.secure_url);
       } else {
         setUploadError('ההעלאה נכשלה, נסי שוב');
       }

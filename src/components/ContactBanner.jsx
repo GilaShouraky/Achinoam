@@ -89,8 +89,8 @@ export default function ContactBanner() {
  </div>
  </div>
 
- <div style={{ borderTop: 'none', paddingTop: '0', display: 'none', textAlign: 'center' }}>
- <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.2)' }}>{content.footer_credit}</p>
+ <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', marginTop: '24px', paddingTop: '16px', textAlign: 'center' }}>
+ <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)', margin: 0 }}>© כל הזכויות שמורות לגילה שוראקי</p>
  </div>
  </div>
  </footer>
