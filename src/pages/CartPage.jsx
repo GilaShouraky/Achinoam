@@ -12,9 +12,11 @@ export default function CartPage() {
   const [form, setForm] = useState({
     name: '', phone: '', email: '',
     delivery: '',
-    deliveryName: '', deliveryPhone: '', city: '', street: '', houseNum: '', floor: '', apt: '', entrance: '', notes: ''
+    deliveryName: '', deliveryPhone: '', city: '', street: '', houseNum: '', floor: '', apt: '', entrance: '', notes: '', orderNotes: '', paymentMethod: '', receiptLink: ''
   });
   const [errors, setErrors] = useState({});
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
   useEffect(() => {
     if (showPopup) {
       document.body.style.overflow = 'hidden';
@@ -27,6 +29,32 @@ export default function CartPage() {
   const setField = (key, val) => {
     setForm(f => ({ ...f, [key]: val }));
     setErrors(e => ({ ...e, [key]: false }));
+  };
+
+  const uploadToImgur = async (file) => {
+    setUploading(true);
+    setUploadError('');
+    try {
+      const base64 = await new Promise((res, rej) => {
+        const reader = new FileReader();
+        reader.onload = () => res(reader.result);
+        reader.onerror = rej;
+        reader.readAsDataURL(file);
+      });
+      const response = await fetch(SHEETS_URL, {
+        method: 'POST',
+        body: JSON.stringify({ type: 'uploadReceipt', image: base64, fileName: file.name }),
+      });
+      const data = await response.json();
+      if (data.success && data.url) {
+        setField('receiptLink', data.url);
+      } else {
+        setUploadError('ההעלאה נכשלה, נסי שוב');
+      }
+    } catch {
+      setUploadError('ההעלאה נכשלה, נסי שוב');
+    }
+    setUploading(false);
   };
 
   const totalWithDelivery = form.delivery === 'home' ? cartTotal + DELIVERY_COST : cartTotal;
@@ -46,6 +74,8 @@ export default function CartPage() {
       if (!form.street.trim()) e.street = true;
       if (!form.houseNum.trim() || isNaN(Number(form.houseNum))) e.houseNum = true;
     }
+    if (!form.paymentMethod) e.paymentMethod = true;
+    if (!form.receiptLink.trim()) e.receiptLink = true;
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -86,6 +116,9 @@ export default function CartPage() {
       apt: form.apt,
       entrance: form.entrance,
       notes: form.notes,
+      orderNotes: form.orderNotes,
+      paymentMethod: form.paymentMethod,
+      receiptLink: form.receiptLink,
     };
     try {
       await fetch(SHEETS_URL, {
@@ -109,7 +142,9 @@ export default function CartPage() {
 כתובת: ${form.street} ${form.houseNum}${form.floor ? ` קומה ${form.floor}` : ''}${form.apt ? ` דירה ${form.apt}` : ''}, ${form.city}${form.entrance ? ` כניסה ${form.entrance}` : ''}${form.notes ? `
 הערות: ${form.notes}` : ''}`
       : '';
-    const msg = `היי! אני רוצה להזמין:\n${items}${savings}\n\nסה"כ לתשלום: ₪${totalWithDelivery}\n\n👤 שם: ${form.name}\n📞 טלפון: ${form.phone}\n\n🚚 אופן קבלה: ${deliveryLabel}${deliveryDetails}`;
+    const paymentLine = `\n\n💳 תשלום: ${form.paymentMethod}\nאסמכתא: ${form.receiptLink}`;
+    const orderNotesLine = form.orderNotes ? `\n\n📝 הערות להזמנה: ${form.orderNotes}` : '';
+    const msg = `היי! אני רוצה להזמין:\n${items}${savings}\n\nסה"כ לתשלום: ₪${totalWithDelivery}\n\n👤 שם: ${form.name}\n📞 טלפון: ${form.phone}\n\n🚚 אופן קבלה: ${deliveryLabel}${deliveryDetails}${paymentLine}${orderNotesLine}`;
     return `https://wa.me/${content.whatsapp_number}?text=${encodeURIComponent(msg)}`;
   };
 
@@ -284,8 +319,50 @@ export default function CartPage() {
                   <label style={lbl}>הערות לשליח</label>
                   <textarea style={{ ...inp(false), resize: 'vertical', minHeight: '72px' }} value={form.notes} onChange={e => setField('notes', e.target.value)} />
                 </div>
+                <div style={{ marginTop: '12px' }}>
+                  <label style={lbl}>הערות להזמנה (לדוגמא אם אתם רוצים לארוז את המתנה בכמה שקיות נפרדות 🛍️)</label>
+                  <textarea style={{ ...inp(false), resize: 'vertical', minHeight: '72px' }} value={form.orderNotes} onChange={e => setField('orderNotes', e.target.value)} />
+                </div>
               </div>
             )}
+
+            {/* תשלום */}
+            <div style={{ marginTop: '20px', marginBottom: '16px' }}>
+              <div style={{ ...secTitle, marginBottom: '10px' }}>איך אני משלמת? *</div>
+              {errors.paymentMethod && <p style={{ color: '#e74c3c', fontSize: '12px', margin: '-4px 0 8px' }}>יש לבחור אמצעי תשלום</p>}
+              <div style={{ display: 'flex', gap: '10px', marginBottom: '14px' }}>
+                {['פייבוקס', 'ביט'].map(method => (
+                  <label key={method} style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '8px', padding: '12px 14px', borderRadius: '12px', border: `1.5px solid ${form.paymentMethod === method ? 'var(--amber)' : '#e0d6cc'}`, background: form.paymentMethod === method ? '#fff8ee' : 'white', cursor: 'pointer', fontWeight: '600', fontSize: '14px', color: 'var(--dark)' }}>
+                    <input type="radio" name="paymentMethod" value={method} checked={form.paymentMethod === method}
+                      onChange={() => setField('paymentMethod', method)}
+                      style={{ accentColor: 'var(--amber)', width: '18px', height: '18px' }} />
+                    {method}
+                  </label>
+                ))}
+              </div>
+              {form.paymentMethod && (
+                <div style={{ background: '#fdf8f2', borderRadius: '12px', padding: '12px 14px', marginBottom: '12px', fontSize: '13px', color: 'var(--mid)', lineHeight: 1.7 }}>
+                  העבירי את הסכום לנייד <strong style={{ color: 'var(--rose)' }}>054-8838607</strong> דרך {form.paymentMethod}
+                </div>
+              )}
+              <div style={row}>
+                <label style={{ ...lbl, color: errors.receiptLink ? '#e74c3c' : undefined }}>העלאת אסמכתא *</label>
+                {form.receiptLink ? (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 14px', borderRadius: '10px', border: '1.5px solid #4caf50', background: '#f0fff4' }}>
+                    <span style={{ fontSize: '20px' }}>✅</span>
+                    <span style={{ fontSize: '13px', color: '#2e7d32', flex: 1 }}>האסמכתא הועלתה בהצלחה</span>
+                    <button onClick={() => setField('receiptLink', '')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--light)', fontSize: '16px' }}>✕</button>
+                  </div>
+                ) : (
+                  <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px', borderRadius: '10px', border: `1.5px dashed ${errors.receiptLink ? '#e74c3c' : '#e0d6cc'}`, cursor: 'pointer', fontSize: '14px', color: 'var(--mid)', background: '#fafafa' }}>
+                    <span style={{ fontSize: '20px' }}>📎</span>
+                    {uploading ? 'מעלה...' : 'לחצי להעלאת תמונת אסמכתא'}
+                    <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => e.target.files[0] && uploadToImgur(e.target.files[0])} disabled={uploading} />
+                  </label>
+                )}
+                {uploadError && <p style={{ color: '#e74c3c', fontSize: '12px', margin: '4px 0 0' }}>{uploadError}</p>}
+              </div>
+            </div>
 
             <div style={{ background: '#fdf8f2', borderRadius: '12px', padding: '14px 16px', margin: '20px 0 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontWeight: '700', color: 'var(--mid)', fontSize: '15px' }}>סה"כ לתשלום:</span>

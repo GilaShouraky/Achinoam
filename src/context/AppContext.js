@@ -35,8 +35,18 @@ export function AppProvider({ children }) {
       setGraphics(g);
       setWorkshops(w);
       setDataLoaded(true);
+      // ספירת כניסות
+      fetch('https://script.google.com/macros/s/AKfycbwmJ7b0E2NiuntAbE1XGk8UGGCarLNMsP3yPVN_n8wJXIhTljCZmTGj28A6zspRpdCP/exec', {
+        method: 'POST',
+        body: JSON.stringify({ type: 'countVisit' }),
+      }).catch(() => {});
     }).catch(err => {
       setDataLoaded(true);
+      // ספירת כניסות
+      fetch('https://script.google.com/macros/s/AKfycbwmJ7b0E2NiuntAbE1XGk8UGGCarLNMsP3yPVN_n8wJXIhTljCZmTGj28A6zspRpdCP/exec', {
+        method: 'POST',
+        body: JSON.stringify({ type: 'countVisit' }),
+      }).catch(() => {});
     });
   }, []);
 
