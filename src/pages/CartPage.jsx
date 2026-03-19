@@ -101,9 +101,7 @@ export default function CartPage() {
       total: totalWithDelivery,
       savings: cartSavings,
       deliveryCost: form.delivery === 'home' ? DELIVERY_COST : 0,
-      deliveryType: form.delivery === 'jerusalem' ? 'איסוף ירושלים - כנפי נשרים'
-        : form.delivery === 'beitshemesh' ? 'איסוף בית שמש - רחוב התבור'
-        : 'משלוח עד הבית',
+      deliveryType: form.delivery === 'beitshemesh' ? 'איסוף בית שמש - רחוב התבור' : 'משלוח עד הבית',
       deliveryName: form.deliveryName,
       deliveryPhone: form.deliveryPhone,
       city: form.city,
@@ -129,9 +127,7 @@ export default function CartPage() {
   const buildWhatsapp = () => {
     const items = cart.map(i => `• ${i.name} x${i.quantity} — ₪${calcItemTotal(i)}`).join('\n');
     const savings = cartSavings > 0 ? `\n\n🎉 חסכת: ₪${cartSavings}` : '';
-    const deliveryLabel = form.delivery === 'jerusalem' ? 'איסוף מירושלים - כנפי נשרים'
-      : form.delivery === 'beitshemesh' ? 'איסוף מבית שמש - רחוב התבור'
-      : `משלוח עד הבית (+₪${DELIVERY_COST})`;
+    const deliveryLabel = form.delivery === 'beitshemesh' ? 'איסוף מבית שמש - רחוב התבור' : `משלוח עד הבית (+₪${DELIVERY_COST})`;
     const deliveryDetails = form.delivery === 'home'
       ? `
 איש קשר: ${form.deliveryName}
@@ -261,7 +257,6 @@ export default function CartPage() {
             {errors.delivery && <p style={{ color: '#e74c3c', fontSize: '12px', margin: '-8px 0 10px' }}>יש לבחור אופן קבלה</p>}
 
             {[
-              { val: 'jerusalem', label: 'איסוף מירושלים – כנפי נשרים' },
               { val: 'beitshemesh', label: 'איסוף מבית שמש – רחוב התבור' },
               { val: 'home', label: `משלוח עד הבית – ₪${DELIVERY_COST}` },
             ].map(opt => (
@@ -316,12 +311,14 @@ export default function CartPage() {
                   <label style={lbl}>הערות לשליח</label>
                   <textarea style={{ ...inp(false), resize: 'vertical', minHeight: '72px' }} value={form.notes} onChange={e => setField('notes', e.target.value)} />
                 </div>
-                <div style={{ marginTop: '12px' }}>
-                  <label style={lbl}>הערות להזמנה (לדוגמא אם אתם רוצים לארוז את המתנה בכמה שקיות נפרדות 🛍️)</label>
-                  <textarea style={{ ...inp(false), resize: 'vertical', minHeight: '72px' }} value={form.orderNotes} onChange={e => setField('orderNotes', e.target.value)} />
-                </div>
               </div>
             )}
+
+            {/* הערות להזמנה */}
+            <div style={{ marginTop: '16px', marginBottom: '4px' }}>
+              <label style={lbl}>הערות להזמנה (לדוגמא אם אתם רוצים לארוז את המתנה בכמה שקיות נפרדות 🛍️)</label>
+              <textarea style={{ ...inp(false), resize: 'vertical', minHeight: '72px' }} value={form.orderNotes} onChange={e => setField('orderNotes', e.target.value)} />
+            </div>
 
             {/* תשלום */}
             <div style={{ marginTop: '20px', marginBottom: '16px' }}>
