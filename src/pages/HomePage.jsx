@@ -115,6 +115,13 @@ const isImageUrl = (val) => val && /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|svg)/
 export default function HomePage() {
  const { content, navigate, products } = useApp();
  const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 600);
+ const [showPopupImg, setShowPopupImg] = React.useState(false);
+ React.useEffect(() => {
+   if (content['תמונה_קופצת']) {
+     const timer = setTimeout(() => setShowPopupImg(true), 3000);
+     return () => clearTimeout(timer);
+   }
+ }, [content['תמונה_קופצת']]);
  React.useEffect(() => {
    const fn = () => setIsMobile(window.innerWidth <= 600);
    window.addEventListener('resize', fn);
@@ -221,6 +228,17 @@ export default function HomePage() {
  {/* מתנות עד 100 */}
  {under100.length > 0 && (
  <Carousel items={under100} color="var(--amber)" title="מתנות עד 100 ₪" bg="var(--amber-soft)" />
+ )}
+
+ {/* פופאפ תמונה קופצת */}
+ {showPopupImg && content['תמונה_קופצת'] && (
+   <div onClick={() => setShowPopupImg(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+     <div onClick={e => e.stopPropagation()} style={{ position: 'relative', maxWidth: '90vw', maxHeight: '85vh' }}>
+       <button onClick={() => setShowPopupImg(false)}
+         style={{ position: 'absolute', top: '-14px', left: '-14px', width: '32px', height: '32px', borderRadius: '50%', background: 'white', border: 'none', cursor: 'pointer', fontSize: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.2)', zIndex: 1 }}>✕</button>
+       <img src={content['תמונה_קופצת']} alt="מבצע" style={{ maxWidth: '100%', maxHeight: '85vh', borderRadius: '16px', display: 'block', boxShadow: '0 8px 40px rgba(0,0,0,0.3)' }} />
+     </div>
+   </div>
  )}
  </div>
  );
