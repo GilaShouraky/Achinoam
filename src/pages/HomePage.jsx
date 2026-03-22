@@ -232,8 +232,12 @@ export default function HomePage() {
 
  {/* פופאפ תמונה קופצת */}
  {showPopupImg && content['תמונה_קופצת'] && (
-   <div onClick={() => setShowPopupImg(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-     <div onClick={e => e.stopPropagation()} style={{ position: 'relative', maxWidth: '90vw', maxHeight: '85vh' }}>
+   <div onClick={() => setShowPopupImg(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', animation: 'fadeInOverlay 0.4s ease' }}>
+   <style>{`
+     @keyframes fadeInOverlay { from { opacity: 0 } to { opacity: 1 } }
+     @keyframes popupEntrance { from { opacity: 0; transform: scale(0.85) translateY(20px) } to { opacity: 1; transform: scale(1) translateY(0) } }
+   `}</style>
+     <div onClick={e => e.stopPropagation()} style={{ position: 'relative', maxWidth: '90vw', maxHeight: '85vh', animation: 'popupEntrance 0.4s cubic-bezier(0.34,1.56,0.64,1)' }}>
        <button onClick={() => setShowPopupImg(false)}
          style={{ position: 'absolute', top: '-14px', left: '-14px', width: '32px', height: '32px', borderRadius: '50%', background: 'white', border: 'none', cursor: 'pointer', fontSize: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.2)', zIndex: 1 }}>✕</button>
        <img src={content['תמונה_קופצת']} alt="מבצע" style={{ maxWidth: '100%', maxHeight: '85vh', borderRadius: '16px', display: 'block', boxShadow: '0 8px 40px rgba(0,0,0,0.3)' }} />

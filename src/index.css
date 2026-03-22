@@ -464,3 +464,7 @@ img { max-width: 100%; display: block; }
     min-width: 0 !important;
   }
 }
+
+/* ── נגישות - גודל טקסט ── */
+body.a11y-font-1 { zoom: 1.15; }
+body.a11y-font-2 { zoom: 1.30; }

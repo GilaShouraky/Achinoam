@@ -1,4 +1,5 @@
 import React from 'react';
+import Accessibility from './components/Accessibility';
 import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
 import { AppProvider, useApp } from './context/AppContext';
 import TopBanner from './components/TopBanner';
@@ -79,7 +80,8 @@ export default function App() {
     <BrowserRouter>
       <AppProvider>
         <Layout />
-      </AppProvider>
+        <Accessibility />
+</AppProvider>
     </BrowserRouter>
   );
 }
