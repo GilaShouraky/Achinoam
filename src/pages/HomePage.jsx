@@ -179,13 +179,13 @@ export default function HomePage() {
  <div className="about-flex" style={{ maxWidth: '860px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '48px', direction: 'rtl' }}>
  {/* תמונה */}
  <div style={{ flexShrink: 0, width: '200px', height: '200px', borderRadius: '50%', overflow: 'hidden', boxShadow: '0 8px 32px rgba(139,90,107,0.18)', border: 'none', background: '#D4B0BE' }}>
- <img src="https://i.ibb.co/vCRMZYPs/25.png" alt="אחינועם"
+ <img src="https://i.ibb.co/tGZ15BS/Whats-App-Image-2026-05-13-at-00-21-53.jpg" alt="אחינועם"
  style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
  </div>
  {/* טקסט */}
  <div style={{ flex: 1, textAlign: 'right' }}>
  <p style={{ fontSize: '16px', lineHeight: '2.1', color: 'var(--mid)', whiteSpace: 'pre-line' }}>{content.about_text}</p>
- <p className="about-signature" style={{ fontFamily: 'var(--font-display)', fontSize: '28px', color: 'var(--rose)', fontWeight: '900', marginTop: '14px' }}>{content.about_signature}</p>
+ <p className="about-signature" style={{ fontFamily: 'var(--font-display)', fontSize: '28px', color: 'var(--rose)', fontWeight: '900', marginTop: '6px' }}>{content.about_signature}</p>
  </div>
  </div>
  </section>
@@ -193,29 +193,54 @@ export default function HomePage() {
  {/* קטגוריות */}
  <section style={{ padding: 'clamp(48px,8vw,76px) 28px', maxWidth: '980px', margin: '0 auto' }}>
  <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,3.5vw,38px)', fontWeight: '900', color: 'var(--rose)', textAlign: 'center', marginBottom: '40px' }}>הקולקציות שלי</h2>
- <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : `repeat(${Math.min(mainCats.length, 3)}, 1fr)`, gap: '20px' }}>
- {mainCats.map((sub, i) => {
- const imgKey = content[`subcat_${sub.id}`];
- const imgUrl = imgKey && imgKey.startsWith('http') ? imgKey : null;
- return (
- <div key={sub.id} onClick={() => navigate('products', { subCategory: sub.id })}
- style={{ borderRadius: '22px', overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.26s cubic-bezier(0.22,1,0.36,1), box-shadow 0.26s', position: 'relative' }}
- onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-7px)'; e.currentTarget.style.boxShadow = 'var(--shadow-xl)'; }}
- onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
- >
- <div style={{ width: '100%', height: isMobile ? '260px' : '400px', position: 'relative', overflow: 'hidden', background: 'var(--rose-soft)' }}>
-   {imgUrl && <img src={imgUrl} alt={sub.label} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.82)' }} />}
-   {/* overlay */}
-   <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.32)' }} />
-   {/* כיתוב במרכז */}
-   <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-     <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px,3.5vw,42px)', fontWeight: '900', color: 'white', textShadow: '0 2px 12px rgba(0,0,0,0.5)', margin: 0, textAlign: 'center', lineHeight: 1.3 }}>{sub.label}</h3>
-   </div>
- </div>
- </div>
- );
- })}
- </div>
+ {(() => {
+   const catCard = (sub, height) => {
+     const imgUrl = (() => { const k = content[`subcat_${sub.id}`]; return k && k.startsWith('http') ? k : null; })();
+     return (
+       <div key={sub.id} onClick={() => navigate('products', { subCategory: sub.id })}
+         style={{ borderRadius: '22px', overflow: 'hidden', cursor: 'pointer', flex: 1, transition: 'transform 0.26s cubic-bezier(0.22,1,0.36,1), box-shadow 0.26s', position: 'relative' }}
+         onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-7px)'; e.currentTarget.style.boxShadow = 'var(--shadow-xl)'; }}
+         onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
+         <div style={{ width: '100%', height: isMobile ? '220px' : height, position: 'relative', overflow: 'hidden', background: 'var(--rose-soft)' }}>
+           {imgUrl && <img src={imgUrl} alt={sub.label} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.82)' }} />}
+           <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.32)' }} />
+           <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+             <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px,2.8vw,38px)', fontWeight: '900', color: 'white', textShadow: '0 2px 12px rgba(0,0,0,0.5)', margin: 0, textAlign: 'center', lineHeight: 1.3 }}>{sub.label}</h3>
+           </div>
+         </div>
+       </div>
+     );
+   };
+   const byCat = (id) => mainCats.find(c => c.id === id);
+   const sofShana = byCat('sof_shana');
+   const rikma = byCat('rikma');
+   const erkatRikma = byCat('erkat_rikma');
+   const shabat = byCat('shabat');
+   const pesach = byCat('pesach');
+   const others = mainCats.filter(c => !['sof_shana','rikma','erkat_rikma','shabat','pesach'].includes(c.id));
+   return (
+     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+       {sofShana && <div style={{ display: 'flex' }}>{catCard(sofShana, '400px')}</div>}
+       {(rikma || erkatRikma) && (
+         <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '20px' }}>
+           {rikma && catCard(rikma, '320px')}
+           {erkatRikma && catCard(erkatRikma, '320px')}
+         </div>
+       )}
+       {(shabat || pesach) && (
+         <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '20px' }}>
+           {shabat && catCard(shabat, '320px')}
+           {pesach && catCard(pesach, '320px')}
+         </div>
+       )}
+       {others.length > 0 && (
+         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+           {others.map(sub => catCard(sub, '320px'))}
+         </div>
+       )}
+     </div>
+   );
+ })()}
  </section>
 
  {/* מוצרים נבחרים */}
