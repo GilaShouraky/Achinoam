@@ -101,7 +101,14 @@ export default function CartPage() {
       total: totalWithDelivery,
       savings: cartSavings,
       deliveryCost: form.delivery === 'home' ? DELIVERY_COST : 0,
-      deliveryType: form.delivery === 'beitshemesh' ? 'איסוף בית שמש - רחוב התבור' : 'משלוח עד הבית',
+      deliveryType: {
+        beitshemesh: 'איסוף בית שמש - רחוב התבור',
+        kiryat_moshe: "נק' מכירה קרית משה - יסכה שטיינר",
+        mitzpe_yericho: "נק' מכירה מצפה יריחו - הדס דסה",
+        etz_efraim: "נק' מכירה עץ אפרים - רויטל סלם",
+        mitzpe_ramon: "נק' מכירה מצפה רמון - חן חסון",
+        home: 'משלוח עד הבית',
+      }[form.delivery] || form.delivery,
       deliveryName: form.deliveryName,
       deliveryPhone: form.deliveryPhone,
       city: form.city,
@@ -127,7 +134,15 @@ export default function CartPage() {
   const buildWhatsapp = () => {
     const items = cart.map(i => `• ${i.name} x${i.quantity} — ₪${calcItemTotal(i)}`).join('\n');
     const savings = cartSavings > 0 ? `\n\n🎉 חסכת: ₪${cartSavings}` : '';
-    const deliveryLabel = form.delivery === 'beitshemesh' ? 'איסוף מבית שמש - רחוב התבור' : `משלוח עד הבית (+₪${DELIVERY_COST})`;
+    const deliveryLabels = {
+      beitshemesh: 'איסוף מבית שמש - רחוב התבור',
+      kiryat_moshe: "נק' מכירה קרית משה - יסכה שטיינר 058-6890267",
+      mitzpe_yericho: "נק' מכירה מצפה יריחו - הדס דסה 058-5355146",
+      etz_efraim: "נק' מכירה עץ אפרים - רויטל סלם 053-5578581",
+      mitzpe_ramon: "נק' מכירה מצפה רמון - חן חסון 058-4181341",
+      home: `משלוח עד הבית (+₪${DELIVERY_COST})`,
+    };
+    const deliveryLabel = deliveryLabels[form.delivery] || form.delivery;
     const deliveryDetails = form.delivery === 'home'
       ? `
 איש קשר: ${form.deliveryName}
@@ -258,15 +273,22 @@ export default function CartPage() {
 
             {[
               { val: 'beitshemesh', label: 'איסוף מבית שמש – רחוב התבור' },
+              { val: 'kiryat_moshe', label: "נק' מכירה קרית משה – יסכה שטיינר 058-6890267" },
+              { val: 'mitzpe_yericho', label: "נק' מכירה מצפה יריחו – הדס דסה 058-5355146" },
+              { val: 'etz_efraim', label: "נק' מכירה עץ אפרים – רויטל סלם 053-5578581" },
+              { val: 'mitzpe_ramon', label: "נק' מכירה מצפה רמון – חן חסון 058-4181341" },
               { val: 'home', label: `משלוח עד הבית – ₪${DELIVERY_COST}` },
             ].map(opt => (
-              <label key={opt.val} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 14px', borderRadius: '12px', border: `1.5px solid ${form.delivery === opt.val ? 'var(--amber)' : '#e0d6cc'}`, background: form.delivery === opt.val ? '#fff8ee' : 'white', marginBottom: '8px', cursor: 'pointer', fontWeight: '600', fontSize: '14px', color: 'var(--dark)' }}>
+              <label key={opt.val} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 14px', borderRadius: '12px', border: `1.5px solid ${form.delivery === opt.val ? 'var(--amber)' : '#e0d6cc'}`, background: form.delivery === opt.val ? '#fff8ee' : 'white', marginBottom: '8px', cursor: 'pointer', fontWeight: '600', fontSize: '14px', color: 'var(--dark)', direction: 'rtl' }}>
                 <input type="radio" name="delivery" value={opt.val} checked={form.delivery === opt.val}
                   onChange={() => { setField('delivery', opt.val); setErrors(e => ({ ...e, delivery: false })); }}
-                  style={{ accentColor: 'var(--amber)', width: '18px', height: '18px' }} />
+                  style={{ accentColor: 'var(--amber)', width: '18px', height: '18px', flexShrink: 0 }} />
                 {opt.label}
               </label>
             ))}
+            <p style={{ fontSize: '11px', color: 'var(--light)', marginTop: '4px', marginBottom: '8px', direction: 'rtl', lineHeight: 1.6 }}>
+              * המוצרים נמצאים בכל נקודות המכירה אבל כדאי לוודא מלאי/מוצרים בעיצוב אישי – כתבו לי בווצאפ, אחינועם 054-8838607
+            </p>
 
             {form.delivery === 'home' && (
               <div style={{ background: '#fdf8f2', borderRadius: '14px', padding: '16px', marginTop: '10px' }}>

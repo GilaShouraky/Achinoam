@@ -313,14 +313,14 @@ img { max-width: 100%; display: block; }
 @media (max-width: 768px) {
 
   .products-grid { grid-template-columns: 1fr 1fr !important; }
-  .scroll-arrow-mobile { display: flex !important; }
+  .scroll-arrow-mobile { display: none !important; }
   .hero-subtitle-mobile { display: block !important; font-size: clamp(25px, 5vw, 31px) !important; line-height: 1.6 !important; }
   .hero-subtitle-desktop { display: none !important; }
 
   /* Hero section - tall on mobile */
   .hero-section {
-    min-height: 65vh !important;
-    height: 65vh !important;
+    min-height: 50vh !important;
+    height: 50vh !important;
   }
 
   /* 1. Hero titles - bigger */
