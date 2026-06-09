@@ -107,6 +107,14 @@ export default function CartPage() {
         mitzpe_yericho: "נק' מכירה מצפה יריחו - הדס דסה",
         etz_efraim: "נק' מכירה עץ אפרים - רויטל סלם",
         mitzpe_ramon: "נק' מכירה מצפה רמון - חן חסון",
+        alon_shvut: "נק' מכירה אלון שבות - עטרה סונא",
+        beit_el: "נק' מכירה בית אל - מילכה סולטן",
+        ali: "נק' מכירה עלי - נעמי יסכה",
+        tel_aviv: "נק' מכירה תל אביב - אפרת שפירא",
+        haifa: "נק' מכירה חיפה - שקד נאמן",
+        kerem_byavne: "נק' מכירה כרם ביבנה - תהילה כהן",
+        kiryat_arba: "נק' מכירה קרית ארבע - תהילה גספר",
+        sderot: "נק' מכירה שדרות - טוהר",
         home: 'משלוח עד הבית',
       }[form.delivery] || form.delivery,
       deliveryName: form.deliveryName,
@@ -140,6 +148,14 @@ export default function CartPage() {
       mitzpe_yericho: "נק' מכירה מצפה יריחו - הדס דסה 058-5355146",
       etz_efraim: "נק' מכירה עץ אפרים - רויטל סלם 053-5578581",
       mitzpe_ramon: "נק' מכירה מצפה רמון - חן חסון 058-4181341",
+      alon_shvut: "נק' מכירה אלון שבות - עטרה סונא 052-6071456",
+      beit_el: "נק' מכירה בית אל - מילכה סולטן 055-9109970",
+      ali: "נק' מכירה עלי - נעמי יסכה 054-4424361",
+      tel_aviv: "נק' מכירה תל אביב - אפרת שפירא 058-6940221",
+      haifa: "נק' מכירה חיפה - שקד נאמן 050-9655442",
+      kerem_byavne: "נק' מכירה כרם ביבנה - תהילה כהן 054-7593537",
+      kiryat_arba: "נק' מכירה קרית ארבע - תהילה גספר 058-7796660",
+      sderot: "נק' מכירה שדרות - טוהר 052-3636234",
       home: `משלוח עד הבית (+₪${DELIVERY_COST})`,
     };
     const deliveryLabel = deliveryLabels[form.delivery] || form.delivery;
@@ -271,12 +287,24 @@ export default function CartPage() {
             <div style={secTitle}>איך אני רוצה לקבל את ההזמנה שלי?</div>
             {errors.delivery && <p style={{ color: '#e74c3c', fontSize: '12px', margin: '-8px 0 10px' }}>יש לבחור אופן קבלה</p>}
 
+            <div style={{ background: '#fff8ee', border: '1.5px solid var(--amber)', borderRadius: '12px', padding: '10px 14px', marginBottom: '12px', fontSize: '12px', color: 'var(--dark)', direction: 'rtl', lineHeight: 1.7, fontWeight: '600' }}>
+              ⚠️ חשוב! יש לוודא מלאי עם נקודת המכירה לפני התשלום.<br/>
+              למוצרים בעיצוב אישי – כתבו לי בווצאפ: אחינועם 054-8838607
+            </div>
             {[
-              { val: 'beitshemesh', label: 'איסוף מבית שמש – רחוב התבור' },
+              { val: 'beitshemesh', label: "איסוף מבית שמש – רחוב התבור" },
               { val: 'kiryat_moshe', label: "נק' מכירה קרית משה – יסכה שטיינר 058-6890267" },
               { val: 'mitzpe_yericho', label: "נק' מכירה מצפה יריחו – הדס דסה 058-5355146" },
               { val: 'etz_efraim', label: "נק' מכירה עץ אפרים – רויטל סלם 053-5578581" },
               { val: 'mitzpe_ramon', label: "נק' מכירה מצפה רמון – חן חסון 058-4181341" },
+              { val: 'alon_shvut', label: "נק' מכירה אלון שבות – עטרה סונא 052-6071456" },
+              { val: 'beit_el', label: "נק' מכירה בית אל – מילכה סולטן 055-9109970" },
+              { val: 'ali', label: "נק' מכירה עלי – נעמי יסכה 054-4424361" },
+              { val: 'tel_aviv', label: "נק' מכירה תל אביב – אפרת שפירא 058-6940221" },
+              { val: 'haifa', label: "נק' מכירה חיפה – שקד נאמן 050-9655442" },
+              { val: 'kerem_byavne', label: "נק' מכירה כרם ביבנה – תהילה כהן 054-7593537" },
+              { val: 'kiryat_arba', label: "נק' מכירה קרית ארבע – תהילה גספר 058-7796660" },
+              { val: 'sderot', label: "נק' מכירה שדרות – טוהר 052-3636234" },
               { val: 'home', label: `משלוח עד הבית – ₪${DELIVERY_COST}` },
             ].map(opt => (
               <label key={opt.val} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 14px', borderRadius: '12px', border: `1.5px solid ${form.delivery === opt.val ? 'var(--amber)' : '#e0d6cc'}`, background: form.delivery === opt.val ? '#fff8ee' : 'white', marginBottom: '8px', cursor: 'pointer', fontWeight: '600', fontSize: '14px', color: 'var(--dark)', direction: 'rtl' }}>
@@ -286,9 +314,6 @@ export default function CartPage() {
                 {opt.label}
               </label>
             ))}
-            <p style={{ fontSize: '11px', color: 'var(--light)', marginTop: '4px', marginBottom: '8px', direction: 'rtl', lineHeight: 1.6 }}>
-              * המוצרים נמצאים בכל נקודות המכירה אבל כדאי לוודא מלאי/מוצרים בעיצוב אישי – כתבו לי בווצאפ, אחינועם 054-8838607
-            </p>
 
             {form.delivery === 'home' && (
               <div style={{ background: '#fdf8f2', borderRadius: '14px', padding: '16px', marginTop: '10px' }}>
