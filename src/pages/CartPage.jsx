@@ -115,6 +115,11 @@ export default function CartPage() {
         kerem_byavne: "נק' מכירה כרם ביבנה - תהילה כהן",
         kiryat_arba: "נק' מכירה קרית ארבע - תהילה גספר",
         sderot: "נק' מכירה שדרות - טוהר",
+        nof_ayalon: "נק' מכירה נוף איילון - חיה ממן",
+        alon_more: "נק' מכירה אלון מורה - אחווה",
+        pt_hadar: "נק' מכירה פתח תקווה הדר גנים - משפחת פסטליך",
+        pt_kfar: "נק' מכירה פתח תקווה כפר אברהם - רחל אורלינסקי",
+        givat_shmuel: "נק' מכירה גבעת שמואל - משפחת רוזנטל",
         home: 'משלוח עד הבית',
       }[form.delivery] || form.delivery,
       deliveryName: form.deliveryName,
@@ -156,6 +161,11 @@ export default function CartPage() {
       kerem_byavne: "נק' מכירה כרם ביבנה - תהילה כהן 054-7593537",
       kiryat_arba: "נק' מכירה קרית ארבע - תהילה גספר 058-7796660",
       sderot: "נק' מכירה שדרות - טוהר 052-3636234",
+      nof_ayalon: "נק' מכירה נוף איילון - חיה ממן 052-6337030",
+      alon_more: "נק' מכירה אלון מורה - אחווה 058-4997561",
+      pt_hadar: "נק' מכירה פתח תקווה הדר גנים - משפחת פסטליך (לבדוק מלאי דרך אחינועם 054-8838607)",
+      pt_kfar: "נק' מכירה פתח תקווה כפר אברהם - רחל אורלינסקי 050-8754191",
+      givat_shmuel: "נק' מכירה גבעת שמואל - משפחת רוזנטל (ווצאפ בלבד) 054-9867606",
       home: `משלוח עד הבית (+₪${DELIVERY_COST})`,
     };
     const deliveryLabel = deliveryLabels[form.delivery] || form.delivery;
@@ -305,6 +315,11 @@ export default function CartPage() {
               { val: 'kerem_byavne', label: "נק' מכירה כרם ביבנה – תהילה כהן 054-7593537" },
               { val: 'kiryat_arba', label: "נק' מכירה קרית ארבע – תהילה גספר 058-7796660" },
               { val: 'sderot', label: "נק' מכירה שדרות – טוהר 052-3636234" },
+              { val: 'nof_ayalon', label: "נק' מכירה נוף איילון – חיה ממן 052-6337030" },
+              { val: 'alon_more', label: "נק' מכירה אלון מורה – אחווה 058-4997561" },
+              { val: 'pt_hadar', label: "נק' מכירה פתח תקווה הדר גנים – משפחת פסטליך (לבדוק מלאי דרך אחינועם 054-8838607)" },
+              { val: 'pt_kfar', label: "נק' מכירה פתח תקווה כפר אברהם – רחל אורלינסקי 050-8754191" },
+              { val: 'givat_shmuel', label: "נק' מכירה גבעת שמואל – משפחת רוזנטל (ווצאפ בלבד) 054-9867606" },
               { val: 'home', label: `משלוח עד הבית – ₪${DELIVERY_COST}` },
             ].map(opt => (
               <label key={opt.val} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 14px', borderRadius: '12px', border: `1.5px solid ${form.delivery === opt.val ? 'var(--amber)' : '#e0d6cc'}`, background: form.delivery === opt.val ? '#fff8ee' : 'white', marginBottom: '8px', cursor: 'pointer', fontWeight: '600', fontSize: '14px', color: 'var(--dark)', direction: 'rtl' }}>
