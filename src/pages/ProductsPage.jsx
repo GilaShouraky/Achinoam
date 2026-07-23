@@ -4,8 +4,11 @@ import { categories } from '../data/products';
 import ProductCard from '../components/ProductCard';
 
 export default function ProductsPage({ subCatOverride } = {}) {
- const { navigate, pageData, products, content } = useApp();
- const subs = categories.products.subCategories.filter(sub => products.some(p => p.category === sub.id));
+ const { navigate, pageData, products, content, subCats = [] } = useApp();
+ // קטגוריות דינמיות מהאקסל לפי הסדר
+ const subs = subCats.length > 0
+   ? subCats.filter(cat => products.some(p => p.category === cat.id))
+   : categories.products.subCategories.filter(sub => products.some(p => p.category === sub.id));
  const [active, setActive] = useState(subCatOverride || pageData?.subCategory || subs[0].id);
  const filtered = products.filter(p => p.category === active);
 

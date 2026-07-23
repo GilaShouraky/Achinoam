@@ -113,7 +113,7 @@ function Carousel({ items, color, title, bg }) {
 const isImageUrl = (val) => val && /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|svg)/i.test(val);
 
 export default function HomePage() {
- const { content, navigate, products } = useApp();
+ const { content, navigate, products, subCats } = useApp();
  const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 600);
  const [showPopupImg, setShowPopupImg] = React.useState(false);
  React.useEffect(() => {
@@ -135,9 +135,8 @@ export default function HomePage() {
 
  const under100 = products.filter(p => Number(p.price) > 0 && Number(p.price) <= 100);
 
- // קטגוריות ישירות מהמוצרים
- const allSubCats = categories.products.subCategories;
- const mainCats = allSubCats.filter(sub => products.some(p => p.category === sub.id));
+ // קטגוריות דינמיות מהאקסל - לפי סדר האקסל, רק עם מוצרים
+ const mainCats = subCats.filter(cat => products.some(p => p.category === cat.id));
 
  return (
  <div>
@@ -195,7 +194,7 @@ export default function HomePage() {
  <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,3.5vw,38px)', fontWeight: '900', color: 'var(--rose)', textAlign: 'center', marginBottom: '40px' }}>הקולקציות שלי</h2>
  {(() => {
    const catCard = (sub, height) => {
-     const imgUrl = (() => { const k = content[`subcat_${sub.id}`]; return k && k.startsWith('http') ? k : null; })();
+     const imgUrl = sub.image || (() => { const k = content[`subcat_${sub.id}`]; return k && k.startsWith('http') ? k : null; })();
      return (
        <div key={sub.id} onClick={() => navigate('products', { subCategory: sub.id })}
          style={{ borderRadius: '22px', overflow: 'hidden', cursor: 'pointer', flex: 1, transition: 'transform 0.26s cubic-bezier(0.22,1,0.36,1), box-shadow 0.26s', position: 'relative' }}
@@ -205,39 +204,24 @@ export default function HomePage() {
            {imgUrl && <img src={imgUrl} alt={sub.label} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.82)' }} />}
            <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.32)' }} />
            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-             <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px,2.8vw,38px)', fontWeight: '900', color: 'white', textShadow: '0 2px 12px rgba(0,0,0,0.5)', margin: 0, textAlign: 'center', lineHeight: 1.3 }}>{sub.label}</h3>
+             <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(20px,2.5vw,34px)', fontWeight: '900', color: 'white', textShadow: '0 2px 12px rgba(0,0,0,0.5)', margin: 0, textAlign: 'center', lineHeight: 1.3 }}>{sub.label}</h3>
            </div>
          </div>
        </div>
      );
    };
-   const byCat = (id) => mainCats.find(c => c.id === id);
-   const sofShana = byCat('sof_shana');
-   const rikma = byCat('rikma');
-   const erkatRikma = byCat('erkat_rikma');
-   const shabat = byCat('shabat');
-   const pesach = byCat('pesach');
-   const others = mainCats.filter(c => !['sof_shana','rikma','erkat_rikma','shabat','pesach'].includes(c.id));
+   // פריסה דינמית: 2 בשורה בדסקטופ, 1 במובייל
+   const rows = [];
+   for (let i = 0; i < mainCats.length; i += 2) {
+     rows.push(mainCats.slice(i, i + 2));
+   }
    return (
      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-       {sofShana && <div style={{ display: 'flex' }}>{catCard(sofShana, '400px')}</div>}
-       {(rikma || erkatRikma) && (
-         <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '20px' }}>
-           {rikma && catCard(rikma, '320px')}
-           {erkatRikma && catCard(erkatRikma, '320px')}
+       {rows.map((row, ri) => (
+         <div key={ri} style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '20px' }}>
+           {row.map(sub => catCard(sub, '360px'))}
          </div>
-       )}
-       {(shabat || pesach) && (
-         <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '20px' }}>
-           {shabat && catCard(shabat, '320px')}
-           {pesach && catCard(pesach, '320px')}
-         </div>
-       )}
-       {others.length > 0 && (
-         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-           {others.map(sub => catCard(sub, '320px'))}
-         </div>
-       )}
+       ))}
      </div>
    );
  })()}

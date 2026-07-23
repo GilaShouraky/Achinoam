@@ -11,6 +11,8 @@ export const SHEETS = {
   workshops: `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=1001488632&single=true&output=csv`,
   // גיליון "קטגוריות ראשיות" – תעדכני את ה-gid אחרי שתוסיפי את הגיליון
   subCategories: `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=2111774314&single=true&output=csv`,
+  categories:    `https://docs.google.com/spreadsheets/d/e/2PACX-1vTzHSA8raPYkB3EaYN8ovRX_LU1wYhKXJ4LjNSjFl8LSDOlj1osu4ziirzAoHkJ_VDsWxo-FcDI65qv/pub?gid=118345411&single=true&output=csv`,
+  pickupPoints:  `https://docs.google.com/spreadsheets/d/e/2PACX-1vTzHSA8raPYkB3EaYN8ovRX_LU1wYhKXJ4LjNSjFl8LSDOlj1osu4ziirzAoHkJ_VDsWxo-FcDI65qv/pub?gid=58180684&single=true&output=csv`,
 };
 
 // CORS proxy – מאפשר לדפדפן לקרוא את הגיליון
@@ -196,26 +198,48 @@ function rowToSetting(row) {
 // ─── פונקציות טעינה ציבוריות ────────────────────────────────
 
 // ─── טעינת תמונות קטגוריות ראשיות ─────────────────────────────
-export async function loadSubCategoriesFromSheets() {
-  // קורא מגיליון ההגדרות הקיים — שורות שהמפתח שלהן מתחיל ב-subcat_
+export async function loadPickupPointsFromSheets() {
   try {
-    const rows = await fetchCSV(SHEETS.settings);
+    const rows = await fetchCSV(SHEETS.pickupPoints);
+    return rows
+      .filter(r => (r['נקודות_מכירה'] || r['נקודת_מכירה'] || Object.values(r)[0] || '').trim())
+      .map(r => ({
+        location: (r['נקודות_מכירה'] || r['נקודת_מכירה'] || Object.values(r)[0] || '').trim(),
+        name: (r['שם'] || Object.values(r)[1] || '').trim(),
+        phone: (r['מספר_פלאפון'] || Object.values(r)[2] || '').trim(),
+      }))
+      .filter(p => p.location);
+  } catch (err) {
+    return [];
+  }
+}
+
+export async function loadSubCategoriesFromSheets() {
+  try {
+    const rows = await fetchCSV(SHEETS.categories || SHEETS.settings);
     const result = {};
+    const order = [];
     rows.forEach(row => {
-      const { key, value } = rowToSetting(row);
-      if (key && key.startsWith('subcat_') && value && value.startsWith('http')) {
-        result[key] = value;
+      // תמיכה בשני מבני כותרות: key/value ו-מזהה_קטגוריה/קישור_לתמונה/שם_קטגוריה
+      const key = (row['מזהה_קטגוריה'] || row['key'] || row['מפתח'] || Object.values(row)[0] || '').trim();
+      const image = (row['קישור_לתמונה'] || row['value'] || row['ערך'] || Object.values(row)[1] || '').trim();
+      const label = (row['שם_קטגוריה'] || Object.values(row)[2] || '').trim();
+      if (key && key.startsWith('subcat_')) {
+        const id = key.replace('subcat_', '');
+        result[key] = { image: image.startsWith('http') ? image : '', label, id, key };
+        order.push(key);
       }
     });
+    result.__order = order;
     return result;
   } catch (err) {
-    return {};
+    return { __order: [] };
   }
 }
 
 export async function loadContentFromSheets() {
   try {
-    const rows = await fetchCSV(SHEETS.settings);
+    const rows = await fetchCSV(SHEETS.categories || SHEETS.settings);
     const content = { ...defaultContent };
     rows.forEach(row => {
       const { key, value } = rowToSetting(row);

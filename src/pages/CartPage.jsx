@@ -6,7 +6,7 @@ const DELIVERY_COST = 38;
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwmJ7b0E2NiuntAbE1XGk8UGGCarLNMsP3yPVN_n8wJXIhTljCZmTGj28A6zspRpdCP/exec';
 
 export default function CartPage() {
-  const { cart, removeFromCart, updateQuantity, clearCart, cartTotal, cartSavings, calcItemTotal, calcItemSaving, navigate, content } = useApp();
+  const { cart, removeFromCart, updateQuantity, clearCart, cartTotal, cartSavings, calcItemTotal, calcItemSaving, navigate, content, pickupPoints = [] } = useApp();
 
   const [showPopup, setShowPopup] = useState(false);
   const [form, setForm] = useState({
@@ -101,27 +101,7 @@ export default function CartPage() {
       total: totalWithDelivery,
       savings: cartSavings,
       deliveryCost: form.delivery === 'home' ? DELIVERY_COST : 0,
-      deliveryType: {
-        beitshemesh: 'איסוף בית שמש - רחוב התבור',
-        kiryat_moshe: "נק' מכירה קרית משה - יסכה שטיינר",
-        mitzpe_yericho: "נק' מכירה מצפה יריחו - הדס דסה",
-        etz_efraim: "נק' מכירה עץ אפרים - רויטל סלם",
-        mitzpe_ramon: "נק' מכירה מצפה רמון - חן חסון",
-        alon_shvut: "נק' מכירה אלון שבות - עטרה סונא",
-        beit_el: "נק' מכירה בית אל - מילכה סולטן",
-        ali: "נק' מכירה עלי - נעמי יסכה",
-        tel_aviv: "נק' מכירה תל אביב - אפרת שפירא",
-        haifa: "נק' מכירה חיפה - שקד נאמן",
-        kerem_byavne: "נק' מכירה כרם ביבנה - תהילה כהן",
-        kiryat_arba: "נק' מכירה קרית ארבע - תהילה גספר",
-        sderot: "נק' מכירה שדרות - טוהר",
-        nof_ayalon: "נק' מכירה נוף איילון - חיה ממן",
-        alon_more: "נק' מכירה אלון מורה - אחווה",
-        pt_hadar: "נק' מכירה פתח תקווה הדר גנים - משפחת פסטליך",
-        pt_kfar: "נק' מכירה פתח תקווה כפר אברהם - רחל אורלינסקי",
-        givat_shmuel: "נק' מכירה גבעת שמואל - משפחת רוזנטל",
-        home: 'משלוח עד הבית',
-      }[form.delivery] || form.delivery,
+      deliveryType: form.delivery === 'home' ? 'משלוח עד הבית' : form.delivery.replace(/_/g, ' '),
       deliveryName: form.deliveryName,
       deliveryPhone: form.deliveryPhone,
       city: form.city,
@@ -302,24 +282,13 @@ export default function CartPage() {
               למוצרים בעיצוב אישי – כתבו לי בווצאפ: אחינועם 054-8838607
             </div>
             {[
-              { val: 'beitshemesh', label: "איסוף מבית שמש – רחוב התבור" },
-              { val: 'kiryat_moshe', label: "נק' מכירה קרית משה – יסכה שטיינר 058-6890267" },
-              { val: 'mitzpe_yericho', label: "נק' מכירה מצפה יריחו – הדס דסה 058-5355146" },
-              { val: 'etz_efraim', label: "נק' מכירה עץ אפרים – רויטל סלם 053-5578581" },
-              { val: 'mitzpe_ramon', label: "נק' מכירה מצפה רמון – חן חסון 058-4181341" },
-              { val: 'alon_shvut', label: "נק' מכירה אלון שבות – עטרה סונא 052-6071456" },
-              { val: 'beit_el', label: "נק' מכירה בית אל – מילכה סולטן 055-9109970" },
-              { val: 'ali', label: "נק' מכירה עלי – נעמי יסכה 054-4424361" },
-              { val: 'tel_aviv', label: "נק' מכירה תל אביב – אפרת שפירא 058-6940221" },
-              { val: 'haifa', label: "נק' מכירה חיפה – שקד נאמן 050-9655442" },
-              { val: 'kerem_byavne', label: "נק' מכירה כרם ביבנה – תהילה כהן 054-7593537" },
-              { val: 'kiryat_arba', label: "נק' מכירה קרית ארבע – תהילה גספר 058-7796660" },
-              { val: 'sderot', label: "נק' מכירה שדרות – טוהר 052-3636234" },
-              { val: 'nof_ayalon', label: "נק' מכירה נוף איילון – חיה ממן 052-6337030" },
-              { val: 'alon_more', label: "נק' מכירה אלון מורה – אחווה 058-4997561" },
-              { val: 'pt_hadar', label: "נק' מכירה פתח תקווה הדר גנים – משפחת פסטליך (לבדוק מלאי דרך אחינועם 054-8838607)" },
-              { val: 'pt_kfar', label: "נק' מכירה פתח תקווה כפר אברהם – רחל אורלינסקי 050-8754191" },
-              { val: 'givat_shmuel', label: "נק' מכירה גבעת שמואל – משפחת רוזנטל (ווצאפ בלבד) 054-9867606" },
+              ...(pickupPoints.length > 0
+                ? pickupPoints.map(p => ({
+                    val: p.location.replace(/\s+/g, '_').replace(/'/g, ''),
+                    label: `נק' מכירה ${p.location}${p.name ? ` – ${p.name}` : ''}${p.phone ? ` ${p.phone}` : ''}`,
+                  }))
+                : [{ val: 'beitshemesh', label: "איסוף מבית שמש – רחוב התבור" }]
+              ),
               { val: 'home', label: `משלוח עד הבית – ₪${DELIVERY_COST}` },
             ].map(opt => (
               <label key={opt.val} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 14px', borderRadius: '12px', border: `1.5px solid ${form.delivery === opt.val ? 'var(--amber)' : '#e0d6cc'}`, background: form.delivery === opt.val ? '#fff8ee' : 'white', marginBottom: '8px', cursor: 'pointer', fontWeight: '600', fontSize: '14px', color: 'var(--dark)', direction: 'rtl' }}>
@@ -387,7 +356,7 @@ export default function CartPage() {
               <div style={{ ...secTitle, marginBottom: '10px' }}>איך אני משלמת? *</div>
               {errors.paymentMethod && <p style={{ color: '#e74c3c', fontSize: '12px', margin: '-4px 0 8px' }}>יש לבחור אמצעי תשלום</p>}
               <div style={{ display: 'flex', gap: '10px', marginBottom: '14px' }}>
-                {['פייבוקס', 'ביט'].map(method => (
+                {['פייבוקס', 'העברה בנקאית'].map(method => (
                   <label key={method} style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '8px', padding: '12px 14px', borderRadius: '12px', border: `1.5px solid ${form.paymentMethod === method ? 'var(--amber)' : '#e0d6cc'}`, background: form.paymentMethod === method ? '#fff8ee' : 'white', cursor: 'pointer', fontWeight: '600', fontSize: '14px', color: 'var(--dark)' }}>
                     <input type="radio" name="paymentMethod" value={method} checked={form.paymentMethod === method}
                       onChange={() => setField('paymentMethod', method)}
@@ -398,7 +367,17 @@ export default function CartPage() {
               </div>
               {form.paymentMethod && (
                 <div style={{ background: '#fdf8f2', borderRadius: '12px', padding: '12px 14px', marginBottom: '12px', fontSize: '13px', color: 'var(--mid)', lineHeight: 1.7 }}>
-                  העבירי את הסכום לנייד <strong style={{ color: 'var(--rose)' }}>054-8838607</strong> דרך {form.paymentMethod}
+                  {form.paymentMethod === 'פייבוקס' && <>
+                    העבירי את הסכום לנייד <strong style={{ color: 'var(--rose)' }}>054-8838607</strong> דרך פייבוקס
+                  </>}
+                  {form.paymentMethod === 'העברה בנקאית' && <>
+                    <strong style={{ color: 'var(--rose)', display: 'block', marginBottom: '6px' }}>פרטי בנק להעברה בנקאית:</strong>
+                    אחינועם הר כוכב<br/>
+                    ת.ז/ח.פ 315210989<br/>
+                    בנק יהב 04<br/>
+                    סניף בית שמש 461<br/>
+                    מס׳ חשבון 24154
+                  </>}
                 </div>
               )}
               <div style={row}>

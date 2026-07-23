@@ -6,6 +6,7 @@ import {
   loadGraphicsFromSheets,
   loadWorkshopsFromSheets,
   loadSubCategoriesFromSheets,
+  loadPickupPointsFromSheets,
 } from '../data/siteContent';
 
 const AppContext = createContext();
@@ -14,6 +15,8 @@ export function AppProvider({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [cart, setCart]               = useState([]);
   const [content, setContent]         = useState(defaultContent);
+  const [subCats, setSubCats]           = useState([]);
+  const [pickupPoints, setPickupPoints] = useState([]);
   const [products, setProducts]       = useState([]);
   const [graphics, setGraphics]       = useState([]);
   const [workshops, setWorkshops]     = useState([]);
@@ -29,8 +32,19 @@ export function AppProvider({ children }) {
       loadGraphicsFromSheets(),
       loadWorkshopsFromSheets(),
       loadSubCategoriesFromSheets(),
-    ]).then(([c, p, g, w, subcats]) => {
-      setContent({ ...c, ...subcats });
+      loadPickupPointsFromSheets(),
+    ]).then(([c, p, g, w, subcats, pickups]) => {
+      setPickupPoints(pickups || []);
+      // בנה רשימת קטגוריות לפי סדר האקסל
+      const order = subcats.__order || [];
+      const cats = order
+        .map(key => subcats[key])
+        .filter(cat => cat && cat.image && cat.label); // רק עם תמונה ושם
+      setSubCats(cats);
+      // שמור גם בcontent לתאימות לאחור
+      const subImages = {};
+      order.forEach(key => { if (subcats[key]) subImages[key] = subcats[key].image; });
+      setContent({ ...c, ...subImages });
       setProducts(p);
       setGraphics(g);
       setWorkshops(w);
@@ -168,7 +182,7 @@ export function AppProvider({ children }) {
       sidebarOpen, setSidebarOpen,
       cart, addToCart, removeFromCart, updateQuantity, clearCart,
       cartCount, cartTotal, cartSavings, calcItemTotal, calcItemSaving,
-      content, products, graphics, workshops, dataLoaded,
+      content, products, graphics, workshops, dataLoaded, subCats, pickupPoints,
     }}>
       {children}
     </AppContext.Provider>
