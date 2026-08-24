@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 
 export default function ProductPage({ productOverride } = {}) {
- const { pageData, navigate, addToCart, content } = useApp();
+ const { pageData, navigate, addToCart, content, formatPrice } = useApp();
+  const fmt = formatPrice || ((n) => Number.isInteger(n) ? n : parseFloat(n.toFixed(1)));
  const product = productOverride || pageData;
  const fromSubCat = product?._fromSubCategory;
  const [qty, setQty] = useState(1);

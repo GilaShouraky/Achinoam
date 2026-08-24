@@ -183,6 +183,7 @@ export function AppProvider({ children }) {
       cart, addToCart, removeFromCart, updateQuantity, clearCart,
       cartCount, cartTotal, cartSavings, calcItemTotal, calcItemSaving,
       content, products, graphics, workshops, dataLoaded, subCats, pickupPoints,
+      formatPrice: (n) => Number.isInteger(n) ? n : parseFloat(n.toFixed(1)),
     }}>
       {children}
     </AppContext.Provider>

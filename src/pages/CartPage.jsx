@@ -6,7 +6,8 @@ const DELIVERY_COST = 38;
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwmJ7b0E2NiuntAbE1XGk8UGGCarLNMsP3yPVN_n8wJXIhTljCZmTGj28A6zspRpdCP/exec';
 
 export default function CartPage() {
-  const { cart, removeFromCart, updateQuantity, clearCart, cartTotal, cartSavings, calcItemTotal, calcItemSaving, navigate, content, pickupPoints = [] } = useApp();
+  const { cart, removeFromCart, updateQuantity, clearCart, cartTotal, cartSavings, calcItemTotal, calcItemSaving, navigate, content, pickupPoints = [], formatPrice } = useApp();
+  const fmt = formatPrice || ((n) => Number.isInteger(n) ? n : parseFloat(n.toFixed(1)));
 
   const [showPopup, setShowPopup] = useState(false);
   const [form, setForm] = useState({
@@ -237,12 +238,12 @@ export default function CartPage() {
           {cartSavings > 0 && (
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', background: '#F0FAF4', borderRadius: '10px', padding: '10px 14px' }}>
               <span style={{ fontSize: '14px', color: '#25A85A', fontWeight: '600' }}>🎉 חסכת במבצעים:</span>
-              <span style={{ fontSize: '16px', color: '#25A85A', fontWeight: '800' }}>₪{cartSavings}</span>
+              <span style={{ fontSize: '16px', color: '#25A85A', fontWeight: '800' }}>₪{fmt(cartSavings)}</span>
             </div>
           )}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
             <span style={{ fontSize: '15px', color: 'var(--mid)' }}>סה"כ לתשלום:</span>
-            <span style={{ fontFamily: 'var(--font-body)', fontSize: '22px', fontWeight: '800', color: 'var(--amber)' }}>₪{cartTotal}</span>
+            <span style={{ fontFamily: 'var(--font-body)', fontSize: '22px', fontWeight: '800', color: 'var(--amber)' }}>₪{fmt(cartTotal)}</span>
           </div>
           <button className="btn-whatsapp" onClick={() => setShowPopup(true)}
             style={{ width: '100%', borderRadius: '12px', fontSize: '15px', padding: '15px', border: 'none', cursor: 'pointer' }}>
@@ -403,7 +404,7 @@ export default function CartPage() {
               <span style={{ fontWeight: '700', color: 'var(--mid)', fontSize: '15px' }}>סה"כ לתשלום:</span>
               <div style={{ textAlign: 'left' }}>
                 {form.delivery === 'home' && <div style={{ fontSize: '12px', color: 'var(--light)', textAlign: 'right' }}>כולל משלוח ₪{DELIVERY_COST}</div>}
-                <span style={{ fontFamily: 'var(--font-body)', fontSize: '22px', fontWeight: '800', color: 'var(--amber)' }}>₪{totalWithDelivery}</span>
+                <span style={{ fontFamily: 'var(--font-body)', fontSize: '22px', fontWeight: '800', color: 'var(--amber)' }}>₪{fmt(totalWithDelivery)}</span>
               </div>
             </div>
 
