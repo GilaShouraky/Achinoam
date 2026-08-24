@@ -209,12 +209,12 @@ export default function CartPage() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
                       {hasDeal ? (
                         <>
-                          <span className="cart-price" style={{ fontSize: '18px', color: 'var(--amber)', fontWeight: '800' }}>₪{itemTotal}</span>
-                          <span style={{ fontSize: '12px', color: 'var(--light)', textDecoration: 'line-through' }}>₪{Number(item.price) * item.quantity}</span>
-                          <span style={{ fontSize: '13px', color: '#25A85A', fontWeight: '700' }}>חסכת ₪{saving}</span>
+                          <span className="cart-price" style={{ fontSize: '18px', color: 'var(--amber)', fontWeight: '800' }}>₪{fmt(itemTotal)}</span>
+                          <span style={{ fontSize: '12px', color: 'var(--light)', textDecoration: 'line-through' }}>₪{fmt(Number(item.price) * item.quantity)}</span>
+                          <span style={{ fontSize: '13px', color: '#25A85A', fontWeight: '700' }}>חסכת ₪{fmt(saving)}</span>
                         </>
                       ) : (
-                        <span className="cart-price" style={{ fontSize: '18px', color: 'var(--amber)', fontWeight: '800' }}>₪{itemTotal}</span>
+                        <span className="cart-price" style={{ fontSize: '18px', color: 'var(--amber)', fontWeight: '800' }}>₪{fmt(itemTotal)}</span>
                       )}
                     </div>
                     <div className="qty-control">
