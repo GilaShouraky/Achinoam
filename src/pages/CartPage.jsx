@@ -290,7 +290,7 @@ export default function CartPage() {
                   }))
                 : [{ val: 'beitshemesh', label: "איסוף מבית שמש – רחוב התבור" }]
               ),
-              { val: 'home', label: `משלוח עד הבית – ₪${DELIVERY_COST}` },
+
             ].map(opt => (
               <label key={opt.val} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 14px', borderRadius: '12px', border: `1.5px solid ${form.delivery === opt.val ? 'var(--amber)' : '#e0d6cc'}`, background: form.delivery === opt.val ? '#fff8ee' : 'white', marginBottom: '8px', cursor: 'pointer', fontWeight: '600', fontSize: '14px', color: 'var(--dark)', direction: 'rtl' }}>
                 <input type="radio" name="delivery" value={opt.val} checked={form.delivery === opt.val}
@@ -300,7 +300,7 @@ export default function CartPage() {
               </label>
             ))}
 
-            {form.delivery === 'home' && (
+            {false && (
               <div style={{ background: '#fdf8f2', borderRadius: '14px', padding: '16px', marginTop: '10px' }}>
                 <p style={{ fontWeight: '700', color: 'var(--rose)', fontSize: '14px', marginBottom: '12px' }}>פרטי משלוח</p>
                 <div style={row}>

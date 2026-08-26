@@ -125,13 +125,26 @@ export function AppProvider({ children }) {
     return 0;
   };
 
+  // מבצע mix: כמות הסטים = מינימום בין כמות הפריטים השונים בקבוצה
+  const getMixDealSets = (currentCart, groupName) => {
+    const groupItems = currentCart.filter(i => i.dealGroup === groupName && i.dealType === 'mix');
+    if (groupItems.length < 2) return 0; // חייב לפחות 2 מוצרים שונים
+    return Math.min(...groupItems.map(i => i.quantity));
+  };
+
   // חישוב מחיר עם מבצעים (כולל מבצע קבוצתי)
   const calcItemTotal = (item, currentCart = cart) => {
     const qty = item.quantity;
     const basePrice = Number(item.price);
 
     if (item.dealQty && item.dealPrice) {
-      if (item.dealGroup) {
+      if (item.dealGroup && item.dealType === 'mix') {
+        // מבצע mix: ההנחה לפי מינימום בין המוצרים השונים
+        const sets = getMixDealSets(currentCart, item.dealGroup);
+        const discountedQty = Math.min(qty, sets);
+        const dealPricePerItem = item.dealPrice / item.dealQty;
+        return discountedQty * dealPricePerItem + (qty - discountedQty) * basePrice;
+      } else if (item.dealGroup) {
         const discountedQty = getDiscountedQtyForItem(item, currentCart);
         const dealPricePerItem = item.dealPrice / item.dealQty;
         return discountedQty * dealPricePerItem + (qty - discountedQty) * basePrice;
@@ -150,7 +163,12 @@ export function AppProvider({ children }) {
     const basePrice = Number(item.price);
 
     if (item.dealQty && item.dealPrice) {
-      if (item.dealGroup) {
+      if (item.dealGroup && item.dealType === 'mix') {
+        const sets = getMixDealSets(currentCart, item.dealGroup);
+        const discountedQty = Math.min(qty, sets);
+        const dealPricePerItem = item.dealPrice / item.dealQty;
+        return discountedQty * (basePrice - dealPricePerItem);
+      } else if (item.dealGroup) {
         const discountedQty = getDiscountedQtyForItem(item, currentCart);
         const dealPricePerItem = item.dealPrice / item.dealQty;
         return discountedQty * (basePrice - dealPricePerItem);
