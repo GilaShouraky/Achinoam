@@ -125,11 +125,18 @@ export function AppProvider({ children }) {
     return 0;
   };
 
-  // מבצע mix: כמות הסטים = מינימום בין כמות הפריטים השונים בקבוצה
+  // מבצע mix: כמות הסטים = מינימום בין תת-קבוצות (לפי סוג_מבצע)
+  // לדוגמא: runner + challah — חייב לפחות אחד מכל סוג
   const getMixDealSets = (currentCart, groupName) => {
-    const groupItems = currentCart.filter(i => i.dealGroup === groupName && i.dealType === 'mix');
-    if (groupItems.length < 2) return 0; // חייב לפחות 2 מוצרים שונים
-    return Math.min(...groupItems.map(i => i.quantity));
+    const groupItems = currentCart.filter(i => i.dealGroup === groupName && i.dealType);
+    const types = [...new Set(groupItems.map(i => i.dealType))];
+    if (types.length < 2) return 0; // חייב לפחות 2 סוגים שונים
+    // כמות לכל סוג = סכום הכמויות של כל המוצרים באותו סוג
+    const qtyByType = {};
+    groupItems.forEach(i => {
+      qtyByType[i.dealType] = (qtyByType[i.dealType] || 0) + i.quantity;
+    });
+    return Math.min(...Object.values(qtyByType));
   };
 
   // חישוב מחיר עם מבצעים (כולל מבצע קבוצתי)
@@ -138,8 +145,8 @@ export function AppProvider({ children }) {
     const basePrice = Number(item.price);
 
     if (item.dealQty && item.dealPrice) {
-      if (item.dealGroup && item.dealType === 'mix') {
-        // מבצע mix: ההנחה לפי מינימום בין המוצרים השונים
+      if (item.dealGroup && item.dealType && item.dealType !== '') {
+        // מבצע mix: ההנחה לפי מינימום בין תת-קבוצות
         const sets = getMixDealSets(currentCart, item.dealGroup);
         const discountedQty = Math.min(qty, sets);
         const dealPricePerItem = item.dealPrice / item.dealQty;
@@ -163,7 +170,7 @@ export function AppProvider({ children }) {
     const basePrice = Number(item.price);
 
     if (item.dealQty && item.dealPrice) {
-      if (item.dealGroup && item.dealType === 'mix') {
+      if (item.dealGroup && item.dealType && item.dealType !== '') {
         const sets = getMixDealSets(currentCart, item.dealGroup);
         const discountedQty = Math.min(qty, sets);
         const dealPricePerItem = item.dealPrice / item.dealQty;

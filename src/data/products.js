@@ -19,7 +19,6 @@ export const categories = {
       { id: 'bride',        label: 'חבילת כלה' },
     ],
   },
-  
   graphics: {
     label: 'עבודות גרפיקה',
     icon: '🎨',
