@@ -240,7 +240,7 @@ export async function loadSubCategoriesFromSheets() {
 
 export async function loadContentFromSheets() {
   try {
-    const rows = await fetchCSV(SHEETS.categories || SHEETS.settings);
+    const rows = await fetchCSV(SHEETS.settings);
     const content = { ...defaultContent };
     rows.forEach(row => {
       const { key, value } = rowToSetting(row);
