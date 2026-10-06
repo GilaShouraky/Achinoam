@@ -1,0 +1,470 @@
+@font-face {
+  font-family: 'Balerina';
+  src: url('./fonts/HKBalerina-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  /* ─── הצבעים המדויקים מהפלטה ─── */
+  --rose:          #8B5A6B;
+  --rose-light:    #A87080;
+  --rose-pale:     #F0E4E8;
+  --rose-soft:     #F8EFF2;
+
+  --slate:         #5B8FA8;
+  --slate-light:   #7AAFC8;
+  --slate-pale:    #E2EFF5;
+  --slate-soft:    #EFF6FA;
+
+  --amber:         #C4861A;
+  --amber-light:   #D9A040;
+  --amber-pale:    #F5EAD4;
+  --amber-soft:    #FAF3E6;
+
+  /* ─── ניטרלים חמים ─── */
+  --linen:         #FAF6F2;
+  --cream:         #F5EFE8;
+  --warm-white:    #FFFCFA;
+  --parchment:     #EDE4D8;
+  --border:        #E2D5CC;
+  --border-light:  #EDE4DC;
+
+  --dark:          #2C1F1F;
+  --mid:           #6B5050;
+  --light:         #A8948A;
+
+  /* ─── סמנטי ─── */
+  --heading-color:  var(--rose);
+  --font-display:   'Balerina', 'Frank Ruhl Libre', serif;
+  --font-body:      'Heebo', sans-serif;
+
+  /* ─── צלליות חמות ─── */
+  --shadow-xs: 0 1px 4px rgba(139,90,107,0.07);
+  --shadow-sm: 0 3px 14px rgba(139,90,107,0.09);
+  --shadow-md: 0 8px 28px rgba(139,90,107,0.13);
+  --shadow-lg: 0 18px 44px rgba(139,90,107,0.17);
+  --shadow-xl: 0 28px 60px rgba(139,90,107,0.21);
+
+  /* ─── גרדיאנטים אורגניים ─── */
+  --grad-rose:   linear-gradient(135deg, #8B5A6B 0%, #6B3D52 100%);
+  --grad-slate:  linear-gradient(135deg, #5B8FA8 0%, #3D6F88 100%);
+  --grad-amber:  linear-gradient(135deg, #C4861A 0%, #9A6410 100%);
+  --grad-warm:   linear-gradient(160deg, #FAF6F2 0%, #F5EDE4 40%, #EFF5F8 100%);
+  --grad-card:   linear-gradient(150deg, #FFFCFA 0%, #F8F2EE 100%);
+
+  --radius-sm: 10px;
+  --radius:    18px;
+  --radius-lg: 26px;
+  --radius-xl: 38px;
+}
+
+/* ─── Base ─── */
+body {
+  font-family: var(--font-body);
+  background: var(--linen);
+  color: var(--dark);
+  direction: rtl;
+  text-align: right;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  line-height: 1.65;
+}
+
+/* טקסטורה עדינה על הרקע */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(139,90,107,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(91,143,168,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 60% 10%, rgba(196,134,26,0.03) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root { position: relative; z-index: 1; }
+
+h1,h2,h3,h4,h5,h6 { color: var(--heading-color); line-height: 1.25; }
+button { font-family: var(--font-body); cursor: pointer; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+
+/* ─── אנימציות ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes bloomIn {
+  from { opacity: 0; transform: scale(0.94) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes slideFromLeft {
+  from { opacity: 0; transform: translateX(-28px) scale(0.96); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes slideFromRight {
+  from { opacity: 0; transform: translateX(28px) scale(0.96); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+.fade-in         { animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+.fade-in-delay-1 { animation: fadeUp 0.5s 0.1s cubic-bezier(0.22,1,0.36,1) both; }
+.fade-in-delay-2 { animation: fadeUp 0.5s 0.2s cubic-bezier(0.22,1,0.36,1) both; }
+.fade-in-delay-3 { animation: fadeUp 0.5s 0.3s cubic-bezier(0.22,1,0.36,1) both; }
+
+/* ─── כפתורים ─── */
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 13px 30px;
+  background: var(--grad-rose);
+  color: white; border: none; border-radius: 50px;
+  font-size: 14px; font-weight: 700; font-family: var(--font-body);
+  cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 18px rgba(139,90,107,0.32);
+  letter-spacing: 0.3px;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(139,90,107,0.42); }
+
+.btn-secondary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px 28px;
+  background: transparent; color: var(--rose);
+  border: 1.5px solid var(--rose); border-radius: 50px;
+  font-size: 14px; font-weight: 600; font-family: var(--font-body);
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-secondary:hover { background: var(--rose); color: white; transform: translateY(-2px); }
+
+.btn-whatsapp {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 13px 28px;
+  background: #1a7a4a;
+  color: white; border: none; border-radius: 50px;
+  font-size: 14px; font-weight: 700; font-family: var(--font-body);
+  cursor: pointer; text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  box-shadow: 0 4px 18px rgba(26,122,74,0.30);
+  border: 2px solid transparent;
+}
+.btn-whatsapp:hover { transform: translateY(-2px); background: #145c37 !important; box-shadow: 0 6px 22px rgba(26,122,74,0.40) !important; }
+
+/* ─── Page header ─── */
+.page-header {
+  background: var(--warm-white);
+  border-bottom: 1px solid var(--border-light);
+  padding: 28px 40px 22px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.page-header::before {
+  display: none;
+}
+/* פרח דקורטיבי ברקע */
+.page-header::after {
+  content: '❀';
+  position: absolute; left: 30px; top: 50%; transform: translateY(-50%);
+  font-size: 80px; opacity: 0.04; pointer-events: none;
+}
+
+/* ─── Back button ─── */
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: white; border: none; font-size: 13px;
+  color: var(--rose); cursor: pointer; padding: 7px 16px;
+  border-radius: 50px; transition: all 0.2s; font-family: var(--font-body);
+  font-weight: 600; box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+}
+.back-btn:hover { background: var(--rose-soft); }
+
+/* ─── Pill ─── */
+.pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 14px; border-radius: 50px;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.3px;
+}
+.pill-rose   { background: var(--rose-pale);  color: var(--rose);  }
+.pill-slate  { background: var(--slate-pale); color: var(--slate); }
+.pill-amber  { background: var(--amber-pale); color: var(--amber); }
+
+/* ─── Section title ─── */
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3.5vw, 38px);
+  font-weight: 900; color: var(--rose);
+  position: relative; display: inline-block;
+}
+.section-title::after {
+  content: '';
+  position: absolute; bottom: -5px; right: 0;
+  width: 45%; height: 2.5px;
+  background: linear-gradient(90deg, var(--amber), transparent);
+  border-radius: 2px;
+}
+
+/* ─── Qty control ─── */
+.qty-control {
+  display: flex; align-items: center;
+  border: 1.5px solid var(--border); border-radius: 50px;
+  overflow: hidden; background: white;
+}
+.qty-btn {
+  width: 36px; height: 36px; background: none; border: none;
+  font-size: 17px; color: var(--rose); cursor: pointer;
+  transition: background 0.2s; font-family: var(--font-body);
+}
+.qty-btn:hover { background: var(--rose-soft); }
+.qty-num { min-width: 34px; text-align: center; font-size: 14px; font-weight: 700; color: var(--dark); }
+
+/* ─── Tag ─── */
+.tag {
+  display: inline-block; padding: 5px 14px; border-radius: 50px;
+  font-size: 12px; font-weight: 500; background: var(--cream);
+  color: var(--mid); border: 1px solid var(--border-light);
+  cursor: pointer; transition: all 0.2s;
+}
+.tag:hover, .tag.active { background: var(--rose); color: white; border-color: var(--rose); }
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--linen); }
+::-webkit-scrollbar-thumb { background: var(--parchment); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--rose-light); }
+
+/* ─── Mobile Responsive ─── */
+@media (max-width: 768px) {
+  /* Header */
+  .page-header { padding: 16px 14px 12px; }
+  .page-header h1 { font-size: clamp(20px, 5.5vw, 30px) !important; }
+
+  /* Product cards grid - 2 columns */
+  div[style*="minmax(195px"] { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+  div[style*="minmax(260px"] { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+
+  /* Category cards - stack */
+  div[style*="minmax(280px"] { grid-template-columns: 1fr !important; }
+
+  /* Qty control */
+  .qty-control { gap: 4px !important; }
+  .qty-btn { width: 30px !important; height: 30px !important; font-size: 15px !important; }
+
+  /* Buttons full width */
+  .btn-primary, .btn-whatsapp { width: 100% !important; padding: 13px 16px !important; }
+
+  /* Sub-category tabs scroll */
+  nav[style*="overflowX"] { -webkit-overflow-scrolling: touch; }
+
+  /* Cart page */
+  .cart-item-img { width: 90px !important; height: 90px !important; }
+}
+
+@media (max-width: 480px) {
+  /* Hero section */
+  section[style*="minHeight"] h1 { font-size: 26px !important; }
+  section[style*="minHeight"] p { font-size: 14px !important; }
+
+  /* About section */
+  div[style*="gap: '48px'"] { flex-direction: column !important; gap: 20px !important; }
+  div[style*="gap: '40px'"] { flex-direction: column !important; gap: 20px !important; }
+
+  /* Product page */
+  div[style*="gap: '44px'"] { flex-direction: column !important; gap: 16px !important; }
+  div[style*="gap: '48px'"] { flex-direction: column !important; gap: 16px !important; }
+
+  /* Logo */
+  img[alt="אחינועם"] { height: 44px !important; }
+
+  /* Cart summary */
+  div[style*="maxWidth: '680px'"] { padding: 0 10px !important; }
+}
+
+
+
+@keyframes bounceDown {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(8px); opacity: 0.4; }
+}
+
+.hero-subtitle-mobile { display: none; }
+.hero-subtitle-desktop { display: inline; }
+
+/* ═══════════════════════════════════════
+   MOBILE ONLY (max 768px)
+   ═══════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  .products-grid { grid-template-columns: 1fr 1fr !important; }
+  .scroll-arrow-mobile { display: none !important; }
+  .hero-subtitle-mobile { display: block !important; font-size: clamp(25px, 5vw, 31px) !important; line-height: 1.6 !important; }
+  .hero-subtitle-desktop { display: none !important; }
+
+  /* Hero section - tall on mobile */
+  .hero-section {
+    min-height: 38vh !important;
+    height: 38vh !important;
+  }
+
+  /* 1. Hero titles - bigger */
+  .hero-subtitle { font-size: clamp(15px, 4vw, 20px) !important; }
+  .hero-title    { font-size: clamp(46px, 13vw, 68px) !important; }
+
+  /* 2. About section - vertical, bigger image */
+  .about-flex {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 16px !important;
+  }
+  .about-flex > div:first-child {
+    width: 160px !important;
+    height: 160px !important;
+  }
+  .about-flex > div:first-child img {
+    width: 160px !important;
+    height: 160px !important;
+  }
+
+  /* 3. Signature "אחינועם" - bigger */
+  .about-signature { font-size: 32px !important; }
+
+  /* 4. Sub-category labels - bigger */
+  .subcat-label { font-size: 20px !important; }
+
+  /* 5. Page main titles (המוצרים שלי / גרפיקה / סדנאות) */
+  .page-main-title { font-size: clamp(34px, 9vw, 48px) !important; }
+
+  /* 6. qty control on product page - bigger, with bottom gap */
+  .product-qty-row .qty-control {
+    transform: scale(1.18);
+    transform-origin: right center;
+    margin-bottom: 12px !important;
+  }
+
+  /* 9. Gallery - 1 image on mobile */
+  .gallery-track > div { flex: 0 0 100% !important; }
+  .gallery-track > div:not(:first-child) { display: none !important; }
+
+  /* 3. Carousel - 1 item on mobile */
+  .carousel-grid { grid-template-columns: 1fr !important; }
+  .carousel-grid > div { min-width: 0; }
+
+  /* 4. ProductPage - deal badge below price */
+  .price-deal-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+
+  /* 5. ProductPage - qty+button stacked */
+  .product-qty-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+  .product-qty-row .qty-control { justify-content: center; }
+  .product-qty-row .btn-primary { width: 100% !important; flex: none !important; }
+
+  /* 6. ProductPage - full column layout (image top, info below) */
+  .product-layout {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  /* 7. Cart items - image LEFT, text+qty RIGHT vertical */
+  .cart-item {
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    padding: 14px 14px !important;
+  }
+  .cart-item-img {
+    width: 90px !important;
+    height: 90px !important;
+    flex-shrink: 0 !important;
+    margin-left: 4px !important;
+  }
+  .cart-item-details {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+  }
+  .cart-item-qty {
+    margin-top: 4px;
+  }
+
+  /* 8. Qty control - clean pill, no stretch */
+  .qty-control {
+    display: inline-flex !important;
+    width: auto !important;
+    align-self: flex-start !important;
+  }
+}
+
+/* ── Popup mobile ── */
+@media (max-width: 600px) {
+  .order-popup-wrap {
+    align-items: center !important;
+    padding: 16px !important;
+  }
+  .order-popup-inner {
+    padding: 20px 16px !important;
+    max-height: 88vh !important;
+    border-radius: 16px !important;
+    width: 100% !important;
+  }
+  .order-popup-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+  .order-popup-grid-3 {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+/* ── Popup scrollbar ── */
+.order-popup-inner::-webkit-scrollbar {
+  width: 4px;
+}
+.order-popup-inner::-webkit-scrollbar-track {
+  background: transparent;
+}
+.order-popup-inner::-webkit-scrollbar-thumb {
+  background: #d4c4b8;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.order-popup-inner:hover::-webkit-scrollbar-thumb {
+  opacity: 1;
+}
+
+/* ── Header search mobile ── */
+@media (max-width: 600px) {
+  .header-search-box {
+    width: calc(100vw - 140px) !important;
+    min-width: 0 !important;
+  }
+}
+
+/* ── נגישות - גודל טקסט ── */
+body.a11y-font-1 { zoom: 1.15; }
+body.a11y-font-2 { zoom: 1.30; }
