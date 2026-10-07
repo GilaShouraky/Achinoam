@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import { T } from '../edit/T';
 
 function ImageGallery({ images, label }) {
  const imgs = (images || []).filter(Boolean);
@@ -101,13 +102,13 @@ function ImageGallery({ images, label }) {
 
 
 export default function WorkshopsPage({ subCatOverride } = {}) {
- const { navigate, pageData, content, workshops } = useApp();
+ const { navigate, pageData, t, workshops } = useApp();
  const [activeId, setActiveId] = useState(subCatOverride || pageData?.subCategory || workshops[0]?.id || '');
  const ws = workshops.find(w => w.id === activeId) || workshops[0];
 
  if (!workshops.length) return (
  <div style={{ textAlign: 'center', padding: '80px 30px', color: 'var(--light)' }}>
- <p>טוענת סדנאות...</p>
+ <p><T k="workshops.loading" /></p>
  </div>
  );
 
@@ -124,10 +125,10 @@ export default function WorkshopsPage({ subCatOverride } = {}) {
  <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '200px', height: '200px', background: 'rgba(255,255,255,0.12)', borderRadius: '50%', filter: 'blur(50px)' }} />
  {/* כפתור חזרה – למעלה, לא חופף */}
  <div style={{ position: 'absolute', top: '14px', right: '16px', zIndex: 2 }}>
- <button className="back-btn" onClick={() => navigate('category', 'workshops')}>→ חזרה לקטגוריות</button>
+ <button className="back-btn" onClick={() => navigate('category', 'workshops')}><T k="common.back_categories" /></button>
  </div>
  <h1 className="page-main-title" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,4vw,36px)', fontWeight: '900', color: 'white', textAlign: 'center', textShadow: '0 2px 10px rgba(0,0,0,0.12)', position: 'relative', zIndex: 1, margin: '40px 0 0' }}>
- {content.workshops_title || 'סדנאות אומנות'}
+ <T k="workshops_title" />
  </h1>
  </div>
 
@@ -159,9 +160,9 @@ export default function WorkshopsPage({ subCatOverride } = {}) {
  )}
  <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
  {ws.priceNote && <span style={{ fontFamily: 'var(--font-display)', fontSize: '16px', color: 'var(--amber)', fontWeight: '700' }}>{ws.priceNote}</span>}
- <a href={`https://wa.me/${content.whatsapp_number}?text=${encodeURIComponent('היי! אני מעוניינת בסדנת ' + ws.label)}`}
+ <a href={`https://wa.me/${t('whatsapp_number')}?text=${encodeURIComponent(t('workshops.wa_msg', { name: ws.label }))}`}
  target="_blank" rel="noopener noreferrer" className="btn-whatsapp" style={{ textDecoration: 'none' }}>
- לקביעת מקום בסדנא
+ <T k="workshops.btn" />
  </a>
  </div>
  </div>

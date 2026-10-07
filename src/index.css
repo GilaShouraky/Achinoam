@@ -155,15 +155,15 @@ img { max-width: 100%; display: block; }
 .btn-whatsapp {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   padding: 13px 28px;
-  background: #1a7a4a;
+  background: var(--btn-wa, #1a7a4a);
   color: white; border: none; border-radius: 50px;
   font-size: 14px; font-weight: 700; font-family: var(--font-body);
   cursor: pointer; text-decoration: none;
   transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-  box-shadow: 0 4px 18px rgba(26,122,74,0.30);
+  box-shadow: 0 4px 18px var(--btn-wa-shadow, rgba(26,122,74,0.30));
   border: 2px solid transparent;
 }
-.btn-whatsapp:hover { transform: translateY(-2px); background: #145c37 !important; box-shadow: 0 6px 22px rgba(26,122,74,0.40) !important; }
+.btn-whatsapp:hover { transform: translateY(-2px); background: var(--btn-wa-dark, #145c37) !important; box-shadow: 0 6px 22px rgba(26,122,74,0.40) !important; }
 
 /* ─── Page header ─── */
 .page-header {
@@ -468,3 +468,15 @@ img { max-width: 100%; display: block; }
 /* ── נגישות - גודל טקסט ── */
 body.a11y-font-1 { zoom: 1.15; }
 body.a11y-font-2 { zoom: 1.30; }
+
+/* ─── מערכת עריכה ─── */
+.edit-only:not(.tx-edit) { display: none; }
+.pay-note b { color: var(--rose); }
+.pay-note .rich p { margin: 0; }
+
+/* הסבר על קטגוריה */
+.cat-desc-wrap { max-width: 1060px; margin: 26px auto 0; padding: 0 28px; }
+.cat-desc { position: relative; max-width: 760px; margin: 0 auto; text-align: center; font-size: 15px; line-height: 1.9; color: var(--mid); white-space: normal; }
+.cat-desc.editing { outline: 1.6px dashed #C4861A; outline-offset: 8px; border-radius: 8px; padding-top: 34px; }
+.cat-desc-empty { color: var(--light); font-style: italic; font-size: 14px; }
+.cat-desc .cat-desc-btn { top: 0; left: 50%; transform: translateX(-50%); }

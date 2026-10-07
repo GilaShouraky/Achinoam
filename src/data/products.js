@@ -19,22 +19,4 @@ export const categories = {
       { id: 'bride',        label: 'חבילת כלה' },
     ],
   },
-  graphics: {
-    label: 'עבודות גרפיקה',
-    icon: '🎨',
-    subCategories: [
-      { id: 'invitations', label: 'הזמנות לאירועים' },
-      { id: 'flyers',      label: 'פלאיירים' },
-      { id: 'branding',    label: 'מיתוגים' },
-    ],
-  },
-  workshops: {
-    label: 'סדנאות אומנות',
-    icon: '✂️',
-    subCategories: [
-      { id: 'macrame',       label: 'סדנת מקרמה' },
-      { id: 'embroidery_ws', label: 'סדנת ריקמה' },
-      { id: 'art_general',   label: 'סדנת אומנות כללי' },
-    ],
-  },
 };

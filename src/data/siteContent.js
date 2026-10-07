@@ -1,280 +1,169 @@
 // ═══════════════════════════════════════════════════════
-//  Google Sheets – קישורי ה-CSV של הגיליון שלך
+//  טעינת הנתונים מ־Google Sheets
+//  גולשים רגילים: קבצי CSV שפורסמו לאינטרנט
+//  מנהלת מחוברת: ישירות מהסקריפט (בזמן אמת, בלי עיכוב)
 // ═══════════════════════════════════════════════════════
-const CACHE_BUST = () => `&t=${Date.now()}`;
-const SHEET_ID = '2PACX-1vTzHSA8raPYkB3EaYN8ovRX_LU1wYhKXJ4LjNSjFl8LSDOlj1osu4ziirzAoHkJ_VDsWxo-FcDI65qv';
+import { PUBLISHED_SHEET_ID, GIDS } from '../config';
 
-export const SHEETS = {
-  settings:  `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=0&single=true&output=csv`,
-  products:  `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=1740173305&single=true&output=csv`,
-  graphics:  `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=1174110383&single=true&output=csv`,
-  workshops: `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=1001488632&single=true&output=csv`,
-  // גיליון "קטגוריות ראשיות" – תעדכני את ה-gid אחרי שתוסיפי את הגיליון
-  subCategories: `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?gid=2111774314&single=true&output=csv`,
-  categories:    `https://docs.google.com/spreadsheets/d/e/2PACX-1vTzHSA8raPYkB3EaYN8ovRX_LU1wYhKXJ4LjNSjFl8LSDOlj1osu4ziirzAoHkJ_VDsWxo-FcDI65qv/pub?gid=118345411&single=true&output=csv`,
-  pickupPoints:  `https://docs.google.com/spreadsheets/d/e/2PACX-1vTzHSA8raPYkB3EaYN8ovRX_LU1wYhKXJ4LjNSjFl8LSDOlj1osu4ziirzAoHkJ_VDsWxo-FcDI65qv/pub?gid=58180684&single=true&output=csv`,
-};
-
-// CORS proxy – מאפשר לדפדפן לקרוא את הגיליון
 const PROXY = 'https://corsproxy.io/?';
+export const csvUrl = (gid) => `https://docs.google.com/spreadsheets/d/e/${PUBLISHED_SHEET_ID}/pub?gid=${gid}&single=true&output=csv`;
 
-// ─── ערכי ברירת מחדל למלל בלבד (לא מוצרים) ─────────────────
+/** סימון לטקסט שהוסתר בכוונה (שורה עם ערך ריק נחשבת "לא נערך") */
+export const EMPTY_MARK = '(ריק)';
+/** בעמודה "הערת מחיר": לא להציג מחיר בכלל */
+export const NO_PRICE = '(ללא)';
+
+// ─── ערכי ברירת מחדל ─────────────────
 export const defaultContent = {
-  banner_text:     '',
-  hero_subtitle:   'מחפשים מתנה לעצמכם? לאהובים עליכם?',
-  hero_title:      'הגעתם למקום הנכון',
-  about_text:      'הי, אני אחינועם הר כוכב, יוצרת, גרפיקאית, ואוהבת מאוד אומנות\nיצרתי את העסק שלי מתוך צורך לשדרג את שולחן השבת של ההורים שלי ומשם זה התפתח לרצון של אנשים סביבי לרכוש את המוצרים גם לבית שלהם\nפה בשביל להגשים לכם וליצור עבורכם מתנות לעצמיכם ולסובבים אתכם\nכאן לכל שאלה, בקשה, הערה והארה',
-  about_signature: 'אחינועם',
-  contact_phone:   '054-8838607',
-  contact_email:   'Achinoamharkochav@gmail.com',
-  contact_address: 'רחוב התבור, בית שמש',
+  banner_text: '',
   whatsapp_number: '9720548838607',
-  graphics_intro:  'כמה מילים ממני… כל עבודה מעוצבת עם אהבה ותשומת לב לפרטים הקטנים. צרו איתי קשר ונתאים יחד את העיצוב המושלם עבורכם.',
-  footer_credit:   'כל הזכויות שמורות © אחינועם הר כוכב',
-  // תמונות לכרטיסי קטגוריה (אופציונלי – אם ריק יוצג האמוג'י)
-  cat_products_image:  '',
-  cat_graphics_image:  '',
-  cat_workshops_image: '',
-  // פס תחתון: קישור לתמונה = מציג תמונה, טקסט = מציג טקסט, ריק = לא מוצג
-  bottom_banner:       '',
-  // כותרות עמודי קטגוריה (ניתן לעריכה בגוגל שיטס)
-  products_page_title:  'המוצרים שלי',
-  graphics_page_title:  'עבודות גרפיקה',
-  workshops_page_title: 'סדנאות אומנות',
-  workshops_title:      'סדנאות אומנות',
-  // תמונות תת-קטגוריות (נטענות מגיליון "קטגוריות ראשיות")
-  subcat_pesach:        '',
-  subcat_sof_shana:     '',
-  subcat_chagim:        '',
-  subcat_notebooks:     '',
-  subcat_embroidery:    '',
-  subcat_under100:      '',
-  subcat_bride:         '',
-  subcat_invitations:   '',
-  subcat_flyers:        '',
-  subcat_branding:      '',
-  subcat_macrame:       '',
-  subcat_embroidery_ws: '',
-  subcat_art_general:   '',
-  // מזהי מוצרים נבחרים (מופרדים בפסיק, לדוגמה: 1,3,5,7)
-  featured_ids:        '',
-  under100_ids:        '',
+  featured_ids: '',
+  under100_exclude: '',
 };
 
-// ─── פירוק שורת CSV ──────────────────────────────────────────
-function parseCSVLine(line) {
-  const result = [];
-  let current = '';
-  let inQuotes = false;
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
-    if (char === '"') {
-      inQuotes = !inQuotes;
-    } else if (char === ',' && !inQuotes) {
-      result.push(current);
-      current = '';
-    } else {
-      current += char;
-    }
+// ─── פירוק CSV (כולל שורות חדשות בתוך תאים) ─────────────
+export function parseCSV(raw) {
+  const rows = [];
+  let cur = [], field = '', inQ = false;
+  for (let i = 0; i < raw.length; i++) {
+    const ch = raw[i];
+    if (ch === '"') {
+      if (inQ && raw[i + 1] === '"') { field += '"'; i++; } else inQ = !inQ;
+    } else if (ch === ',' && !inQ) { cur.push(field); field = ''; }
+    else if ((ch === '\n' || (ch === '\r' && raw[i + 1] === '\n')) && !inQ) {
+      if (ch === '\r') i++;
+      cur.push(field); field = '';
+      if (cur.some(f => f.trim())) rows.push(cur);
+      cur = [];
+    } else field += ch;
   }
-  result.push(current);
-  return result;
-}
-
-// ─── קריאת CSV דרך proxy ──────────────────────────────────────
-async function fetchCSV(url) {
-  let text;
-  let source = 'direct';
-
-  try {
-    const res = await fetch(url + CACHE_BUST());
-    text = await res.text();
-    if (text.trim().startsWith('<')) {
-      throw new Error('got HTML');
-    }
-  } catch (e) {
-    source = 'proxy';
-    try {
-      const proxyUrl = PROXY + encodeURIComponent(url);
-      const res2 = await fetch(proxyUrl);
-      text = await res2.text();
-    } catch (e2) {
-      throw e2;
-    }
-  }
-
-  // פרסור נכון של CSV עם שורות חדשות בתוך תאים
-  function parseCSVFull(raw) {
-    const rows = [];
-    let cur = [], field = '', inQ = false;
-    for (let i = 0; i < raw.length; i++) {
-      const ch = raw[i];
-      if (ch === '"') {
-        if (inQ && raw[i+1] === '"') { field += '"'; i++; }
-        else inQ = !inQ;
-      } else if (ch === ',' && !inQ) {
-        cur.push(field); field = '';
-      } else if ((ch === '\n' || (ch === '\r' && raw[i+1] === '\n')) && !inQ) {
-        if (ch === '\r') i++;
-        cur.push(field); field = '';
-        if (cur.some(f => f.trim())) rows.push(cur);
-        cur = [];
-      } else {
-        field += ch;
-      }
-    }
-    if (field || cur.length) { cur.push(field); if (cur.some(f=>f.trim())) rows.push(cur); }
-    return rows;
-  }
-
-  const allRows = parseCSVFull(text.trim());
-  const lines = allRows.map(r => r.map(f => f.replace(/^"|"$/g, '')));
-
-  if (lines.length < 2) {
-    return [];
-  }
-
-  const headers = lines[0].map(h => h.trim());
-
-  return lines.slice(1).map(row => {
-    const obj = {};
-    headers.forEach((h, i) => { obj[h] = (row[i] || '').trim(); });
+  if (field || cur.length) { cur.push(field); if (cur.some(f => f.trim())) rows.push(cur); }
+  if (rows.length < 2) return [];
+  const headers = rows[0].map(h => h.trim());
+  return rows.slice(1).map((row, i) => {
+    const obj = { _row: i + 2 };
+    headers.forEach((h, j) => { if (h) obj[h] = (row[j] || '').trim(); });
     return obj;
   });
 }
 
+async function fetchCSV(gid) {
+  const url = csvUrl(gid);
+  let text;
+  try {
+    const res = await fetch(url + `&t=${Date.now()}`);
+    text = await res.text();
+    if (text.trim().startsWith('<')) throw new Error('got HTML');
+  } catch {
+    const res2 = await fetch(PROXY + encodeURIComponent(url));
+    text = await res2.text();
+  }
+  return parseCSV(text.trim());
+}
 
-// ─── המרות שורה → אובייקט ────────────────────────────────────
+/** טעינת כל הלשוניות הציבוריות */
+export async function loadRawFromCSV() {
+  const keys = Object.keys(GIDS);
+  const results = await Promise.all(keys.map(k => fetchCSV(GIDS[k]).catch(() => [])));
+  const raw = {};
+  keys.forEach((k, i) => { raw[k] = results[i]; });
+  return raw;
+}
 
-function rowToProduct(row) {
+// ─── המרות ────────────────────────────────────────────
+const v = (row, ...names) => {
+  for (const n of names) if (row[n] !== undefined && String(row[n]).trim() !== '') return String(row[n]).trim();
+  return '';
+};
+export const isHidden = (row) => /^(לא|no|false|0)$/i.test(v(row, 'מוצג'));
+
+export function settingsMap(rows = []) {
+  const m = {};
+  rows.forEach(row => {
+    const key = v(row, 'key', 'מפתח');
+    const value = row.value ?? row['ערך'] ?? '';
+    if (key && String(value).trim() !== '') m[key] = String(value) === EMPTY_MARK ? '' : String(value);
+  });
+  return m;
+}
+
+export function rowToProduct(row) {
   const emojiKey = Object.keys(row).find(k => k.includes('אמוג'));
-  const rawPrice = (row['מחיר'] || '').trim();
-  const rawPriceNote = (row['הערת מחיר'] || '').trim();
-  const price = rawPrice ? Number(rawPrice) : 0;
-
-  // אם יש מחיר – הוא תמיד גובר. הערת מחיר רלוונטית רק כשאין מחיר.
-  const priceNote = price > 0 ? '' : (rawPriceNote || 'מחיר לפי הצעה');
-
+  const rawPrice = v(row, 'מחיר');
+  const price = rawPrice ? Number(rawPrice) || 0 : 0;
+  const rawNote = v(row, 'הערת מחיר');
+  const noPrice = price <= 0 && rawNote === NO_PRICE;
+  const priceNote = price > 0 || noPrice ? '' : rawNote;
+  const stockKey = Object.keys(row).find(k => k.trim() === 'כמות_במלאי');
   return {
-    id:          (row['מזהה'] || '').trim()    || String(Math.random()),
-    category:    (row['קטגוריה'] || '').trim() || '',
-    name:        (row['שם'] || '').trim()       || '',
-    description: (row['תיאור'] || '').trim()    || '',
+    id: v(row, 'מזהה') || String(row._row),
+    category: v(row, 'קטגוריה'),
+    name: v(row, 'שם'),
+    description: v(row, 'תיאור'),
     price,
     priceNote,
-    emoji:       (emojiKey && row[emojiKey].trim()) || '🎁',
-    images:      [row['תמונה1'], row['תמונה2'], row['תמונה3'], row['תמונה4']].filter(Boolean),
-    _debug_keys: Object.keys(row).join('|'),
-    _debug_img: row['תמונה1'],
-    dealQty:     row['מבצע_כמות']   ? Number(row['מבצע_כמות'])   : null,
-    dealPrice:   row['מבצע_מחיר']   ? Number(row['מבצע_מחיר'])   : null,
-    dealLabel:   (row['תיאור_מבצע'] || '').trim() || null,
-    dealGroup:   (row['שם_מבצע']    || '').trim() || null,
-    dealType:    (row['סוג_מבצע']   || '').trim() || null,
-    stock:       (() => { const k = Object.keys(row).find(k => k.trim() === 'כמות_במלאי'); return k && row[k] !== '' ? Number(row[k]) : null; })(),
+    noPrice,
+    emoji: (emojiKey && String(row[emojiKey]).trim()) || '',
+    images: [row['תמונה1'], row['תמונה2'], row['תמונה3'], row['תמונה4']].map(x => (x || '').trim()).filter(Boolean),
+    dealQty: v(row, 'מבצע_כמות') ? Number(v(row, 'מבצע_כמות')) : null,
+    dealPrice: v(row, 'מבצע_מחיר') ? Number(v(row, 'מבצע_מחיר')) : null,
+    dealLabel: v(row, 'תיאור_מבצע') || null,
+    dealGroup: v(row, 'שם_מבצע') || null,
+    dealType: v(row, 'סוג_מבצע') || null,
+    stock: stockKey && String(row[stockKey]).trim() !== '' ? Number(row[stockKey]) : null,
+    hidden: isHidden(row),
   };
 }
 
-function rowToWorkshop(row) {
+export function rowToWorkshop(row) {
   const emojiKey = Object.keys(row).find(k => k.includes('אמוג'));
   return {
-    id:          row['מזהה']       || '',
-    label:       row['כותרת']      || '',
-    description: row['תיאור']      || '',
-    details:     row['פרטים']      || '',
-    priceNote:   row['הערת מחיר'] || '',
-    emoji:       (emojiKey && row[emojiKey]) || '✂️',
-    images:      [row['תמונה1'], row['תמונה2'], row['תמונה3'], row['תמונה4']].filter(Boolean),
+    id: v(row, 'מזהה') || String(row._row),
+    label: v(row, 'כותרת'),
+    description: v(row, 'תיאור'),
+    details: v(row, 'פרטים'),
+    priceNote: v(row, 'הערת מחיר'),
+    emoji: (emojiKey && row[emojiKey]) || '✂️',
+    images: [row['תמונה1'], row['תמונה2'], row['תמונה3'], row['תמונה4']].map(x => (x || '').trim()).filter(Boolean),
+    hidden: isHidden(row),
   };
 }
 
-function rowToSetting(row) {
-  // תומך גם בכותרות אנגלית (key/value) וגם עברית (מפתח/ערך)
+export function rowToCategory(row) {
+  const vals = Object.values(row).filter((x, i) => i > 0); // בלי _row
+  const key = v(row, 'מזהה_קטגוריה', 'key', 'מפתח') || String(vals[0] || '').trim();
+  const image = v(row, 'קישור_לתמונה', 'value', 'ערך') || String(vals[1] || '').trim();
+  const label = v(row, 'שם_קטגוריה') || String(vals[2] || '').trim();
   return {
-    key:   row['key']   || row['מפתח'] || '',
-    value: row['value'] || row['ערך']  || '',
+    key, id: key.replace(/^subcat_/, ''), label,
+    image: /^https?:/.test(image) ? image : '',
+    description: v(row, 'תיאור_קטגוריה'),
+    hidden: isHidden(row),
   };
 }
 
-// ─── פונקציות טעינה ציבוריות ────────────────────────────────
-
-// ─── טעינת תמונות קטגוריות ראשיות ─────────────────────────────
-export async function loadPickupPointsFromSheets() {
-  try {
-    const rows = await fetchCSV(SHEETS.pickupPoints);
-    return rows
-      .filter(r => (r['נקודות_מכירה'] || r['נקודת_מכירה'] || Object.values(r)[0] || '').trim())
-      .map(r => ({
-        location: (r['נקודות_מכירה'] || r['נקודת_מכירה'] || Object.values(r)[0] || '').trim(),
-        name: (r['שם'] || Object.values(r)[1] || '').trim(),
-        phone: (r['מספר_פלאפון'] || Object.values(r)[2] || '').trim(),
-      }))
-      .filter(p => p.location);
-  } catch (err) {
-    return [];
-  }
+export function rowToPickup(row) {
+  const vals = Object.values(row).filter((x, i) => i > 0);
+  return {
+    location: v(row, 'נקודות_מכירה', 'נקודת_מכירה') || String(vals[0] || '').trim(),
+    name: v(row, 'שם') || String(vals[1] || '').trim(),
+    phone: v(row, 'מספר_פלאפון') || String(vals[2] || '').trim(),
+  };
 }
 
-export async function loadSubCategoriesFromSheets() {
-  try {
-    const rows = await fetchCSV(SHEETS.categories || SHEETS.settings);
-    const result = {};
-    const order = [];
-    rows.forEach(row => {
-      // תמיכה בשני מבני כותרות: key/value ו-מזהה_קטגוריה/קישור_לתמונה/שם_קטגוריה
-      const key = (row['מזהה_קטגוריה'] || row['key'] || row['מפתח'] || Object.values(row)[0] || '').trim();
-      const image = (row['קישור_לתמונה'] || row['value'] || row['ערך'] || Object.values(row)[1] || '').trim();
-      const label = (row['שם_קטגוריה'] || Object.values(row)[2] || '').trim();
-      if (key && key.startsWith('subcat_')) {
-        const id = key.replace('subcat_', '');
-        result[key] = { image: image.startsWith('http') ? image : '', label, id, key };
-        order.push(key);
-      }
-    });
-    result.__order = order;
-    return result;
-  } catch (err) {
-    return { __order: [] };
-  }
-}
-
-export async function loadContentFromSheets() {
-  try {
-    const rows = await fetchCSV(SHEETS.settings);
-    const content = { ...defaultContent };
-    rows.forEach(row => {
-      const { key, value } = rowToSetting(row);
-      if (key && value) content[key] = value;
-    });
-    return content;
-  } catch (err) {
-    return defaultContent;
-  }
-}
-
-export async function loadProductsFromSheets() {
-  try {
-    const rows = await fetchCSV(SHEETS.products);
-    return rows.filter(r => r['שם']).map(rowToProduct);
-  } catch (err) {
-    return [];
-  }
-}
-
-export async function loadGraphicsFromSheets() {
-  try {
-    const rows = await fetchCSV(SHEETS.graphics);
-    return rows.filter(r => r['שם']).map(rowToProduct);
-  } catch (err) {
-    return [];
-  }
-}
-
-export async function loadWorkshopsFromSheets() {
-  try {
-    const rows = await fetchCSV(SHEETS.workshops);
-    return rows.filter(r => r['כותרת']).map(rowToWorkshop);
-  } catch (err) {
-    return [];
-  }
+/** מהנתונים הגולמיים → מה שהאתר מציג */
+export function deriveSite(raw) {
+  const settings = settingsMap(raw.settings);
+  const content = { ...defaultContent, ...settings };
+  const allCats = (raw.categories || []).map(rowToCategory).filter(c => c.key.startsWith('subcat_'));
+  allCats.forEach(c => { content[c.key] = c.image; });
+  const products = (raw.products || []).filter(r => v(r, 'שם')).map(rowToProduct);
+  return {
+    settings,
+    content,
+    allCats,
+    subCats: allCats.filter(c => c.image && c.label && !c.hidden),
+    products: products.filter(p => !p.hidden),
+    pickupPoints: (raw.pickup || []).map(rowToPickup).filter(p => p.location),
+  };
 }

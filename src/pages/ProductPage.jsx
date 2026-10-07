@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import { useNavigate } from 'react-router-dom';
+import { Pencil } from 'lucide-react';
+import { T } from '../edit/T';
+import { useEdit } from '../edit/EditContext';
+import { track } from '../lib/api';
 
 export default function ProductPage({ productOverride } = {}) {
- const { pageData, navigate, addToCart, content, formatPrice } = useApp();
+ const { pageData, navigate, addToCart, t, formatPrice } = useApp();
+ const ed = useEdit();
+ const rnav = useNavigate();
   const fmt = formatPrice || ((n) => Number.isInteger(n) ? n : parseFloat(n.toFixed(1)));
  const product = productOverride || pageData;
  const fromSubCat = product?._fromSubCategory;
@@ -11,11 +18,12 @@ export default function ProductPage({ productOverride } = {}) {
  const [activeImg, setActiveImg] = useState(0);
  const [animating, setAnimating] = useState(false);
 
+ React.useEffect(() => { if (product?.id) track('viewProduct', { id: product.id, name: product.name }); }, [product?.id]);
  if (!product) return null;
 
  const price = Number(product.price);
  const hasPrice = price > 0;
- const priceDisplay = hasPrice ? `₪${price}` : product.priceNote || 'מחיר לפי הצעה';
+ const priceDisplay = hasPrice ? `₪${price}` : product.priceNote || t('product.price_note');
  const imgs = product.images?.filter(Boolean) || [];
 
  const switchImage = (i) => {
@@ -30,6 +38,7 @@ export default function ProductPage({ productOverride } = {}) {
  const stock = product.stock; // null = unlimited
  const outOfStock = stock !== null && stock <= 0;
  const maxQty = stock !== null ? stock : 999;
+ const lowFrom = Number(t('product.low_stock_from')) || 5;
  const handleAdd = () => {
    if (outOfStock) return;
    addToCart(product, qty);
@@ -50,7 +59,7 @@ export default function ProductPage({ productOverride } = {}) {
  <div style={{ maxWidth: '900px', margin: '0 auto', padding: '28px 28px 80px' }}>
  {/* כפתור חזרה */}
  <div style={{ display: 'flex', justifyContent: 'flex-end', direction: 'ltr', marginBottom: '26px' }}>
- <button className="back-btn" onClick={() => navigate('products', fromSubCat ? { subCategory: fromSubCat } : undefined)}>→ חזרה למוצרים</button>
+ <button className="back-btn" onClick={() => navigate('products', fromSubCat ? { subCategory: fromSubCat } : undefined)}><T k="product.back" /></button>
  </div>
 
  <div className="product-layout" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '44px', alignItems: 'start' }}>
@@ -97,16 +106,19 @@ export default function ProductPage({ productOverride } = {}) {
 
  {/* עמודת מידע */}
  <div>
+ {ed?.editMode && (
+ <button className="a-btn amber sm" style={{ marginBottom: 12 }} onClick={() => rnav(`/admin/catalog?tab=products&edit=${encodeURIComponent(product.id)}`)}><Pencil size={14} /> עריכת המוצר (שם, מחיר, תמונות, תיאור)</button>
+ )}
  <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px,4vw,34px)', fontWeight: '900', color: 'var(--rose)', lineHeight: '1.2', marginBottom: '14px' }}>
  {product.name}
  </h1>
  <div className="price-deal-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
  <div style={{ fontSize: '32px', fontWeight: '800', color: hasPrice ? 'var(--amber)' : 'var(--rose)', fontFamily: 'Heebo, sans-serif' }}>
- {priceDisplay}
+ {product.noPrice ? '' : priceDisplay}
  </div>
  {product.dealQty && product.dealPrice && (
  <div style={{ background: 'var(--grad-amber)', borderRadius: '8px', padding: '4px 10px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
- <span style={{ color: 'white', fontSize: '11px', fontWeight: '800' }}>מבצע!</span>
+ <span style={{ color: 'white', fontSize: '11px', fontWeight: '800' }}><T k="product.deal_badge" /></span>
  <span style={{ color: 'white', fontSize: '11px', fontWeight: '600' }}>{product.dealLabel || `${product.dealQty}×₪${product.dealPrice}`}</span>
  </div>
  )}
@@ -125,13 +137,13 @@ export default function ProductPage({ productOverride } = {}) {
          style={{ opacity: qty >= maxQty ? 0.35 : 1, cursor: qty >= maxQty ? 'not-allowed' : 'pointer' }}>+</button>
      </div>
      <button className="btn-primary" onClick={handleAdd} disabled={outOfStock}
-       style={{ flex: 1, background: outOfStock ? '#ccc' : added ? 'linear-gradient(135deg,#C0A0BC,#A885A8)' : 'var(--grad-rose)', cursor: outOfStock ? 'not-allowed' : 'pointer' }}>
-       {outOfStock ? 'אזל מהמלאי' : added ? ' נוסף לסל!' : 'הוספה לסל'}
+       style={{ flex: 1, background: outOfStock ? '#ccc' : added ? 'var(--rose-header, linear-gradient(135deg,#C0A0BC,#A885A8))' : 'var(--grad-rose)', cursor: outOfStock ? 'not-allowed' : 'pointer' }}>
+       {outOfStock ? <T k="product.out" /> : added ? <T k="product.added" /> : <T k="product.add" />}
      </button>
    </div>
-   {stock !== null && stock > 0 && (stock <= 5 || qty >= stock) && (
+   {stock !== null && stock > 0 && (stock <= lowFrom || qty >= stock) && (
      <p style={{ fontSize: '12px', color: 'var(--amber)', fontWeight: '600', margin: '0', textAlign: 'right' }}>
-       {stock <= 5 ? `⚠️ נשארו רק ${stock} במלאי` : `הגעת למקסימום הזמין (${stock})`}
+       {stock <= lowFrom ? <T k="product.low_stock" vars={{ n: stock }} /> : <T k="product.max_stock" vars={{ n: stock }} />}
      </p>
    )}
  </div>
