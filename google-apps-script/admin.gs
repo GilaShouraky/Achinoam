@@ -31,7 +31,7 @@ var EXTRA = {
   views:  { name: 'צפיות במוצרים', headers: ['מזהה', 'שם', 'צפיות'] },
 };
 var DRIVE_FOLDER = 'תמונות לאתר אחינועם';
-var SCRIPT_VERSION = '1.0';
+var SCRIPT_VERSION = '1.1';
 
 /* ─────────────────────────── כניסה ─────────────────────────── */
 
@@ -194,6 +194,7 @@ function getAll() {
   Object.keys(SHEETS).forEach(function (k) {
     try {
       var sh = sheetOf(k);
+      if (k === 'products') { try { withLock(function () { fillIds(sh, 'מזהה', 'שם'); return {}; }); } catch (e2) {} }
       res.data[k] = readRows(sh);
       res.info[k] = { name: sh.getName(), rows: res.data[k].length, headers: headersOf(sh), ok: true };
     } catch (e) {
@@ -265,15 +266,39 @@ function nextId(sh, col) {
   return String(max + 1);
 }
 
-/** שמירת שורה לפי מזהה. אם אין מזהה – נוצרת שורה חדשה */
+/** נותן מזהה לכל שורה שיש בה שם ואין לה מזהה (כדי שעריכה תעדכן ולא תשכפל) */
+function fillIds(sh, col, nameCol) {
+  var h = ensureHeaders(sh, [col]);
+  var c = h.indexOf(col), n = h.indexOf(nameCol);
+  var lr = sh.getLastRow();
+  if (c === -1 || n === -1 || lr < 2) return 0;
+  var vals = sh.getRange(2, 1, lr - 1, h.length).getValues();
+  var max = 0;
+  vals.forEach(function (r) { var x = Number(r[c]); if (String(r[c]).trim() !== '' && !isNaN(x) && x > max) max = x; });
+  var added = 0;
+  vals.forEach(function (r, i) {
+    if (String(r[n]).trim() !== '' && String(r[c]).trim() === '') { max++; sh.getRange(i + 2, c + 1).setValue(max); added++; }
+  });
+  return added;
+}
+
+/** שמירת שורה לפי מזהה. אם אין מזהה – נוצרת שורה חדשה.
+ *  rowNum: מספר השורה בגיליון, לשורה קיימת שעוד אין לה מזהה (מעדכנים אותה במקום להוסיף) */
 function saveRow(d) {
   var sh = sheetOf(d.sheet);
   var col = d.idCol;
   var row = d.row || {};
   var h = ensureHeaders(sh, Object.keys(row).concat([col]));
   var isNew = !row[col];
+  var r = -1;
+  if (isNew && d.rowNum && Number(d.rowNum) >= 2 && Number(d.rowNum) <= sh.getLastRow()) {
+    var cur = sh.getRange(Number(d.rowNum), 1, 1, h.length).getValues()[0];
+    var nameIdx = h.indexOf('שם');
+    var sameName = nameIdx === -1 || String(cur[nameIdx]).trim() === String(d.oldName || '').trim();
+    if (sameName && String(cur[h.indexOf(col)]).trim() === '') { r = Number(d.rowNum); isNew = false; row[col] = nextId(sh, col); }
+  }
   if (isNew) row[col] = d.newId || nextId(sh, col);
-  var r = isNew ? -1 : findRow(sh, col, row[col]);
+  if (r === -1) r = isNew ? -1 : findRow(sh, col, row[col]);
   var line;
   if (r === -1) {
     line = h.map(function (k) { return row[k] === undefined ? '' : row[k]; });

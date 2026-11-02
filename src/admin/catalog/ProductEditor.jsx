@@ -124,7 +124,7 @@ export default function ProductEditor({ sheet, row, cats, defaultCat, onClose, o
       }
       IMG_COLS.forEach((c, i) => { out[c] = images[i] || ''; });
       if (id) out['מזהה'] = id;
-      const newId = await ops.saveRow(sheet, out);
+      const newId = await ops.saveRow(sheet, out, !id && row ? { rowNum: row._row, oldName: row['שם'] } : {});
       const pid = String(newId || id);
       if (sheet === 'products') {
         const extra = {};

@@ -110,10 +110,15 @@ function ProductsTab({ sheet }) {
   const counts = {};
   rows.forEach(({ p }) => { counts[p.category] = (counts[p.category] || 0) + 1; });
   const orphan = rows.filter(({ p }) => !cats.some(c => c.id === p.category)).length;
+  const nameCount = {};
+  rows.forEach(({ p }) => { const k = p.name.trim(); nameCount[k] = (nameCount[k] || 0) + 1; });
+  const isDup = (p) => nameCount[p.name.trim()] > 1;
+  const dupCount = rows.filter(({ p }) => isDup(p)).length;
   const term = q.trim();
-  const list = rows.filter(({ p, miss }) => (cat === 'all' || (cat === '_missing' ? miss.length > 0 : cat === '_none' ? !cats.some(c => c.id === p.category) : p.category === cat))
-    && (!term || [p.name, p.description, p.id].some(x => String(x).includes(term))));
-  const canMove = !['all', '_none', '_missing'].includes(cat) && !term;
+  const list = rows.filter(({ p, miss }) => (cat === 'all' || (cat === '_dup' ? isDup(p) : cat === '_missing' ? miss.length > 0 : cat === '_none' ? !cats.some(c => c.id === p.category) : p.category === cat))
+    && (!term || [p.name, p.description, p.id].some(x => String(x).includes(term))))
+    .sort(cat === '_dup' ? (a, b) => a.p.name.localeCompare(b.p.name, 'he') : () => 0);
+  const canMove = !['all', '_none', '_missing', '_dup'].includes(cat) && !term;
   const move = (i, d) => {
     const a = list[i], b = list[i + d];
     if (!a || !b) return;
@@ -134,6 +139,7 @@ function ProductsTab({ sheet }) {
         {missingCount > 0 && <button className={`chip miss${cat === '_missing' ? ' on' : ''}`} onClick={() => setCat('_missing')}>חסרים פרטים<i>{missingCount}</i></button>}
         <button className={`chip${cat === 'all' ? ' on' : ''}`} onClick={() => setCat('all')}>הכול<i>{rows.length}</i></button>
         {cats.map(c => (counts[c.id] || cat === c.id) ? <button key={c.id} className={`chip${cat === c.id ? ' on' : ''}`} onClick={() => setCat(c.id)}>{c.label}<i>{counts[c.id] || 0}</i></button> : null)}
+        {dupCount > 0 && <button className={`chip miss${cat === '_dup' ? ' on' : ''}`} onClick={() => setCat('_dup')}>כפולים<i>{dupCount}</i></button>}
         {orphan > 0 && <button className={`chip${cat === '_none' ? ' on' : ''}`} onClick={() => setCat('_none')}>בלי קטגוריה<i>{orphan}</i></button>}
       </div>
       {canMove && list.length > 1 && <p className="small muted" style={{ margin: '-4px 2px 8px' }}>החצים משנים את הסדר בעמוד הקטגוריה.</p>}
@@ -155,16 +161,17 @@ function ProductsTab({ sheet }) {
                   {p.stock !== null && p.stock <= 0 && <span className="badge b-bad">אזל</span>}
                   {p.stock !== null && p.stock > 0 && p.stock <= 3 && <span className="badge b-amber">נשארו {p.stock}</span>}
                   {p.dealQty && p.dealPrice ? <span className="badge b-amber">{p.dealQty} ב־{p.dealPrice}</span> : null}
+                  {isDup(p) && <span className="badge b-bad">כפול</span>}
                   {isFeat && <span className="badge b-ok"><Star size={11} /> נבחר</span>}
                 </span></span>
             </button>
-            <span className="swl"><Switch checked={!p.hidden} onChange={(v) => run(() => ops.saveRow(sheet, { 'מזהה': p.id, 'מוצג': v ? '' : 'לא' }), v ? 'מוצג באתר ✓' : 'הוסתר מהאתר')} />מוצג</span>
+            <span className="swl"><Switch checked={!p.hidden} onChange={(v) => run(() => (r['מזהה'] ? ops.saveRow(sheet, { 'מזהה': r['מזהה'], 'מוצג': v ? '' : 'לא' }) : ops.saveRow(sheet, { 'מוצג': v ? '' : 'לא' }, { rowNum: r._row, oldName: r['שם'] })), v ? 'מוצג באתר ✓' : 'הוסתר מהאתר')} />מוצג</span>
           </div>
         );
       })}
       {!list.length && <div className="empty"><Package size={40} /><div>{term ? 'לא נמצאו מוצרים' : 'אין מוצרים כאן עדיין'}</div></div>}
       {editing && <ProductEditor sheet={sheet} row={editing === 'new' ? null : editing} cats={cats}
-        defaultCat={!['all', '_none', '_missing'].includes(cat) ? cat : ''} onClose={() => setEditing(null)} onSaved={(m) => ed.showToast(m)} />}
+        defaultCat={!['all', '_none', '_missing', '_dup'].includes(cat) ? cat : ''} onClose={() => setEditing(null)} onSaved={(m) => ed.showToast(m)} />}
     </div>
   );
 }

@@ -110,9 +110,11 @@ export function AppProvider({ children }) {
       async saveRow(sheet, row, opts = {}) {
         const idCol = idColOf(sheet);
         const before = rawRef.current;
-        const isNew = !row[idCol];
-        if (!isNew) patchRaw(sheet, rows => rows.map(r => (String(r[idCol]) === String(row[idCol]) ? { ...r, ...row } : r)));
-        const res = await guard(() => call('saveRow', { sheet, idCol, row, position: opts.position, newId: opts.newId }), before);
+        const byRow = !row[idCol] && opts.rowNum;   // שורה קיימת שאין לה מזהה
+        const isNew = !row[idCol] && !byRow;
+        if (!isNew && !byRow) patchRaw(sheet, rows => rows.map(r => (String(r[idCol]) === String(row[idCol]) ? { ...r, ...row } : r)));
+        const res = await guard(() => call('saveRow', { sheet, idCol, row, position: opts.position, newId: opts.newId, rowNum: opts.rowNum, oldName: opts.oldName }), before);
+        if (byRow) patchRaw(sheet, rows => rows.map(r => (r._row === opts.rowNum ? { ...r, ...row, [idCol]: res.id } : r)));
         if (isNew) {
           const full = { ...row, [idCol]: res.id };
           patchRaw(sheet, rows => (opts.position === 'top' ? [full, ...rows] : [...rows, full]));
