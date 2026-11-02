@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
 import { categories } from '../data/products';
+import { T } from '../edit/T';
 
 const subCatVisuals = {
  pesach: { emoji: '', bg: 'linear-gradient(145deg, #F5E8E8, #EDD0D0)' },
@@ -19,19 +20,19 @@ const subCatVisuals = {
 };
 
 const catMeta = {
- products: { title: 'המוצרים שלי', color: 'var(--rose)', grad: 'var(--grad-rose)', headerBg: 'linear-gradient(135deg, #C0A0BC, #A885A8)', targetPage: 'products' },
- graphics: { title: 'עבודות גרפיקה', color: 'var(--slate)', grad: 'var(--grad-slate)', headerBg: 'linear-gradient(135deg, #8AB4CC, #6E9EBA)', targetPage: 'graphics' },
- workshops: { title: 'סדנאות אומנות', color: 'var(--amber)', grad: 'var(--grad-amber)', headerBg: 'linear-gradient(135deg, #C8A840, #B09030)', targetPage: 'workshops' },
+ products: { titleKey: 'page.products_title', color: 'var(--rose)', grad: 'var(--grad-rose)', headerBg: 'linear-gradient(135deg, #C0A0BC, #A885A8)', targetPage: 'products' },
+ graphics: { titleKey: 'page.graphics_title', color: 'var(--slate)', grad: 'var(--grad-slate)', headerBg: 'linear-gradient(135deg, #8AB4CC, #6E9EBA)', targetPage: 'graphics' },
+ workshops: { titleKey: 'workshops_title', color: 'var(--amber)', grad: 'var(--grad-amber)', headerBg: 'linear-gradient(135deg, #C8A840, #B09030)', targetPage: 'workshops' },
 };
 
 export default function CategoryPage({ catKeyOverride } = {}) {
- const { navigate, pageData, workshops, content, products } = useApp();
+ const { navigate, pageData, workshops, content, products, subCats } = useApp();
  const catKey = catKeyOverride || pageData || 'products';
  const meta = catMeta[catKey] || catMeta.products;
 
  const allSubs = catKey === 'workshops'
  ? (workshops || []).map(w => ({ id: w.id, label: w.label }))
- : (categories[catKey]?.subCategories || []);
+ : catKey === 'products' && subCats.length ? subCats : (categories[catKey]?.subCategories || []);
 
  // סנן קטגוריות ריקות (רק במוצרים)
  const subs = catKey === 'products'
@@ -56,11 +57,11 @@ export default function CategoryPage({ catKeyOverride } = {}) {
  }}>
  <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '200px', height: '200px', background: 'rgba(255,255,255,0.12)', borderRadius: '50%', filter: 'blur(50px)' }} />
  <div style={{ position: 'absolute', top: '14px', right: '16px', zIndex: 2 }}>
- <button className="back-btn" onClick={() => navigate('home')}>→ חזרה לדף הבית</button>
+ <button className="back-btn" onClick={() => navigate('home')}><T k="common.back_home" /></button>
  </div>
  <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', marginTop: '40px' }}>
  <h1 className="page-main-title" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(26px,5vw,40px)', fontWeight: '900', color: 'white', textShadow: '0 2px 10px rgba(0,0,0,0.12)', margin: 0 }}>
- {meta.title}
+ <T k={meta.titleKey} />
  </h1>
  </div>
  </div>

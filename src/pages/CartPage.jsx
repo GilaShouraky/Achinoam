@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useApp } from '../context/AppContext';
+import { T } from '../edit/T';
+import { ORDERS_SCRIPT_URL as SHEETS_URL } from '../config';
 
 const DELIVERY_COST = 38;
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwmJ7b0E2NiuntAbE1XGk8UGGCarLNMsP3yPVN_n8wJXIhTljCZmTGj28A6zspRpdCP/exec';
 
 export default function CartPage() {
-  const { cart, removeFromCart, updateQuantity, clearCart, cartTotal, cartSavings, calcItemTotal, calcItemSaving, navigate, content, pickupPoints = [], formatPrice } = useApp();
+  const { cart, removeFromCart, updateQuantity, clearCart, cartTotal, cartSavings, calcItemTotal, calcItemSaving, navigate, t, pickupPoints = [], formatPrice } = useApp();
+  const PAY_METHODS = [t('pay.paybox_name'), t('pay.bank_name')];
   const fmt = formatPrice || ((n) => Number.isInteger(n) ? n : parseFloat(n.toFixed(1)));
 
   const [showPopup, setShowPopup] = useState(false);
@@ -47,10 +49,10 @@ export default function CartPage() {
       if (data.secure_url) {
         setField('receiptLink', data.secure_url);
       } else {
-        setUploadError('ההעלאה נכשלה, נסי שוב');
+        setUploadError(t('order.upload_error'));
       }
     } catch {
-      setUploadError('ההעלאה נכשלה, נסי שוב');
+      setUploadError(t('order.upload_error'));
     }
     setUploading(false);
   };
@@ -159,8 +161,8 @@ export default function CartPage() {
       : '';
     const paymentLine = `\n\n💳 תשלום: ${form.paymentMethod}\nאסמכתא: ${form.receiptLink}`;
     const orderNotesLine = form.orderNotes ? `\n\n📝 הערות להזמנה: ${form.orderNotes}` : '';
-    const msg = `היי! אני רוצה להזמין:\n${items}${savings}\n\nסה"כ לתשלום: ₪${totalWithDelivery}\n\n👤 שם: ${form.name}\n📞 טלפון: ${form.phone}\n\n🚚 אופן קבלה: ${deliveryLabel}${deliveryDetails}${paymentLine}${orderNotesLine}`;
-    return `https://wa.me/${content.whatsapp_number}?text=${encodeURIComponent(msg)}`;
+    const msg = `${t('order.wa_intro')}\n${items}${savings}\n\nסה"כ לתשלום: ₪${totalWithDelivery}\n\n👤 שם: ${form.name}\n📞 טלפון: ${form.phone}\n\n🚚 אופן קבלה: ${deliveryLabel}${deliveryDetails}${paymentLine}${orderNotesLine}`;
+    return `https://wa.me/${t('whatsapp_number')}?text=${encodeURIComponent(msg)}`;
   };
 
   const inp = (err) => ({
@@ -175,17 +177,17 @@ export default function CartPage() {
   if (!cart.length) return (
     <div className="fade-in" style={{ textAlign: 'center', padding: '100px 28px' }}>
       <div style={{ fontSize: '58px', marginBottom: '18px', animation: 'float 3s ease-in-out infinite' }}>🛒</div>
-      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '26px', color: 'var(--rose)', marginBottom: '10px' }}>הסל ריק</h2>
-      <p style={{ color: 'var(--light)', marginBottom: '26px' }}>עדיין לא הוספת מוצרים לסל</p>
-      <button className="btn-primary" onClick={() => navigate('category', 'products')}>לצפייה במוצרים ←</button>
+      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '26px', color: 'var(--rose)', marginBottom: '10px' }}><T k="cart.empty_title" /></h2>
+      <p style={{ color: 'var(--light)', marginBottom: '26px' }}><T k="cart.empty_text" /></p>
+      <button className="btn-primary" onClick={() => navigate('products')}><T k="cart.empty_btn" /></button>
     </div>
   );
 
   return (
     <div className="fade-in">
       <div className="page-header">
-        <button className="back-btn" onClick={() => navigate('home')}>→ חזרה לקנייה</button>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '42px', color: 'var(--rose)', fontWeight: '900', marginTop: '12px', textAlign: 'center', width: '100%' }}>סל הקניות</h1>
+        <button className="back-btn" onClick={() => navigate('home')}><T k="cart.back" /></button>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '42px', color: 'var(--rose)', fontWeight: '900', marginTop: '12px', textAlign: 'center', width: '100%' }}><T k="cart.title" /></h1>
       </div>
       <div style={{ maxWidth: '680px', margin: '32px auto 78px', padding: '0 28px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
@@ -197,7 +199,7 @@ export default function CartPage() {
               <div key={item.id} className="cart-item" style={{ background: 'var(--warm-white)', border: `1px solid ${hasDeal ? '#D4A84060' : 'var(--border-light)'}`, borderRadius: '16px', padding: '18px 22px', display: 'flex', alignItems: 'center', gap: '24px', position: 'relative' }}>
                 {hasDeal && (
                   <div style={{ position: 'absolute', top: '-10px', right: '16px', background: 'var(--grad-amber)', color: 'white', fontSize: '11px', fontWeight: '700', padding: '3px 10px', borderRadius: '20px', boxShadow: '0 2px 8px rgba(196,134,26,0.3)' }}>
-                    {item.dealLabel || 'מבצע!'}
+                    {item.dealLabel || <T k="product.deal_badge" />}
                   </div>
                 )}
                 <div className="cart-item-img" style={{ width: '120px', height: '120px', background: 'var(--cream)', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px', flexShrink: 0, overflow: 'hidden' }}>
@@ -211,7 +213,7 @@ export default function CartPage() {
                         <>
                           <span className="cart-price" style={{ fontSize: '18px', color: 'var(--amber)', fontWeight: '800' }}>₪{fmt(itemTotal)}</span>
                           <span style={{ fontSize: '12px', color: 'var(--light)', textDecoration: 'line-through' }}>₪{fmt(Number(item.price) * item.quantity)}</span>
-                          <span style={{ fontSize: '13px', color: '#25A85A', fontWeight: '700' }}>חסכת ₪{fmt(saving)}</span>
+                          <span style={{ fontSize: '13px', color: '#25A85A', fontWeight: '700' }}><T k="cart.saved_item" vars={{ n: fmt(saving) }} /></span>
                         </>
                       ) : (
                         <span className="cart-price" style={{ fontSize: '18px', color: 'var(--amber)', fontWeight: '800' }}>₪{fmt(itemTotal)}</span>
@@ -237,17 +239,17 @@ export default function CartPage() {
         <div style={{ background: 'var(--warm-white)', border: '1px solid var(--border-light)', borderRadius: '18px', padding: '26px', boxShadow: 'var(--shadow-sm)' }}>
           {cartSavings > 0 && (
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', background: '#F0FAF4', borderRadius: '10px', padding: '10px 14px' }}>
-              <span style={{ fontSize: '14px', color: '#25A85A', fontWeight: '600' }}>🎉 חסכת במבצעים:</span>
+              <span style={{ fontSize: '14px', color: '#25A85A', fontWeight: '600' }}><T k="cart.saved_total" /></span>
               <span style={{ fontSize: '16px', color: '#25A85A', fontWeight: '800' }}>₪{fmt(cartSavings)}</span>
             </div>
           )}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
-            <span style={{ fontSize: '15px', color: 'var(--mid)' }}>סה"כ לתשלום:</span>
+            <span style={{ fontSize: '15px', color: 'var(--mid)' }}><T k="cart.total" /></span>
             <span style={{ fontFamily: 'var(--font-body)', fontSize: '22px', fontWeight: '800', color: 'var(--amber)' }}>₪{fmt(cartTotal)}</span>
           </div>
           <button className="btn-whatsapp" onClick={() => setShowPopup(true)}
             style={{ width: '100%', borderRadius: '12px', fontSize: '15px', padding: '15px', border: 'none', cursor: 'pointer' }}>
-            סיימתי, אני רוצה להמשיך
+            <T k="cart.continue" />
           </button>
         </div>
       </div>
@@ -258,37 +260,36 @@ export default function CartPage() {
           onClick={e => { if (e.target === e.currentTarget) setShowPopup(false); }}>
           <div className="order-popup-inner" style={{ background: 'white', borderRadius: '20px', padding: '28px 24px', maxWidth: '480px', width: '100%', maxHeight: '75vh', overflowY: 'auto', scrollbarWidth: 'thin', scrollbarColor: '#d4c4b8 transparent', direction: 'rtl', boxShadow: '0 20px 60px rgba(0,0,0,0.2)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: 'var(--rose)', margin: 0 }}>רק עוד כמה פרטים אחרונים</h2>
+              <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: 'var(--rose)', margin: 0 }}><T k="order.title" /></h2>
               <button onClick={() => setShowPopup(false)} style={{ background: 'none', border: 'none', fontSize: '22px', cursor: 'pointer', color: 'var(--light)', lineHeight: 1 }}>✕</button>
             </div>
 
             <div style={row}>
-              <label style={lbl}>שם מלא *</label>
+              <label style={lbl}><T k="order.name" /></label>
               <input style={inp(errors.name)} value={form.name} onChange={e => setField('name', e.target.value)} />
             </div>
             <div style={row}>
-              <label style={lbl}>מספר פלאפון *</label>
+              <label style={lbl}><T k="order.phone" /></label>
               <input style={inp(errors.phone)} value={form.phone} onChange={e => setField('phone', e.target.value)} type="tel" />
             </div>
             <div style={row}>
-              <label style={lbl}>מייל *</label>
+              <label style={lbl}><T k="order.email" /></label>
               <input style={inp(errors.email)} value={form.email} onChange={e => setField('email', e.target.value)} type="email" />
             </div>
 
-            <div style={secTitle}>איך אני רוצה לקבל את ההזמנה שלי?</div>
-            {errors.delivery && <p style={{ color: '#e74c3c', fontSize: '12px', margin: '-8px 0 10px' }}>יש לבחור אופן קבלה</p>}
+            <div style={secTitle}><T k="order.delivery_title" /></div>
+            {errors.delivery && <p style={{ color: '#e74c3c', fontSize: '12px', margin: '-8px 0 10px' }}><T k="order.delivery_error" /></p>}
 
             <div style={{ background: '#fff8ee', border: '1.5px solid var(--amber)', borderRadius: '12px', padding: '10px 14px', marginBottom: '12px', fontSize: '12px', color: 'var(--dark)', direction: 'rtl', lineHeight: 1.7, fontWeight: '600' }}>
-              ⚠️ חשוב! יש לוודא מלאי עם נקודת המכירה לפני התשלום.<br/>
-              למוצרים בעיצוב אישי – כתבו לי בווצאפ: אחינועם 054-8838607
+              <T k="order.notice" />
             </div>
             {[
               ...(pickupPoints.length > 0
                 ? pickupPoints.map(p => ({
                     val: p.location.replace(/\s+/g, '_').replace(/'/g, ''),
-                    label: `נק' מכירה ${p.location}${p.name ? ` – ${p.name}` : ''}${p.phone ? ` ${p.phone}` : ''}`,
+                    label: `${t('order.pickup_prefix')} ${p.location}${p.name ? ` – ${p.name}` : ''}${p.phone ? ` ${p.phone}` : ''}`,
                   }))
-                : [{ val: 'beitshemesh', label: "איסוף מבית שמש – רחוב התבור" }]
+                : [{ val: 'beitshemesh', label: t('order.pickup_fallback') }]
               ),
 
             ].map(opt => (
@@ -348,16 +349,16 @@ export default function CartPage() {
 
             {/* הערות להזמנה */}
             <div style={{ marginTop: '16px', marginBottom: '4px' }}>
-              <label style={lbl}>הערות להזמנה (לדוגמא אם אתם רוצים לארוז את המתנה בכמה שקיות נפרדות 🛍️)</label>
+              <label style={lbl}><T k="order.notes" /></label>
               <textarea style={{ ...inp(false), resize: 'vertical', minHeight: '72px' }} value={form.orderNotes} onChange={e => setField('orderNotes', e.target.value)} />
             </div>
 
             {/* תשלום */}
             <div style={{ marginTop: '20px', marginBottom: '16px' }}>
-              <div style={{ ...secTitle, marginBottom: '10px' }}>איך אני משלמת? *</div>
-              {errors.paymentMethod && <p style={{ color: '#e74c3c', fontSize: '12px', margin: '-4px 0 8px' }}>יש לבחור אמצעי תשלום</p>}
+              <div style={{ ...secTitle, marginBottom: '10px' }}><T k="order.pay_title" /></div>
+              {errors.paymentMethod && <p style={{ color: '#e74c3c', fontSize: '12px', margin: '-4px 0 8px' }}><T k="order.pay_error" /></p>}
               <div style={{ display: 'flex', gap: '10px', marginBottom: '14px' }}>
-                {['פייבוקס', 'העברה בנקאית'].map(method => (
+                {PAY_METHODS.map(method => (
                   <label key={method} style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '8px', padding: '12px 14px', borderRadius: '12px', border: `1.5px solid ${form.paymentMethod === method ? 'var(--amber)' : '#e0d6cc'}`, background: form.paymentMethod === method ? '#fff8ee' : 'white', cursor: 'pointer', fontWeight: '600', fontSize: '14px', color: 'var(--dark)' }}>
                     <input type="radio" name="paymentMethod" value={method} checked={form.paymentMethod === method}
                       onChange={() => setField('paymentMethod', method)}
@@ -368,31 +369,22 @@ export default function CartPage() {
               </div>
               {form.paymentMethod && (
                 <div style={{ background: '#fdf8f2', borderRadius: '12px', padding: '12px 14px', marginBottom: '12px', fontSize: '13px', color: 'var(--mid)', lineHeight: 1.7 }}>
-                  {form.paymentMethod === 'פייבוקס' && <>
-                    העבירי את הסכום לנייד <strong style={{ color: 'var(--rose)' }}>054-8838607</strong> דרך פייבוקס
-                  </>}
-                  {form.paymentMethod === 'העברה בנקאית' && <>
-                    <strong style={{ color: 'var(--rose)', display: 'block', marginBottom: '6px' }}>פרטי בנק להעברה בנקאית:</strong>
-                    אחינועם הר כוכב<br/>
-                    ת.ז/ח.פ 315210989<br/>
-                    בנק יהב 04<br/>
-                    סניף בית שמש 461<br/>
-                    מס׳ חשבון 24154
-                  </>}
+                  {form.paymentMethod === PAY_METHODS[0] && <span className="pay-note"><T k="pay.paybox_text" vars={{ phone: t('paybox_number') }} /></span>}
+                  {form.paymentMethod === PAY_METHODS[1] && <div className="pay-note"><T k="pay.bank_details" /></div>}
                 </div>
               )}
               <div style={row}>
-                <label style={{ ...lbl, color: errors.receiptLink ? '#e74c3c' : undefined }}>העלאת אסמכתא *</label>
+                <label style={{ ...lbl, color: errors.receiptLink ? '#e74c3c' : undefined }}><T k="order.receipt" /></label>
                 {form.receiptLink ? (
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 14px', borderRadius: '10px', border: '1.5px solid #4caf50', background: '#f0fff4' }}>
                     <span style={{ fontSize: '20px' }}>✅</span>
-                    <span style={{ fontSize: '13px', color: '#2e7d32', flex: 1 }}>האסמכתא הועלתה בהצלחה</span>
+                    <span style={{ fontSize: '13px', color: '#2e7d32', flex: 1 }}><T k="order.receipt_ok" /></span>
                     <button onClick={() => setField('receiptLink', '')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--light)', fontSize: '16px' }}>✕</button>
                   </div>
                 ) : (
                   <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px', borderRadius: '10px', border: `1.5px dashed ${errors.receiptLink ? '#e74c3c' : '#e0d6cc'}`, cursor: 'pointer', fontSize: '14px', color: 'var(--mid)', background: '#fafafa' }}>
                     <span style={{ fontSize: '20px' }}>📎</span>
-                    {uploading ? 'מעלה...' : 'לחצי להעלאת תמונת אסמכתא'}
+                    {uploading ? <T k="order.uploading" /> : <T k="order.receipt_btn" />}
                     <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => e.target.files[0] && uploadToImgur(e.target.files[0])} disabled={uploading} />
                   </label>
                 )}
@@ -401,7 +393,7 @@ export default function CartPage() {
             </div>
 
             <div style={{ background: '#fdf8f2', borderRadius: '12px', padding: '14px 16px', margin: '20px 0 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontWeight: '700', color: 'var(--mid)', fontSize: '15px' }}>סה"כ לתשלום:</span>
+              <span style={{ fontWeight: '700', color: 'var(--mid)', fontSize: '15px' }}><T k="cart.total" /></span>
               <div style={{ textAlign: 'left' }}>
                 {form.delivery === 'home' && <div style={{ fontSize: '12px', color: 'var(--light)', textAlign: 'right' }}>כולל משלוח ₪{DELIVERY_COST}</div>}
                 <span style={{ fontFamily: 'var(--font-body)', fontSize: '22px', fontWeight: '800', color: 'var(--amber)' }}>₪{fmt(totalWithDelivery)}</span>
@@ -410,7 +402,7 @@ export default function CartPage() {
 
             <button onClick={() => { if (validate()) { saveToSheets(); updateStock(); window.open(buildWhatsapp(), "_blank"); setShowPopup(false); clearCart(); } }} className="btn-whatsapp"
               style={{ width: "100%", borderRadius: "12px", fontSize: "15px", padding: "15px", border: "none", cursor: "pointer", display: "block", textAlign: "center", boxSizing: "border-box" }}>
-              להשלמת ההזמנה בוואטסאפ
+              <T k="order.submit" />
             </button>
           </div>
         </div>

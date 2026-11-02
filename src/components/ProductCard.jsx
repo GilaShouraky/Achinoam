@@ -1,17 +1,22 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Pencil } from 'lucide-react';
+import { T } from '../edit/T';
+import { useEdit } from '../edit/EditContext';
 
-export default function ProductCard({ product, size = 'normal' }) {
- const { navigate } = useApp();
+export default function ProductCard({ product, size = 'normal', preview = false }) {
+ const { navigate, t } = useApp();
+ const ed = useEdit();
+ const rnav = useNavigate();
  const params = useParams();
  const subCat = params?.subCat;
  const isSmall = size === 'small';
- const price = Number(product.price) > 0 ? `₪${Number(product.price)}` : product.priceNote || 'לפי הצעה';
+ const price = Number(product.price) > 0 ? `₪${Number(product.price)}` : product.priceNote || t('product.price_note_short');
  const isPriceFixed = Number(product.price) > 0;
 
  return (
- <div onClick={() => navigate('product', { ...product, _fromSubCategory: subCat || product.category })}
+ <div onClick={() => !preview && navigate('product', { ...product, _fromSubCategory: subCat || product.category })}
  style={{
  background: 'var(--warm-white)',
  border: '1px solid var(--border-light)',
@@ -36,6 +41,11 @@ export default function ProductCard({ product, size = 'normal' }) {
  {product.emoji || ''}
  </div>
  )}
+ {ed?.editMode && !preview && (
+ <div className="card-tools" style={{ top: 'auto', bottom: 9, left: 'auto', right: 9 }}>
+ <button className="lbl" onClickCapture={e => { e.preventDefault(); e.stopPropagation(); rnav(`/admin/catalog?tab=products&edit=${encodeURIComponent(product.id)}`); }}><Pencil size={13} /> עריכת מוצר</button>
+ </div>
+ )}
  {/* תגית מבצע */}
  {product.dealQty && product.dealPrice && (
  <div style={{
@@ -44,18 +54,20 @@ export default function ProductCard({ product, size = 'normal' }) {
  padding: '4px 10px', borderRadius: '20px',
  fontSize: '11px', fontWeight: '800',
  boxShadow: '0 2px 8px rgba(196,134,26,0.35)',
- }}>מבצע! {product.dealLabel || ''}</div>
+ }}><T k="product.deal_badge" /> {product.dealLabel || ''}</div>
  )}
+ {!product.noPrice && (<>
  {/* תג מחיר */}
  <div style={{
  position: 'absolute', bottom: '9px', left: '9px',
- background: isPriceFixed ? 'var(--amber)' : 'rgba(139,90,107,0.82)',
+ background: isPriceFixed ? 'var(--amber)' : 'var(--rose)',
  backdropFilter: 'blur(6px)',
  color: 'white', padding: '5px 12px', borderRadius: '50px',
  fontSize: '13px', fontWeight: '800',
  }}>
  {price}
  </div>
+ </>)}
  </div>
 
  {/* מידע */}

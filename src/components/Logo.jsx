@@ -1,7 +1,8 @@
 import React from 'react';
+import { useImg } from '../edit/T';
 
 export default function Logo({ size = 'normal' }) {
-  const logoUrl = 'https://i.ibb.co/6R35Qkzt/4.png';
+  const logoUrl = useImg('logo_url');
 
   if (size === 'header') {
     return (

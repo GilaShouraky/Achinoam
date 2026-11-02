@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/static/css/main.232bba1d.css",
+    "main.js": "/static/js/main.3b997420.js",
+    "static/css/78.b9b11928.chunk.css": "/static/css/78.b9b11928.chunk.css",
+    "static/js/78.7e23b088.chunk.js": "/static/js/78.7e23b088.chunk.js",
+    "static/media/HKBalerina-Regular.otf": "/static/media/HKBalerina-Regular.4ff721d21678ed757d5d.otf",
+    "index.html": "/index.html",
+    "main.232bba1d.css.map": "/static/css/main.232bba1d.css.map",
+    "main.3b997420.js.map": "/static/js/main.3b997420.js.map",
+    "78.b9b11928.chunk.css.map": "/static/css/78.b9b11928.chunk.css.map",
+    "78.7e23b088.chunk.js.map": "/static/js/78.7e23b088.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.232bba1d.css",
+    "static/js/main.3b997420.js"
+  ]
+}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { T } from '../edit/T';
 
 export default function Accessibility() {
   const [open, setOpen] = useState(false);
@@ -65,7 +66,7 @@ export default function Accessibility() {
       `}</style>
 
       {/* כפתור צף */}
-      <button onClick={() => setOpen(o => !o)} title="תפריט נגישות"
+      <button className="a11y-fab" onClick={() => setOpen(o => !o)} title="תפריט נגישות"
         style={{
           position: 'fixed', bottom: '24px', left: '24px', zIndex: 9990,
           width: '52px', height: '52px', borderRadius: '50%',
@@ -94,13 +95,13 @@ export default function Accessibility() {
           direction: 'rtl', animation: 'a11ySlideUp 0.3s ease',
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '18px', color: 'var(--rose)', margin: 0 }}>נגישות</h3>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '18px', color: 'var(--rose)', margin: 0 }}><T k="a11y.title" /></h3>
             <button onClick={() => setOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', color: 'var(--light)' }}>✕</button>
           </div>
 
           {/* גודל טקסט */}
           <div style={{ background: '#f5f0f2', borderRadius: '10px', padding: '10px 14px', marginBottom: '8px' }}>
-            <p style={{ fontSize: '13px', fontWeight: '600', color: 'var(--mid)', margin: '0 0 8px' }}>גודל טקסט</p>
+            <p style={{ fontSize: '13px', fontWeight: '600', color: 'var(--mid)', margin: '0 0 8px' }}><T k="a11y.font" /></p>
             <div style={{ display: 'flex', gap: '8px' }}>
               {[{val:0,size:'13px'},{val:1,size:'17px'},{val:2,size:'22px'}].map(({val,size}) => (
                 <button key={val} onClick={() => setFontSize(val)} style={{
@@ -115,15 +116,15 @@ export default function Accessibility() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {btn(contrast, () => setContrast(c => !c), 'ניגודיות גבוהה')}
-            {btn(highlight, () => setHighlight(h => !h), 'הדגשת קישורים')}
-            {btn(noAnimations, () => setNoAnimations(a => !a), 'עצירת אנימציות')}
+            {btn(contrast, () => setContrast(c => !c), <T k="a11y.contrast" />)}
+            {btn(highlight, () => setHighlight(h => !h), <T k="a11y.links" />)}
+            {btn(noAnimations, () => setNoAnimations(a => !a), <T k="a11y.anim" />)}
             <button onClick={reset} style={{
               width: '100%', padding: '10px', borderRadius: '10px',
               border: '1.5px solid #e0d6cc', background: 'white',
               color: 'var(--light)', fontFamily: 'var(--font-body)', fontSize: '13px',
               cursor: 'pointer', marginTop: '4px',
-            }}>איפוס הכל</button>
+            }}><T k="a11y.reset" /></button>
           </div>
         </div>
       )}

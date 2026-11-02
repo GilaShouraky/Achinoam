@@ -1,12 +1,11 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
 import Logo from './Logo';
+import { T } from '../edit/T';
 
 const menuItems = [
-  { label: 'דף הבית',       page: 'home'                          },
-  { label: 'המוצרים שלי',   page: 'category', data: 'products'   },
-  // { label: 'עבודות גרפיקה', page: 'category', data: 'graphics'   },
-  // { label: 'סדנאות אומנות', page: 'category', data: 'workshops'  },
+  { k: 'nav.home',     page: 'home'                          },
+  { k: 'nav.products', page: 'category', data: 'products'   },
 ];
 
 export default function Sidebar() {
@@ -39,14 +38,14 @@ export default function Sidebar() {
               onMouseEnter={e => { e.currentTarget.style.background = 'var(--rose-soft)'; e.currentTarget.style.paddingRight = '22px'; }}
               onMouseLeave={e => { e.currentTarget.style.background = 'none'; e.currentTarget.style.paddingRight = '16px'; }}
             >
-              <span style={{ fontSize: '15px', fontWeight: '600', color: 'var(--dark)' }}>{item.label}</span>
+              <span style={{ fontSize: '15px', fontWeight: '600', color: 'var(--dark)' }}><T k={item.k} /></span>
             </button>
           ))}
         </nav>
         <div style={{ padding: '18px 20px', borderTop: '1px solid var(--border-light)' }}>
           <a href={`https://wa.me/${content.whatsapp_number}`} target="_blank" rel="noopener noreferrer"
             className="btn-whatsapp" style={{ width: '100%', borderRadius: '12px', padding: '13px' }}>
-            <span>שלחי הודעה בוואטסאפ</span>
+            <span><T k="nav.whatsapp" /></span>
           </a>
         </div>
       </div>

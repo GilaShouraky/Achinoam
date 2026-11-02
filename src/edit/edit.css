@@ -1,0 +1,96 @@
+/* ═══ מצב עריכה על האתר ═══ */
+.tx-edit { outline: 1.6px dashed #C4861A; outline-offset: 3px; border-radius: 5px; cursor: pointer;
+  background: rgba(250, 236, 200, .55); transition: background .15s; }
+.tx-edit:hover, .tx-edit:focus-visible { background: rgba(250, 226, 160, .8); outline-style: solid; }
+.tx-edit.changed { outline-color: #2E7D4F; background: rgba(227, 242, 233, .8); }
+.tx-edit.changed:hover { background: rgba(205, 235, 215, .95); }
+.tx-edit.empty { opacity: .75; }
+span.tx-edit { display: inline-block; max-width: 100%; position: relative; }
+.tx-hidden { font-size: .8em; font-weight: 400; color: #93600B; font-family: Heebo, sans-serif; }
+.tx-pen { display: inline-flex; align-items: center; justify-content: center; width: 17px; height: 17px; border-radius: 50%;
+  background: #C4861A; color: #fff; position: absolute; top: -10px; inset-inline-end: -10px; z-index: 2; box-shadow: 0 1px 3px rgba(0,0,0,.25); flex: none; font-size: 0; line-height: 1;
+  font-family: Heebo, sans-serif; font-weight: 400; text-shadow: none; }
+.tx-edit.changed .tx-pen { background: #2E7D4F; }
+div.tx-edit { display: block; position: relative; }
+
+.img-edit-btn { position: absolute; z-index: 6; top: 10px; left: 10px; display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(255, 255, 255, .95); color: #2C1F1F; border: none; border-radius: 99px; padding: 6px 12px;
+  font: 700 12.5px Heebo, sans-serif; cursor: pointer; box-shadow: 0 2px 10px rgba(0, 0, 0, .2); white-space: nowrap; }
+.img-edit-btn svg { color: #C4861A; }
+.img-edit-btn:hover { background: #fff; transform: translateY(-1px); }
+
+/* כלים על כרטיסים (קטגוריה / מוצר) */
+.card-tools { position: absolute; z-index: 6; top: 10px; left: 10px; display: flex; gap: 5px; }
+.card-tools button { width: 32px; height: 32px; border-radius: 9px; border: none; background: rgba(255, 255, 255, .95); color: #6B5050;
+  display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 1px 6px rgba(0, 0, 0, .2); }
+.card-tools button:hover { color: #8B5A6B; }
+.card-tools button:disabled { opacity: .35; cursor: default; }
+.card-tools .lbl { width: auto; padding: 0 10px; gap: 4px; font: 700 12.5px Heebo, sans-serif; }
+.card-hidden-badge { position: absolute; z-index: 5; bottom: 10px; right: 10px; background: #B3412F; color: #fff; font: 700 12px Heebo, sans-serif;
+  padding: 3px 10px; border-radius: 99px; }
+.is-hidden-card { opacity: .55; }
+.add-card { border: 2px dashed #C4861A !important; background: rgba(250, 236, 200, .35) !important; color: #93600B; display: flex; align-items: center; justify-content: center;
+  gap: 6px; font: 700 15px Heebo, sans-serif; border-radius: 22px; min-height: 70px; cursor: pointer; width: 100%; }
+
+/* כפתור צף למנהלת */
+.adm-fab-wrap { position: fixed; z-index: 9989; bottom: 24px; right: 20px; display: flex; gap: 6px; direction: rtl; }
+.adm-fab-btn { display: inline-flex; align-items: center; gap: 6px; height: 46px; padding: 0 14px; border-radius: 99px; border: none;
+  background: #fff; color: #8B5A6B; font: 700 14.5px Heebo, sans-serif; box-shadow: 0 6px 20px rgba(0, 0, 0, .18); cursor: pointer; text-decoration: none; }
+.adm-fab-btn.edit { background: #C4861A; color: #fff; }
+
+/* פס / לוח עריכה */
+.edit-panel { position: fixed; z-index: 9995; inset-inline: 10px; bottom: 10px; background: #C4861A; color: #fff; border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .28); font-family: Heebo, sans-serif; direction: rtl; overflow: hidden; max-height: 80vh; display: flex; flex-direction: column; }
+.ep-bar { display: flex; align-items: center; gap: 10px; padding: 10px 12px; flex: none; }
+.ep-grow { flex: 1; line-height: 1.25; min-width: 0; }
+.ep-grow b { display: block; font-size: 15px; }
+.ep-grow small { display: block; font-size: 12px; opacity: .92; }
+.ep-more { width: 38px; height: 34px; border-radius: 10px; border: none; background: rgba(255, 255, 255, .2); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.ep-done { height: 34px; border-radius: 10px; border: none; background: #fff; color: #93600B; font: 700 13.5px Heebo, sans-serif; padding: 0 12px;
+  display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+.ep-close { display: none; }
+.ep-body { display: none; background: #fff; color: #2C1F1F; padding: 14px 16px 16px; overflow-y: auto; }
+.edit-panel.open .ep-body { display: block; }
+.ep-legend { display: flex; flex-direction: column; gap: 7px; font-size: 13px; color: #6B5050; background: #FAF6F2; border-radius: 12px; padding: 10px 12px; margin-bottom: 4px; }
+.ep-legend span { display: flex; align-items: center; gap: 8px; }
+.ep-legend i { width: 26px; height: 14px; border-radius: 4px; display: inline-block; }
+.lg-edit { outline: 1.6px dashed #C4861A; background: rgba(250, 236, 200, .6); }
+.lg-changed { outline: 1.6px dashed #2E7D4F; background: rgba(227, 242, 233, .8); }
+.ep-h { font-size: 12.5px; font-weight: 700; color: #A8948A; margin: 14px 2px 7px; }
+.ep-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.ep-chips button { border: 1.5px solid #EDE4DC; background: #fff; border-radius: 99px; padding: 5px 12px; font: 500 13px Heebo, sans-serif; color: #6B5050; cursor: pointer; }
+.ep-chips button.on { background: #8B5A6B; border-color: #8B5A6B; color: #fff; font-weight: 700; }
+.ep-recent { display: block; width: 100%; text-align: right; border: none; background: none; border-top: 1px solid #EDE4DC; padding: 8px 2px; cursor: pointer; font-family: Heebo, sans-serif; }
+.ep-recent small { display: block; font-size: 11.5px; color: #A8948A; }
+.ep-recent span { display: block; font-size: 14px; color: #2C1F1F; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ep-muted { font-size: 12.5px; color: #A8948A; margin: 4px 2px; line-height: 1.5; }
+.ep-warn { font-size: 12.5px; color: #B3412F; margin: 8px 2px; }
+.ep-actions { display: flex; gap: 8px; margin-top: 12px; }
+
+/* במחשב – לוח קבוע בצד */
+@media (min-width: 1100px) {
+  body.edit-mode-on #root { margin-left: 330px; }
+  .edit-panel { inset: 0 auto 0 0; width: 330px; border-radius: 0; max-height: none; background: #fff; color: #2C1F1F; box-shadow: 8px 0 30px rgba(0, 0, 0, .12); }
+  .ep-bar { background: #8B5A6B; color: #fff; padding: 14px 16px; }
+  .ep-more, .ep-done { display: none; }
+  .ep-close { display: flex; background: none; border: none; color: #fff; cursor: pointer; }
+  .ep-body { display: block; flex: 1; }
+}
+
+/* חלונות העריכה */
+.ed-where { font-size: 13px; color: #A8948A; margin: 0 0 12px; }
+.ed-where b { color: #8B5A6B; }
+.ed-var { background: #F8EFF2; color: #8B5A6B; padding: 1px 5px; border-radius: 5px; margin: 0 2px; direction: ltr; display: inline-block; }
+.ed-preview { background: #FAF6F2; border-radius: 12px; padding: 10px 12px; margin: 10px 0; font-size: 15px; line-height: 1.7; }
+.ed-preview small { display: block; color: #A8948A; font-size: 12px; margin-bottom: 4px; }
+.ed-orig { font-size: 13.5px; color: #6B5050; border: 1px solid #EDE4DC; border-radius: 10px; padding: 8px 12px; margin: 10px 0; white-space: pre-line; }
+.ed-orig summary { font-weight: 700; cursor: pointer; }
+.ed-orig div { margin-top: 6px; }
+
+/* טקסט עשיר */
+.rich p { margin: 0 0 .6em; }
+.rich p:last-child { margin-bottom: 0; }
+.rich-list { margin: 0 0 .6em; padding-inline-start: 1.2em; }
+
+/* במצב עריכה – כפתור הנגישות לא מסתיר את פס העריכה */
+@media (max-width: 1099px) { body.edit-mode-on .a11y-fab { display: none !important; } }

@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { categories } from '../data/products';
 import ProductCard from '../components/ProductCard';
+import { T } from '../edit/T';
 
 export default function GraphicsPage({ subCatOverride } = {}) {
- const { navigate, pageData, content, graphics } = useApp();
+ const { navigate, pageData, t, graphics } = useApp();
  const subs = categories.graphics.subCategories;
  const [active, setActive] = useState(subCatOverride || pageData?.subCategory || subs[0].id);
  const filtered = graphics.filter(p => p.category === active);
@@ -22,10 +23,10 @@ export default function GraphicsPage({ subCatOverride } = {}) {
  <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '200px', height: '200px', background: 'rgba(255,255,255,0.12)', borderRadius: '50%', filter: 'blur(50px)' }} />
  {/* כפתור חזרה – למעלה, לא חופף */}
  <div style={{ position: 'absolute', top: '14px', right: '16px', zIndex: 2 }}>
- <button className="back-btn" onClick={() => navigate('category', 'graphics')}>→ חזרה לקטגוריות</button>
+ <button className="back-btn" onClick={() => navigate('category', 'graphics')}><T k="common.back_categories" /></button>
  </div>
  <h1 className="page-main-title" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,4vw,36px)', fontWeight: '900', color: 'white', textAlign: 'center', textShadow: '0 2px 10px rgba(0,0,0,0.12)', position: 'relative', zIndex: 1, margin: '40px 0 0' }}>
- {'עבודות גרפיקה '}
+ <T k="page.graphics_title" />
  </h1>
  </div>
 
@@ -42,7 +43,7 @@ export default function GraphicsPage({ subCatOverride } = {}) {
  {filtered.length === 0 ? (
  <div style={{ textAlign: 'center', padding: '80px 0', color: 'var(--light)' }}>
  <div style={{ fontSize: '46px', marginBottom: '14px' }}></div>
- <p>אין פריטים בקטגוריה זו עדיין</p>
+ <p><T k="graphics.empty" /></p>
  </div>
  ) : (
  <div className="products-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '18px' }}>
@@ -52,11 +53,11 @@ export default function GraphicsPage({ subCatOverride } = {}) {
 
  {/* CTA */}
  <div style={{ marginTop: '52px', background: 'var(--slate-soft)', border: '1px solid var(--border-light)', borderRadius: '22px', padding: '38px', textAlign: 'center' }}>
- <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: 'var(--slate)', marginBottom: '10px' }}>רוצה עיצוב מותאם אישית?</h3>
- <p style={{ color: 'var(--mid)', marginBottom: '22px', fontSize: '13px' }}>כל עיצוב נבנה עם אהבה ותשומת לב לפרטים הקטנים</p>
- <a href={`https://wa.me/${content.whatsapp_number}?text=${encodeURIComponent('היי, אני מעוניינת בעיצוב גרפי!')}`}
+ <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: 'var(--slate)', marginBottom: '10px' }}><T k="graphics.cta_title" /></h3>
+ <p style={{ color: 'var(--mid)', marginBottom: '22px', fontSize: '13px' }}><T k="graphics.cta_text" /></p>
+ <a href={`https://wa.me/${t('whatsapp_number')}?text=${encodeURIComponent(t('graphics.wa_msg'))}`}
  target="_blank" rel="noopener noreferrer" className="btn-whatsapp" style={{ textDecoration: 'none' }}>
- כתבי לי עכשיו
+ <T k="graphics.cta_btn" />
  </a>
  </div>
  </div>

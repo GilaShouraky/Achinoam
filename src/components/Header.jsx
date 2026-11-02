@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
-
-const LOGO_URL = 'https://i.ibb.co/6R35Qkzt/4.png';
+import { T, useImg, ImgEditBtn } from '../edit/T';
 
 export default function Header() {
-  const { setSidebarOpen, cartCount, navigate, products } = useApp();
+  const { cartCount, navigate, products } = useApp();
+  const LOGO_URL = useImg('logo_url');
   const [scrolled, setScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth <= 600);
   useEffect(() => {
@@ -82,6 +82,7 @@ export default function Header() {
         style={{ background: 'none', border: 'none', cursor: 'pointer', position: 'absolute', left: '50%', transform: 'translateX(-50%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <img src={LOGO_URL} alt="אחינועם"
           style={{ height: '68px', width: 'auto', objectFit: 'contain', display: 'block' }} />
+        <ImgEditBtn k="logo_url" label="לוגו" style={{ top: '50%', left: '100%', transform: 'translateY(-50%)', marginLeft: 6 }} />
       </button>
 
 
@@ -129,7 +130,7 @@ export default function Header() {
                 </div>
               )}
               {query && results.length === 0 && (
-                <div style={{ background: 'white', border: '1px solid var(--border-light)', borderRadius: '10px', padding: '10px', textAlign: 'center', color: 'var(--light)', fontSize: '13px', boxShadow: '0 4px 12px rgba(0,0,0,0.06)' }}>לא נמצאו מוצרים</div>
+                <div style={{ background: 'white', border: '1px solid var(--border-light)', borderRadius: '10px', padding: '10px', textAlign: 'center', color: 'var(--light)', fontSize: '13px', boxShadow: '0 4px 12px rgba(0,0,0,0.06)' }}><T k="header.search_empty" /></div>
               )}
             </div>
           )}
