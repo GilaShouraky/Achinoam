@@ -3,7 +3,7 @@ import { Trash2, ExternalLink, Check, Tag, Eye, Info, Monitor } from 'lucide-rea
 import { useApp } from '../../context/AppContext';
 import { NoEdit } from '../../edit/EditContext';
 import { FullPage } from '../common';
-import { Field, Switch, ErrorBox, Spinner } from '../../ui/ui';
+import { Field, Switch, Spinner } from '../../ui/ui';
 import ImagesField from './ImagesField';
 import ProductCard from '../../components/ProductCard';
 import { rowToProduct, NO_PRICE } from '../../data/siteContent';
@@ -95,6 +95,8 @@ export default function ProductEditor({ sheet, row, cats, defaultCat, onClose, o
     setBad(b);
     const first = Object.values(b)[0];
     setErr(first ? `${first}${Object.keys(b).length > 1 ? ` (ועוד ${Object.keys(b).length - 1})` : ''}` : null);
+    // מראים מיד מה חסר: גוללים לשדה הראשון שסומן באדום
+    if (first) setTimeout(() => document.querySelector('.fullpage .bad')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
     return !first;
   };
 
@@ -153,8 +155,9 @@ export default function ProductEditor({ sheet, row, cats, defaultCat, onClose, o
     <FullPage title={isNew ? 'מוצר חדש' : 'עריכת מוצר'} onBack={onClose}
       extra={id && <button className="a-btn ghost sm" onClick={() => window.open(`/product/${encodeURIComponent(id)}`, '_blank')}><ExternalLink size={14} /> באתר</button>}
       footer={<>
+        {err && <p className="fp-err" role="alert">⚠️ לא נשמר: {err}</p>}
         {!isNew && <button className="a-btn danger-ghost icon" onClick={del} disabled={busy} aria-label="מחיקה"><Trash2 size={18} /></button>}
-        <button className="a-btn primary wide" onClick={save} disabled={busy}>{busy ? <Spinner /> : <><Check size={18} /> שמירה לגוגל שיטס</>}</button>
+        <button className="a-btn primary wide" onClick={save} disabled={busy}>{busy ? <Spinner /> : <><Check size={18} /> שמירת שינויים</>}</button>
       </>}>
       <div className="pe-grid">
         <aside className="pe-prev">
@@ -260,7 +263,6 @@ export default function ProductEditor({ sheet, row, cats, defaultCat, onClose, o
             </>}
           </div>
           {isNew && <p className="a-hint"><Info size={13} style={{ verticalAlign: -2 }} /> המוצר יתווסף בסוף הלשונית "מוצרים" בגיליון.</p>}
-          <ErrorBox message={err} />
         </div>
       </div>
     </FullPage>

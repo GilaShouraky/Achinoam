@@ -208,3 +208,7 @@
 .miss-line { display: block; font-size: 12px; font-weight: 700; color: var(--a-bad); margin-top: 2px; }
 .chip.miss { border-color: var(--a-bad); color: var(--a-bad); font-weight: 700; }
 .chip.miss.on { background: var(--a-bad); color: #fff; }
+
+/* שגיאה מעל כפתור השמירה */
+.fp-foot > div { flex-wrap: wrap; }
+.fp-err { flex-basis: 100%; margin: 0 0 2px; background: var(--a-bad-soft); color: var(--a-bad); font-weight: 700; font-size: 14px; border-radius: 10px; padding: 8px 12px; }
