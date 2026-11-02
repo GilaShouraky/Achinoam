@@ -3,7 +3,7 @@ import { Trash2, ExternalLink, Check, Tag, Eye, Info, Monitor } from 'lucide-rea
 import { useApp } from '../../context/AppContext';
 import { NoEdit } from '../../edit/EditContext';
 import { FullPage } from '../common';
-import { Field, Switch, Spinner } from '../../ui/ui';
+import { Field, Switch, Spinner, Modal } from '../../ui/ui';
 import ImagesField from './ImagesField';
 import ProductCard from '../../components/ProductCard';
 import { rowToProduct, NO_PRICE } from '../../data/siteContent';
@@ -100,7 +100,15 @@ export default function ProductEditor({ sheet, row, cats, defaultCat, onClose, o
     return !first;
   };
 
+  // שינויים שלא נשמרו – מזהים לפי צילום מצב
+  const snap = JSON.stringify([f, images, priceMode, featured, cheap, deal, mode]);
+  const [initial] = useState(snap);
+  const dirty = snap !== initial;
+  const [askLeave, setAskLeave] = useState(false);
+  const back = () => { if (busy) return; if (dirty) setAskLeave(true); else onClose(); };
+
   const save = async () => {
+    setAskLeave(false);
     if (!validate()) return;
     setBusy(true);
     try {
@@ -152,7 +160,7 @@ export default function ProductEditor({ sheet, row, cats, defaultCat, onClose, o
   const catLabel = cats.find(c => c.id === f['קטגוריה'])?.label;
 
   return (
-    <FullPage title={isNew ? 'מוצר חדש' : 'עריכת מוצר'} onBack={onClose}
+    <FullPage title={isNew ? 'מוצר חדש' : 'עריכת מוצר'} onBack={back}
       extra={id && <button className="a-btn ghost sm" onClick={() => window.open(`/product/${encodeURIComponent(id)}`, '_blank')}><ExternalLink size={14} /> באתר</button>}
       footer={<>
         {err && <p className="fp-err" role="alert">⚠️ לא נשמר: {err}</p>}
@@ -265,6 +273,15 @@ export default function ProductEditor({ sheet, row, cats, defaultCat, onClose, o
           {isNew && <p className="a-hint"><Info size={13} style={{ verticalAlign: -2 }} /> המוצר יתווסף בסוף הלשונית "מוצרים" בגיליון.</p>}
         </div>
       </div>
+      {askLeave && (
+        <Modal title="השינויים עוד לא נשמרו" onClose={() => setAskLeave(false)}
+          footer={<>
+            <button className="a-btn ghost" onClick={() => { setAskLeave(false); onClose(); }}>יציאה בלי לשמור</button>
+            <button className="a-btn primary" onClick={save}><Check size={18} /> שמירת שינויים</button>
+          </>}>
+          <p style={{ margin: 0 }}>שינית פרטים במוצר. לשמור אותם לפני שיוצאים?</p>
+        </Modal>
+      )}
     </FullPage>
   );
 }

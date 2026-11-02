@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 
@@ -19,12 +19,15 @@ export function Seg({ tabs, value, onChange }) {
 
 /** מסך מלא שנפתח מעל הרשימה. Esc / חזרה בדפדפן סוגרים */
 export function FullPage({ title, onBack, children, footer, extra }) {
+  const backRef = useRef(onBack);
+  backRef.current = onBack;
   useEffect(() => {
-    const k = (e) => e.key === 'Escape' && onBack();
+    const k = (e) => e.key === 'Escape' && !document.querySelector('.a-modal-wrap') && backRef.current();
     window.addEventListener('keydown', k);
     // כפתור "חזרה" של הטלפון סוגר את המסך במקום לצאת מהניהול
     window.history.pushState({ fp: 1 }, '');
-    const pop = () => onBack();
+    // אם המסך לא נסגר (למשל נשארו שינויים לא שמורים) – מחזירים את הרשומה להיסטוריה
+    const pop = () => { window.history.pushState({ fp: 1 }, ''); backRef.current(); };
     window.addEventListener('popstate', pop);
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -38,7 +41,7 @@ export function FullPage({ title, onBack, children, footer, extra }) {
   return (
     <div className="fullpage adm" role="dialog">
       <div className="fp-head">
-        <button className="a-icon-btn" onClick={onBack} aria-label="חזרה"><ChevronRight size={22} /></button>
+        <button className="a-icon-btn" onClick={() => backRef.current()} aria-label="חזרה"><ChevronRight size={22} /></button>
         <h2>{title}</h2>
         {extra}
       </div>
@@ -51,7 +54,7 @@ export function FullPage({ title, onBack, children, footer, extra }) {
 export function SectionHead({ title, onBack, children }) {
   return (
     <div className="adm-head">
-      <button className="a-icon-btn" onClick={onBack} aria-label="חזרה" style={{ width: 38, height: 38 }}><ChevronRight size={22} /></button>
+      <button className="a-icon-btn" onClick={() => backRef.current()} aria-label="חזרה" style={{ width: 38, height: 38 }}><ChevronRight size={22} /></button>
       <div className="grow"><small className="muted small">ניהול</small><h1>{title}</h1></div>
       {children}
     </div>

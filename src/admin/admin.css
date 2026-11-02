@@ -1,5 +1,5 @@
 /* ═══ מערכת הניהול ═══ */
-.adm { font-family: Heebo, sans-serif; direction: rtl; text-align: right; background: var(--a-bg); color: var(--a-text); min-height: 100vh; font-size: 15px; line-height: 1.5; }
+.adm { font-family: Heebo, sans-serif; direction: rtl; text-align: right; background: var(--a-bg); color: var(--a-text); min-height: 100vh; min-height: 100dvh; font-size: 15px; line-height: 1.5; }
 .adm *, .adm *::before, .adm *::after { box-sizing: border-box; }
 .adm h1, .adm h2, .adm h3, .adm p { margin: 0; }
 .adm button { font-family: inherit; }
@@ -81,11 +81,11 @@
 .empty svg { opacity: .35; margin-bottom: 8px; }
 
 /* מסך מלא (עריכת מוצר / הזמנה) */
-.fullpage { position: fixed; inset: 0; z-index: 200; background: var(--a-bg); display: flex; flex-direction: column; animation: fp-in .22s cubic-bezier(.22, 1, .36, 1); }
+.fullpage { position: fixed; top: 0; left: 0; right: 0; height: 100%; height: 100dvh; min-height: 0; z-index: 200; background: var(--a-bg); display: flex; flex-direction: column; animation: fp-in .22s cubic-bezier(.22, 1, .36, 1); }
 @keyframes fp-in { from { transform: translateX(-30px); opacity: 0; } }
 .fp-head { height: 58px; display: flex; align-items: center; gap: 10px; padding: 0 14px; background: #fff; border-bottom: 1px solid var(--a-border); flex: none; }
 .fp-head h2 { font-size: 17px; font-weight: 800; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.fp-body { flex: 1; overflow-y: auto; }
+.fp-body { flex: 1; min-height: 0; overflow-y: auto; }
 .fp-inner { max-width: 760px; margin: 0 auto; padding: 16px 16px 30px; }
 .fp-foot { background: #fff; border-top: 1px solid var(--a-border); padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); flex: none; }
 .fp-foot > div { max-width: 760px; margin: 0 auto; display: flex; gap: 10px; }
