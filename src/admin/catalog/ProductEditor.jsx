@@ -85,7 +85,7 @@ export default function ProductEditor({ sheet, row, cats, defaultCat, onClose, o
     if (!f['שם'].trim()) b['שם'] = 'צריך לתת שם למוצר';
     if (!f['קטגוריה']) b['קטגוריה'] = 'צריך לבחור קטגוריה';
     if (priceMode === 'price' && (!isNum(f['מחיר']) || Number(f['מחיר']) <= 0)) b['מחיר'] = 'מחיר במספרים בלבד';
-    if (!isInt(f['כמות_במלאי'])) b['כמות_במלאי'] = 'מלאי במספר שלם (0 = אזל)';
+    if (String(f['כמות_במלאי'] ?? '').trim() && !isInt(f['כמות_במלאי'])) b['כמות_במלאי'] = 'מלאי במספר שלם (0 = אזל)';
     if (deal) {
       if (!isInt(f['מבצע_כמות']) || Number(f['מבצע_כמות']) < 1) b['מבצע_כמות'] = 'כמות במספר שלם';
       if (!isNum(f['מבצע_מחיר']) || Number(f['מבצע_מחיר']) <= 0) b['מבצע_מחיר'] = 'מחיר במספרים';
@@ -204,7 +204,7 @@ export default function ProductEditor({ sheet, row, cats, defaultCat, onClose, o
             {priceMode === 'price' && <Field label="מחיר ₪" required hint={bad['מחיר']}><input {...num('מחיר')} /></Field>}
             {priceMode === 'note' && <Field label="מה לכתוב במקום מחיר" hint={`ריק = "${t('product.price_note_short')}"`}><input className="a-input" value={f['הערת מחיר']} onChange={set('הערת מחיר')} placeholder={t('product.price_note_short')} /></Field>}
             {priceMode === 'none' && <p className="a-hint" style={{ flex: 1, margin: '0 0 14px' }}>לא יוצג מחיר בכלל, וגם לא כפתור "הוספה לסל".</p>}
-            <Field label="כמה במלאי" required hint={bad['כמות_במלאי'] || (stockN === 0 ? 'יוצג "אזל מהמלאי"' : null)}><input {...num('כמות_במלאי', { inputMode: 'numeric' })} /></Field>
+            <Field label="כמה במלאי" hint={bad['כמות_במלאי'] || (stockN === 0 ? 'יוצג "אזל מהמלאי"' : 'אפשר להשאיר ריק')}><input {...num('כמות_במלאי', { inputMode: 'numeric', placeholder: 'לא מוגבל' })} /></Field>
           </div>
           {priceMode === 'note' && <p className="a-hint" style={{ marginTop: -8 }}>בלי מחיר אי אפשר להוסיף לסל – הלקוחה פונה אלייך בוואטסאפ.</p>}
           <Field label="תיאור"><textarea className="a-textarea" rows={4} value={f['תיאור']} onChange={set('תיאור')} /></Field>

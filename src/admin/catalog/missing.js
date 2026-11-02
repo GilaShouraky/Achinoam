@@ -11,7 +11,8 @@ export function missingFields(row, catIds) {
   if (!cat || !catIds.includes(cat)) out.push('קטגוריה');
   const price = String(row['מחיר'] ?? '').trim();
   if (price && !isNum(price)) out.push('מחיר');
-  if (!isInt(row['כמות_במלאי'])) out.push('מלאי');
+  const stock = String(row['כמות_במלאי'] ?? '').trim();
+  if (stock && !isInt(stock)) out.push('מלאי');
   const dq = String(row['מבצע_כמות'] ?? '').trim(), dp = String(row['מבצע_מחיר'] ?? '').trim();
   if ((dq || dp) && (!isInt(dq) || !isNum(dp))) out.push('מבצע');
   return out;
